@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Item extends Model
+{
+    protected $table = 'item';
+    protected $primaryKey = 'item_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $fillable = [
+        'item_id',
+        'description',
+    ];
+
+    // Method accessor yang berfungsi untuk mengganti karakter titik (.) dengan underscore (_)
+    // Pemanggilan blade: $item->safe_item_id
+    public function  getSafeItemIdAttribute(){
+        return str_replace('.', '_', $this->item_id);
+    }
+
+    public function marketPrices()
+    {
+        return $this->hasMany(MarketPrice::class, 'item_id', 'item_id');
+    }
+
+    public function arrivals()
+    {
+        return $this->hasMany(Arrival::class, 'item_id', 'item_id');
+    }
+
+    public function suggests()
+    {
+        return $this->hasMany(Suggest::class, 'item_id', 'item_id');
+    }
+}
