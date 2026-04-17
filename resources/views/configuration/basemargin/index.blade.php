@@ -10,74 +10,23 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col">
-                        <h4 class="card-title">List Data Base Margin</h4>
-                    </div>
-                    <div class="col d-flex justify-content-end gap-2 p-2">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#add_basemargin">
-                            Add Data<i class=" mdi mdi-plus-box ms-1"></i>
-                        </button>
-                    </div>
-                </div>
-                <!-- Modal starts -->
-                <div class="row">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    <div class="col-12 table-responsive">
-                        <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
-                            <thead>
-                                <tr>
-                                    <th>No #</th>
-                                    <th>Margin Percentage</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $basemargin)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $basemargin->margin_percentage_format }}</td>
-                                        <td>
-                                            <span class="d-none">Edit</span>
+                <h4 class="card-title">Base Margin Percentage</h4>
+                <p class="card-description">Manage the base margin percentages for your calculations.</p>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#gpmargin" role="tab"
+                            aria-controls="home" aria-selected="true">GP Margin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="targetgp-tab" data-bs-toggle="tab" href="#targetgp" role="tab"
+                            aria-controls="profile" aria-selected="false">Target GP</a>
+                    </li>
+                </ul>
 
-                                            <a type="button"
-                                                class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#edit_item{{ $basemargin->id }}"
-                                                title="Edit">
-                                                <i
-                                                    class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
-                                            </a>
-                                            <span class="d-none">Delete</span>
-
-                                            <a type="button"
-                                                class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#delete_item{{ $basemargin->id }}"
-                                                title="Delete">
-                                                <i
-                                                    class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{-- Modal View Add Data --}}
-                        @include('configuration.basemargin.create')
-                        @include('configuration.basemargin.update')
-                        @include('configuration.basemargin.delete')
-                        {{-- End Modal View Add Data --}}
-
-
-                    </div>
+                {{-- Detail Tab Content --}}
+                <div class="tab-content">
+                    @include('configuration.basemargin.gpmargin.index')
+                    @include('configuration.basemargin.targetgp.index')
                 </div>
             </div>
         </div>

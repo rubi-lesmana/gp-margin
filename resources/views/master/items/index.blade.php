@@ -32,47 +32,49 @@
                             </ul>
                         </div>
                     @endif
-                    <div class="col-12 table-responsive">
-                        <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
-                            <thead>
-                                <tr>
-                                    <th>No #</th>
-                                    <th>Item ID</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $item)
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
+                                <thead>
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->item_id }}</td>
-                                        <td>{{ $item->description }}</td>
-                                        {{-- <td>{{ $data->total_course }}</td> --}}
-                                        <td>
-                                            <span class="d-none">Edit</span>
-
-                                            <a type="button"
-                                                class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#edit_item{{ $item->safe_item_id }}"
-                                                title="Edit">
-                                                <i
-                                                    class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
-                                            </a>
-                                            <span class="d-none">Delete</span>
-
-                                            <a type="button"
-                                                class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#delete_item{{ $item->safe_item_id }}" title="Delete">
-                                                <i
-                                                    class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
-                                            </a>
-                                        </td>
+                                        <th>No #</th>
+                                        <th>Item ID</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->item_id }}</td>
+                                            <td>{{ $item->description }}</td>
+                                            {{-- <td>{{ $data->total_course }}</td> --}}
+                                            <td>
+                                                <span class="d-none">Edit</span>
+
+                                                <a type="button"
+                                                    class="btn btn-gradient-success btn-rounded btn-icon position-relative"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#edit_item{{ $item->safe_item_id }}" title="Edit">
+                                                    <i
+                                                        class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
+                                                <span class="d-none">Delete</span>
+
+                                                <a type="button"
+                                                    class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#delete_item{{ $item->safe_item_id }}" title="Delete">
+                                                    <i
+                                                        class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{-- Modal View Add Data --}}
                         @include('master.items.create')
                         @include('master.items.update')

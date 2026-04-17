@@ -5,7 +5,7 @@
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
                     <i class="icon-calendar"></i>
-                </span> Inventory Arrival  Management
+                </span> Inventory Arrival Management
             </h3>
         </div>
         <div class="card">
@@ -31,54 +31,56 @@
                             </ul>
                         </div>
                     @endif
-                    <div class="col-12 table-responsive">
-                        <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
-                            <thead>
-                                <tr>
-                                    <th>No #</th>
-                                    <th>Item ID</th>
-                                    <th>Description</th>
-                                    <th>Status</th>
-                                    <th>Quantity</th>
-                                    <th>Date Arrival</th>
-                                    <th class="col-wrap">Keterangan</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $arrival)
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
+                                <thead>
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $arrival->item_id }}</td>
-                                        <td>{{ $arrival->item->description }}</td>
-                                        <td>{{ $arrival->status }}</td>
-                                        <td>{{ number_format($arrival->quantity, 0, ',', '.') }}</td>
-                                        <td>{{ $arrival->date }}</td>
-                                        <td class="col-wrap">{{ $arrival->keterangan }}</td>
-                                        <td>
-                                            <span class="d-none">Edit</span>
-
-                                            <a type="button"
-                                                class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#edit_arrival{{ $arrival->id }}"
-                                                title="Edit">
-                                                <i
-                                                    class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
-                                            </a>
-                                            <span class="d-none">Delete</span>
-
-                                            <a type="button"
-                                                class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#delete_arrival{{ $arrival->id }}" title="Delete">
-                                                <i
-                                                    class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
-                                            </a>
-                                        </td>
+                                        <th>No #</th>
+                                        <th>Item ID</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Quantity</th>
+                                        <th>Date Arrival</th>
+                                        <th class="col-wrap">Keterangan</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data as $arrival)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $arrival->item_id }}</td>
+                                            <td>{{ $arrival->item->description }}</td>
+                                            <td>{{ $arrival->status }}</td>
+                                            <td>{{ number_format($arrival->quantity, 0, ',', '.') }}</td>
+                                            <td>{{ $arrival->date }}</td>
+                                            <td class="col-wrap">{{ $arrival->keterangan }}</td>
+                                            <td>
+                                                <span class="d-none">Edit</span>
+
+                                                <a type="button"
+                                                    class="btn btn-gradient-success btn-rounded btn-icon position-relative"
+                                                    data-bs-toggle="modal" data-bs-target="#edit_arrival{{ $arrival->id }}"
+                                                    title="Edit">
+                                                    <i
+                                                        class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
+                                                <span class="d-none">Delete</span>
+
+                                                <a type="button"
+                                                    class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#delete_arrival{{ $arrival->id }}" title="Delete">
+                                                    <i
+                                                        class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{-- Modal View Add Data --}}
                         @include('master.arrival.update')
                         @include('master.arrival.delete')
