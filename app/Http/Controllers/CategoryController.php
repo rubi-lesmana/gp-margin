@@ -31,15 +31,17 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'status' => 'required|string|max:25',
-            'quantity' => 'required|integer|min:0',
-            'calculation' => 'required|numeric|min:0',
+            'status'        => 'required|string|max:25',
+            'min'           => 'required|integer|min:0',
+            'max'           => 'required|integer|min:0',
+            'calculation'   => 'required|numeric|min:0',
         ]);
 
         Category::create([
-            'status' => $request->status,
-            'quantity' => $request->quantity,
-            'calculation' => $request->calculation,
+            'status'        => $request->status,
+            'min'           => $request->min,
+            'max'           => $request->max,
+            'calculation'   => $request->calculation,
         ]);
 
         Alert::success('Success', 'Category has been added successfully');
@@ -48,36 +50,22 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'status' => 'required|string|max:25',
-            'quantity' => 'required|integer|min:0',
-            'calculation' => 'required|numeric|min:0',
+            'status'        => 'required|string|max:25',
+            'min'           => 'required|integer|min:0',
+            'max'           => 'required|integer|min:0',
+            'calculation'   => 'required|numeric|min:0',
         ]);
 
         Category::findOrFail($id)->update([
-            'status' => $request->status,
-            'quantity' => $request->quantity,
-            'calculation' => $request->calculation,
+            'status'        => $request->status,
+            'min'           => $request->min,
+            'max'           => $request->max,
+            'calculation'   => $request->calculation,
         ]);
 
         Alert::success('Success', 'Category has been updated successfully');

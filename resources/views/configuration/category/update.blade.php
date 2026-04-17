@@ -22,12 +22,20 @@
                                 value="{{ old('status', $category->status) }}">
                         </div>
                         <div class="form-group">
-                            <label for="quantity">Quantity</label>
-                            <input type="number" step="0.01" class="form-control" id="quantity" name="quantity"
-                                placeholder="Quantity"
-                                @error('quantity') is-invalid                              
+                            <label for="min">min</label>
+                            <input type="number" step="0.01" class="form-control" id="min" name="min"
+                                placeholder="min"
+                                @error('min') is-invalid                              
                              @enderror
-                                value="{{ old('quantity', $category->quantity) }}">
+                                value="{{ old('min', $category->min) }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="max">Max</label>
+                            <input type="number" step="0.01" class="form-control" id="max" name="max"
+                                placeholder="Max"
+                                @error('max') is-invalid                              
+                             @enderror
+                                value="{{ old('max', $category->max) }}">
                         </div>
                         <div class="form-group">
                             <label for="calculation">Calculation</label>

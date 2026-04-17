@@ -16,11 +16,28 @@
             <div class="border-bottom mt-2">
             </div>
         </li>
-        {{-- USer COurse --}}
+
+        {{-- Calculator --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('suggested-gp.index') }}">
-                <span class="menu-title">Suggested GP</span>
+            <a class="nav-link" href="{{ route('calculator.index') }}">
+                <span class="menu-title">Calculator</span>
                 <i class="icon-calculator menu-icon"></i>
+            </a>
+        </li>
+
+        {{-- List Transaction --}}
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <span class="menu-title">List Transaction</span>
+                <i class="icon-notebook menu-icon"></i>
+            </a>
+        </li>
+
+        {{-- Pengajuan --}}
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <span class="menu-title">Pengajuan</span>
+                <i class="icon-directions menu-icon"></i>
             </a>
         </li>
 

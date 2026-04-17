@@ -9,7 +9,8 @@ class Category extends Model
     protected $table = 'category';
     protected $fillable = [
         'status',
-        'quantity',
+        'min',
+        'max',
         'calculation',
     ];
 

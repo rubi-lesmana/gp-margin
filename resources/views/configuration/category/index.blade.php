@@ -38,7 +38,8 @@
                                 <tr>
                                     <th>No #</th>
                                     <th>Status</th>
-                                    <th>Quantity</th>
+                                    <th>Min</th>
+                                    <th>Max</th>
                                     <th>Calculation</th>
                                     <th>Action</th>
                                 </tr>
@@ -48,7 +49,8 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->status }}</td>
-                                        <td>{{ $category->quantity }}</td>
+                                        <td>{{ $category->min }}</td>
+                                        <td>{{ $category->max }}</td>
                                         <td>{{ $category->calculation_format }}</td>
                                         <td>
                                             <span class="d-none">Edit</span>
