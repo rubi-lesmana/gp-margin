@@ -10,7 +10,7 @@
                 </button>
             </div>
         </div>
-        <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
+        <table class="table table-striped dt-responsive nowrap w-100">
             <thead>
                 <tr>
                     <th class="text-center">No #</th>

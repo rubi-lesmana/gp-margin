@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BaseMargin;
 use App\Models\TgpMargin;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class BaseMarginController extends Controller
+class TgpMarginController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = BaseMargin::all();
         $data_tgp = TgpMargin::all();
-        return view('configuration.basemargin.index', compact('data', 'data_tgp'));
+        return view('configuration.basemargin.targetgp.index', compact('data_tgp'));
     }
 
     /**
@@ -28,11 +26,11 @@ class BaseMarginController extends Controller
             'margin_percentage' => 'required|numeric|min:0|max:100',
         ]);
 
-        BaseMargin::create([
-            // setelah diubah di Model BaseMargin accessor/mutator
+        TgpMargin::create([
+            // setelah diubah di Model TgpMargin accessor/mutator
             'margin_percentage' => $request->margin_percentage,
         ]);
-        Alert::success('Success', 'Base Margin has been added successfully');
+        Alert::success('Success', 'Target GP Margin has been added successfully');
         return redirect()->route('base-margin.index');
     }
 
@@ -45,11 +43,11 @@ class BaseMarginController extends Controller
             'margin_percentage' => 'required|numeric|min:0|max:100',
         ]);
 
-        BaseMargin::findOrFail($id)->update([
-            // setelah diubah di Model BaseMargin accessor/mutator
+        TgpMargin::findOrFail($id)->update([
+            // setelah diubah di Model TgpMargin accessor/mutator
             'margin_percentage' => $request->margin_percentage,
         ]);
-        Alert::success('Success', 'Base Margin has been updated successfully');
+        Alert::success('Success', 'Target GP Margin has been updated successfully');
         return redirect()->route('base-margin.index');
     }
 
@@ -58,8 +56,8 @@ class BaseMarginController extends Controller
      */
     public function destroy(string $id)
     {
-        BaseMargin::findOrFail($id)->delete();
-        Alert::success('Success', 'Base Margin has been deleted successfully');
+        TgpMargin::findOrFail($id)->delete();
+        Alert::success('Success', 'Target GP Margin has been deleted successfully');
         return redirect()->route('base-margin.index');
     }
 }
