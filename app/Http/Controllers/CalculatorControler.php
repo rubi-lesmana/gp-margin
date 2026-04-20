@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
 use App\Models\Item;
+use App\Services\CalculatorService;
 use Illuminate\Http\Request;
 
 class CalculatorControler extends Controller
 {
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CalculatorService $calculatorService)
     {
-        $this->categoryService = $categoryService;
+        $this->calculatorService = $calculatorService;
     }
     /**
      * Display a listing of the resource.
@@ -32,7 +32,7 @@ class CalculatorControler extends Controller
         $top        = $request->input('top');
 
         // Category Service
-        $result         = $this->categoryService->resolveStatus($quantity);
+        $result         = $this->calculatorService->resolveStatus($quantity);
         $status         = $result['status'];
         $calculation    = $result['calculation'] * 100;
 
@@ -41,7 +41,11 @@ class CalculatorControler extends Controller
         $gpmargin['margin_percentage'] *= 100;
         $gpmargin['final_margin']      *= 100;
 
-        
+        // Target GP Margin
+        $tgpResult      = $this->calculatorService->resolveTgpMargin($top, $gpmargin['final_margin']);
+        $tgpValue       = $tgpResult['tgp_value'];
+        $tgpMargin      = $tgpResult['tgp_margin'];
+
         return view('transaction.calculator.index', compact(
             'items',
             'status',
@@ -50,7 +54,9 @@ class CalculatorControler extends Controller
             'costPrice',
             'top',
             'calculation',
-            'gpmargin'
+            'gpmargin',
+            'tgpValue',
+            'tgpMargin'
         ));
     }
 

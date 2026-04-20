@@ -4,8 +4,9 @@ namespace App\Services;
 
 use App\Models\BaseMargin;
 use App\Models\Category;
+use App\Models\TgpMargin;
 
-class CategoryService
+class CalculatorService
 {
      public function resolveStatus(int $quantity): ?array
      {
@@ -37,6 +38,22 @@ class CategoryService
           return [
                'margin_percentage' => $marginPercentage,
                'final_margin'      => $finalMargin
+          ];
+     }
+
+     public function resolveTgpMargin(float $top, float $finalMargin): array
+     {
+          $tgpMargin = TgpMargin::first();
+
+          // Fallback ke 0 jika data tidak ditemukan
+          $tgpMarginValue = $tgpMargin?->margin_percentage * 100 ?? 0;
+
+          // Formula untuk menghitung Target GP Margin
+          $targetGPMargin = ($top / 365 * $tgpMarginValue) + $finalMargin;
+          
+          return [
+               'tgp_value' => $tgpMarginValue,
+               'tgp_margin' => $targetGPMargin
           ];
      }
 }
