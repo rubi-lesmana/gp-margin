@@ -12,5 +12,4 @@ class TermOfPayment extends Model
         'description',
     ];
 
-    
 }

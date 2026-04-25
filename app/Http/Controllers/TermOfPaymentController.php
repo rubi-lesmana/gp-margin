@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TermOfPayment;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TermOfPaymentController extends Controller
 {
@@ -13,15 +14,7 @@ class TermOfPaymentController extends Controller
     public function index()
     {
         $data = TermOfPayment::all();
-        return view('configuration.term-of-payment.index', compact('data'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('configuration.top.index', compact('data'));
     }
 
     /**
@@ -29,23 +22,18 @@ class TermOfPaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'days' => 'required|integer',
+            'description' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        TermOfPayment::create([
+            'days' => $request->days,
+            'description' => $request->description,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        Alert::success('Success', 'Term of Payment created successfully.');
+        return redirect()->route('term-of-payment.index');
     }
 
     /**
@@ -53,7 +41,19 @@ class TermOfPaymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'days' => 'required|integer',
+            'description' => 'required|string|max:255',
+        ]);
+
+        $top = TermOfPayment::findOrFail($id);
+        $top->update([
+            'days' => $request->days,
+            'description' => $request->description,
+        ]);
+
+        Alert::success('Success', 'Term of Payment updated successfully.');
+        return redirect()->route('term-of-payment.index');
     }
 
     /**
@@ -61,6 +61,10 @@ class TermOfPaymentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $top = TermOfPayment::findOrFail($id);
+        $top->delete();
+
+        Alert::success('Success', 'Term of Payment deleted successfully.');
+        return redirect()->route('term-of-payment.index');
     }
 }

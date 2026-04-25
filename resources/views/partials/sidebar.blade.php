@@ -21,7 +21,7 @@
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <span class="menu-title">Selling Price</span>
-                <i class="icon-notebook menu-icon"></i>
+                <i class="icon-chart menu-icon"></i>
             </a>
         </li>
 
@@ -90,7 +90,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('term-of-payment.index') }}">
                 <span class="menu-title">TOP</span>
-                <i class="icon-equalizer menu-icon"></i>
+                <i class="icon-credit-card menu-icon"></i>
             </a>
         </li>
 
