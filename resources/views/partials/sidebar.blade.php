@@ -17,6 +17,14 @@
             </div>
         </li>
 
+        {{-- List Transaction --}}
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                <span class="menu-title">Selling Price</span>
+                <i class="icon-notebook menu-icon"></i>
+            </a>
+        </li>
+
         {{-- Calculator --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ route('calculator.index') }}">
@@ -25,18 +33,10 @@
             </a>
         </li>
 
-        {{-- List Transaction --}}
+        {{-- Requestion --}}
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <span class="menu-title">List Transaction</span>
-                <i class="icon-notebook menu-icon"></i>
-            </a>
-        </li>
-
-        {{-- Pengajuan --}}
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <span class="menu-title">Pengajuan</span>
+                <span class="menu-title">Requestion</span>
                 <i class="icon-directions menu-icon"></i>
             </a>
         </li>
@@ -79,17 +79,37 @@
             </div>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('base-margin.index') }}">
-                <span class="menu-title">Base Margin</span>
-                <i class="mdi mdi-call-missed menu-icon"></i>
-            </a>
-        </li>
+        {{-- Category --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ route('category.index') }}">
                 <span class="menu-title">Category</span>
                 <i class="icon-equalizer menu-icon"></i>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('term-of-payment.index') }}">
+                <span class="menu-title">TOP</span>
+                <i class="icon-equalizer menu-icon"></i>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('doi-percentage.index') }}">
+                <span class="menu-title">DOI Percentage</span>
+                <i class=" icon-graph menu-icon"></i>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('base-margin.index') }}">
+                <span class="menu-title">Base Margin</span>
+                <i class="mdi mdi-call-missed menu-icon"></i>
+            </a>
+        </li>
+
+
+
+
     </ul>
 </nav>

@@ -13,6 +13,9 @@
                     <input type="hidden" name="cost_price" value="{{ $costPrice }}">
                     <input type="hidden" name="top" value="{{ $top }}">
                     <input type="hidden" name="status" value="{{ $status }}">
+                    <input type="hidden" name="gpmargin" value="{{ $calculation }}">
+                    <input type="hidden" name="tgp_value" value="{{ $tgpValue }}">
+                    <input type="hidden" name="tgp_margin" value="{{ $tgpMargin }}">
 
                     <table class="table">
                         <tr>
@@ -37,6 +40,7 @@
                         </tr>
                         @include('transaction.calculator.result.gpmargin')
                         @include('transaction.calculator.result.tgpmargin')
+                        @include('transaction.calculator.result.tgpdoi')
 
                     </table>
                     <button type="submit" class="btn btn-gradient-primary mt-3">Save</button>

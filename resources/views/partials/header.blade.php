@@ -75,6 +75,16 @@
             width: 60px !important;
             text-align: center;
         }
+
+        .form-control {
+            border-radius: 8px;
+            /* Ubah angka ini untuk mengatur tingkat kelengkungan */
+        }
+
+        .btn {
+            border-radius: 8px;
+            /* Ubah angka ini untuk mengatur tingkat kelengkungan */
+        }
     </style>
 
 </head>

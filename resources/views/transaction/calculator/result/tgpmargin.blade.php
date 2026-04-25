@@ -1,6 +1,6 @@
 {{-- Target GP Margin --}}
 <tr data-bs-toggle="collapse" data-bs-target="#detailTgpMargin" style="cursor: pointer;">
-    <td>Target GP Margin</td>
+    <td>Target GP</td>
     <td>
         <div class="d-flex justify-content-between align-items-center">
             <span>

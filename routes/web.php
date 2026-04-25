@@ -5,8 +5,10 @@ use App\Http\Controllers\BaseMarginController;
 use App\Http\Controllers\CalculatorControler;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DoiPercentageController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MarketPriceController;
+use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +25,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('/market-price', MarketPriceController::class);
     Route::resource('/arrival-inventory', ArrivalController::class);
     Route::get('/calculator/calculate', [CalculatorControler::class, 'calculate'])->name('calculator.calculate');
+    Route::resource('/doi-percentage', DoiPercentageController::class);
     Route::resource('/calculator', CalculatorControler::class);
+    Route::resource('/term-of-payment', TermOfPaymentController::class);
 });

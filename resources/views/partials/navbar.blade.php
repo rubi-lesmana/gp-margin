@@ -15,7 +15,7 @@
 
         <div class="navbar-nav  text-center navbar-toggler align-self-center">
             {{-- <img src="{{ asset('purple/src/assets/images/Logo Arbe.png') }}" style="width: 7%; height: auto;" alt=""> --}}
-            <p class="mb-1 text-black">PT. Arbe Chemindo</p>
+            <p class="mb-1 text-black">PT. Arbe Global Trading</p>
         </div>
 
         <ul class="navbar-nav navbar-nav-right">

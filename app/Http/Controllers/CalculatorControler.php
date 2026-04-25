@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Services\CalculatorService;
+use App\Services\DoiService;
 use Illuminate\Http\Request;
 
 class CalculatorControler extends Controller
 {
 
-    public function __construct(CalculatorService $calculatorService)
+    public function __construct(
+        private CalculatorService $calculatorService,
+        private DoiService $doiService,
+    )
     {
         $this->calculatorService = $calculatorService;
+        $this->doiService = $doiService;
     }
     /**
      * Display a listing of the resource.
@@ -46,6 +51,12 @@ class CalculatorControler extends Controller
         $tgpValue       = $tgpResult['tgp_value'];
         $tgpMargin      = $tgpResult['tgp_margin'];
 
+        // DOI Service
+        $doiResult      = $this->doiService->applyToTgpMargin($tgpMargin, $itemId);
+        $doi            = $doiResult['doi'];
+        $doiDeduction   = $doiResult['doi_deduction'];
+        $finalTgpMargin = $doiResult['final_tgp'];
+
         return view('transaction.calculator.index', compact(
             'items',
             'status',
@@ -56,7 +67,10 @@ class CalculatorControler extends Controller
             'calculation',
             'gpmargin',
             'tgpValue',
-            'tgpMargin'
+            'tgpMargin',
+            'doi',
+            'doiDeduction',
+            'finalTgpMargin',
         ));
     }
 
