@@ -19,7 +19,7 @@
                                 placeholder="Min Days" value="{{ old('min_days', $doi->min_days) }}">
                         </div>
                         <div class="form-group">
-                            <label for="max_days">Max Days</label>
+                            <label for="max_days">Max Days<code>(opsional, kosong = tidak terbatas)</code></label>
                             <input type="number" class="form-control" id="max_days" name="max_days"
                                 placeholder="Max Days" value="{{ old('max_days', $doi->max_days) }}">
                         </div>
@@ -39,7 +39,6 @@
                 </form>
             </div>
         </div>
-    </div>
     </div>
     {{-- End Modal --}}
 @endforeach

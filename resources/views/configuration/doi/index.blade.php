@@ -48,8 +48,8 @@
                                 @foreach ($data as $doi)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $doi->min_days }} Day</td>
-                                        <td>{{ $doi->max_days }} Day</td>
+                                        <td>{{ $doi->min_days_format }}</td>
+                                        <td>{{ $doi->range_max_days }}</td>
                                         <td>{{ $doi->percentage }}%</td>
                                         <td>{{ $doi->label }}</td>
                                         <td>

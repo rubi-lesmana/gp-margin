@@ -33,4 +33,23 @@ class DoiPercentage extends Model
             ->orderBy('min_days', 'desc')
             ->first();
     }
+
+    /**
+     * Menambahkan kata hari dalam min days
+     */
+    public function getMinDaysFormatAttribute()    {
+        return $this->min_days . ' hari';
+    }
+
+    /**
+     * Tampilkan range days, jika max_days null tampilkan ">"
+     */
+    public function getRangeMaxDaysAttribute(): string
+    {
+        if (is_null($this->max_days)) {
+            return '> ' . $this->min_days . ' hari';
+        }
+
+        return $this->min_days . ' - ' . $this->max_days . ' hari';
+    }
 }
