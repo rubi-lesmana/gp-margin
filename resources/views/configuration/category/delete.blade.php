@@ -1,5 +1,5 @@
 @foreach ($data as $category)
-    <div class="modal fade" id="delete_category{{ $category->id }}" tabindex="-1" role="dialog"
+    <div class="modal fade" id="delete_category{{ $category->status }}" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalLabel-2" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -10,7 +10,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="forms-sample" action="{{ route('category.destroy', $category->id) }}" method="POST">
+                    <form class="forms-sample" action="{{ route('category.destroy', $category->status) }}"
+                        method="POST">
                         @method('DELETE')
                         @csrf
                         <p>Are you sure want to delete <b>Category {{ $category->status }}</b> ? </p>

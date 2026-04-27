@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CategoryController extends Controller
 {
+    public function __construct(protected CategoryService $categoryService)
+    {
+        // 
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Category::all();
+        $data = Category::orderBy('min_quantity')->get();
         return view('configuration.category.index', compact('data'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -30,19 +27,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'status'        => 'required|string|max:25',
-            'min'           => 'required|integer|min:0',
-            'max'           => 'required|integer|min:0',
-            'calculation'   => 'required|numeric|min:0',
+        $validated = $request->validate([
+            'status'       => 'required|string|max:15',
+            'min_quantity' => 'required|integer|min:0',
+            'max_quantity' => [
+                'nullable',
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!is_null($value) && $value <= $request->input('min_quantity')) {
+                        $fail('Max quantity harus lebih besar dari min quantity.');
+                    }
+                },
+            ],
+            'calculation'  => 'required|numeric|min:0',
         ]);
 
-        Category::create([
-            'status'        => $request->status,
-            'min'           => $request->min,
-            'max'           => $request->max,
-            'calculation'   => $request->calculation,
-        ]);
+        $this->categoryService->store($validated);
 
         Alert::success('Success', 'Category has been added successfully');
 
@@ -52,33 +52,39 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $status)
     {
-        $request->validate([
-            'status'        => 'required|string|max:25',
-            'min'           => 'required|integer|min:0',
-            'max'           => 'required|integer|min:0',
-            'calculation'   => 'required|numeric|min:0',
+        $category = Category::findOrFail($status);
+
+        $validated = $request->validate([
+            'status'       => 'required|string|max:15',
+            'min_quantity' => 'required|integer|min:0',
+            'max_quantity' => [
+                'nullable',
+                'integer',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!is_null($value) && $value <= $request->input('min_quantity')) {
+                        $fail('Max quantity harus lebih besar dari min quantity.');
+                    }
+                },
+            ],
+            'calculation'  => 'required|numeric|min:0',
         ]);
 
-        Category::findOrFail($id)->update([
-            'status'        => $request->status,
-            'min'           => $request->min,
-            'max'           => $request->max,
-            'calculation'   => $request->calculation,
-        ]);
+        $this->categoryService->update($category, $validated);
 
         Alert::success('Success', 'Category has been updated successfully');
-
         return redirect()->route('category.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $status)
     {
-        Category::findOrFail($id)->delete();
+        $category = Category::findOrFail($status);
+
+        $this->categoryService->destroy($category);
         Alert::success('Success', 'Category has been deleted successfully');
         return redirect()->route('category.index');
     }

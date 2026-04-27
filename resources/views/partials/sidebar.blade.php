@@ -19,7 +19,7 @@
 
         {{-- List Transaction --}}
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('selling-price.index') }}">
                 <span class="menu-title">Selling Price</span>
                 <i class="icon-chart menu-icon"></i>
             </a>

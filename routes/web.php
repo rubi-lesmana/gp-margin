@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoiPercentageController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MarketPriceController;
+use App\Http\Controllers\SellingPriceController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,5 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('/doi-percentage', DoiPercentageController::class);
     Route::resource('/calculator', CalculatorControler::class);
     Route::resource('/term-of-payment', TermOfPaymentController::class);
+    Route::resource('/selling-price', SellingPriceController::class);
 });

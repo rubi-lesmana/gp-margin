@@ -1,5 +1,5 @@
 @foreach ($data as $category)
-    <div class="modal fade" id="edit_category{{ $category->id }}" tabindex="-1" role="dialog"
+    <div class="modal fade" id="edit_category{{ $category->status }}" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalLabel-2" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -10,7 +10,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="forms-sample" action="{{ route('category.update', $category->id) }}" method="POST">
+                    <form class="forms-sample" action="{{ route('category.update', $category->status) }}"
+                        method="POST">
                         @method('PUT')
                         @csrf
                         <div class="form-group">
@@ -22,20 +23,21 @@
                                 value="{{ old('status', $category->status) }}">
                         </div>
                         <div class="form-group">
-                            <label for="min">min</label>
-                            <input type="number" step="0.01" class="form-control" id="min" name="min"
-                                placeholder="min"
-                                @error('min') is-invalid                              
+                            <label for="min_quantity">Min Quantity</label>
+                            <input type="number" step="0.01" class="form-control" id="min_quantity"
+                                name="min_quantity" placeholder="Min Quantity"
+                                @error('min_quantity') is-invalid                              
                              @enderror
-                                value="{{ old('min', $category->min) }}">
+                                value="{{ old('min_quantity', $category->min_quantity) }}">
                         </div>
                         <div class="form-group">
-                            <label for="max">Max</label>
-                            <input type="number" step="0.01" class="form-control" id="max" name="max"
-                                placeholder="Max"
-                                @error('max') is-invalid                              
+                            <label for="max_quantity">Max Quantity<code>(opsional, kosong = tidak
+                                    terbatas)</code></label>
+                            <input type="number" step="0.01" class="form-control" id="max_quantity"
+                                name="max_quantity" placeholder="Max Quantity"
+                                @error('max_quantity') is-invalid                              
                              @enderror
-                                value="{{ old('max', $category->max) }}">
+                                value="{{ old('max_quantity', $category->max_quantity) }}">
                         </div>
                         <div class="form-group">
                             <label for="calculation">Calculation</label>
@@ -45,6 +47,7 @@
                              @enderror
                                 value="{{ old('calculation', $category->calculation_formated) }}">
                         </div>
+
                         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                     </form>

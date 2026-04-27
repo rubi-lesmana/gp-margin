@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $table = 'category';
+    protected $table = 'categories';
+    protected $primaryKey = 'status';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'status',
-        'min',
-        'max',
+        'min_quantity',
+        'max_quantity',
         'calculation',
     ];
 
@@ -33,5 +36,17 @@ class Category extends Model
             rtrim(number_format($this->calculation * 100, 2, '.', ''), '0'), 
             '.'
         );
+    }
+
+    /**
+     * Tampilkan range quantity, jika max_quantity null tampilkan ">"
+     */
+    public function getRangeMaxQuantityAttribute(): string
+    {
+        if (is_null($this->max_quantity)) {
+            return '> ' . $this->min_quantity;
+        }
+
+        return $this->min_quantity . ' - ' . $this->max_quantity;
     }
 }

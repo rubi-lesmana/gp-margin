@@ -19,20 +19,20 @@
                             value="{{ old('status') }}">
                     </div>
                     <div class="form-group">
-                        <label for="min">Min</label>
-                        <input type="number" step="0.01" min="0" value="{{ old('min') }}"
-                            class="form-control" id="min" name="min" placeholder="Min"
-                            @error('min') is-invalid                              
+                        <label for="min_quantity">Min Quantity</label>
+                        <input type="number" step="0.01" min="0" value="{{ old('min_quantity') }}"
+                            class="form-control" id="min_quantity" name="min_quantity" placeholder="Min Quantity"
+                            @error('min_quantity') is-invalid                              
                              @enderror
-                            value="{{ old('min') }}">
+                            value="{{ old('min_quantity') }}">
                     </div>
                     <div class="form-group">
-                        <label for="max">Max</label>
-                        <input type="number" step="0.01" min="0" value="{{ old('max') }}"
-                            class="form-control" id="max" name="max" placeholder="Max"
-                            @error('max') is-invalid                              
+                        <label for="max_quantity">Max Quantity<code>(opsional, kosong = tidak terbatas)</code></label>
+                        <input type="number" step="0.01" min="0" value="{{ old('max_quantity') }}"
+                            class="form-control" id="max_quantity" name="max_quantity" placeholder="Max Quantity"
+                            @error('max_quantity') is-invalid                              
                              @enderror
-                            value="{{ old('max') }}">
+                            value="{{ old('max_quantity') }}">
                     </div>
 
                     <div class="form-group">

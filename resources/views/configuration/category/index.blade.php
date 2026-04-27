@@ -49,16 +49,16 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $category->status }}</td>
-                                        <td>{{ $category->min }}</td>
-                                        <td>{{ $category->max }}</td>
+                                        <td>{{ $category->min_quantity }}</td>
+                                        <td>{{ $category->range_max_quantity }}</td>
                                         <td>{{ $category->calculation_format }}</td>
                                         <td>
                                             <span class="d-none">Edit</span>
 
                                             <a type="button"
                                                 class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#edit_category{{ $category->id }}"
-                                                title="Edit">
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#edit_category{{ $category->status }}" title="Edit">
                                                 <i
                                                     class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
                                             </a>
@@ -66,8 +66,8 @@
 
                                             <a type="button"
                                                 class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#delete_category{{ $category->id }}"
-                                                title="Delete">
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#delete_category{{ $category->status }}" title="Delete">
                                                 <i
                                                     class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                             </a>
