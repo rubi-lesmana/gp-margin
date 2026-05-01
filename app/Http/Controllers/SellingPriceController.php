@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SellingPriceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SellingPriceController extends Controller
 {
-
-    public function __construct(SellingPriceService $sellingPriceService)
-    {
-        $this->sellingPriceService = $sellingPriceService;
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $gpMargins = $this->sellingPriceService->calculateGpMarginAllStatuses();
+        $gpMargins = DB::table('vw_gp_margin')->get();
         return view('transaction.sellingprice.index', compact('gpMargins'));
     }
 

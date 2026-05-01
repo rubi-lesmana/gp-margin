@@ -46,10 +46,10 @@
                                             <td>
                                                 <span
                                                     class="badge 
-                                                    @if ($gpMargin->status === 'Low') bg-warning
-                                                    @elseif($gpMargin->status === 'High') bg-danger
+                                                    @if ($gpMargin->category_status === 'Low') bg-warning
+                                                    @elseif($gpMargin->category_status === 'High') bg-danger
                                                     @else bg-secondary @endif">
-                                                    {{ $gpMargin->status }}
+                                                    {{ $gpMargin->category_status }}
                                                 </span>
                                             </td>
                                             <td>{{ number_format($gpMargin->gp_margin, 2, ',', '.') }}%</td>
