@@ -13,7 +13,13 @@ class Item extends Model
     protected $fillable = [
         'item_id',
         'description',
+        'base_margin_id',
     ];
+
+    public function base_margin()
+    {
+        return $this->hasOne(BaseMargin::class, 'id', 'base_margin_id');
+    }
 
     // Method accessor yang berfungsi untuk mengganti karakter titik (.) dengan underscore (_)
     // Pemanggilan blade: $item->safe_item_id

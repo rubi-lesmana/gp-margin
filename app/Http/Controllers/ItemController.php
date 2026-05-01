@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BaseMargin;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -13,7 +14,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $data  = Item::all();
+        $data  = Item::with('base_margin')->get();
         return view('master.items.index', compact('data'));
     }
 
@@ -22,7 +23,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        $data = Item::with('base_margin')->get();
+        $base_margins = BaseMargin::pluck('margin_percentage', 'id');
+        return view('master.items.create', compact('data', 'base_margins'));
     }
 
     /**
@@ -33,6 +36,7 @@ class ItemController extends Controller
         $validatedData = $request->validate([
             'item_id' => 'required|unique:item,item_id|max:25',
             'description' => 'required|max:255',
+            'base_margin_id' => 'required|exists:base_margin,id',
         ]);
 
         Item::create($validatedData);
@@ -51,9 +55,11 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $item)
+    public function edit(string $id)
     {
-        //
+        $item = Item::findOrFail($id);  
+        $base_margins = BaseMargin::pluck('margin_percentage', 'id');
+        return view('master.items.update', compact('item', 'base_margins'));
     }
 
     /**
@@ -64,6 +70,7 @@ class ItemController extends Controller
         $validatedData = $request->validate([
             // 'item_id'   => 'required|unique:item,item_id|max:25',
             'description' => 'required|max:255',
+            'base_margin_id' => 'required|exists:base_margin,id',
         ]);
         
         Item::findOrFail($id)->update($validatedData);

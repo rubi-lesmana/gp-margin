@@ -15,10 +15,13 @@
                         <h4 class="card-title">List Data Item</h4>
                     </div>
                     <div class="col d-flex justify-content-end gap-2 p-2">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#add_item">
                             Add Data<i class=" mdi mdi-plus-box ms-1"></i>
-                        </button>
+                        </button> --}}
+                        <a href="{{ route('items.create') }}" class="btn btn-primary btn-sm">
+                            Add Data<i class="mdi mdi-plus-box ms-1"></i>
+                        </a>
                     </div>
                 </div>
                 <!-- Modal starts -->
@@ -53,10 +56,9 @@
                                             <td>
                                                 <span class="d-none">Edit</span>
 
-                                                <a type="button"
+                                                <a type="button" href="{{ route('items.edit', $item->item_id) }}"
                                                     class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#edit_item{{ $item->safe_item_id }}" title="Edit">
+                                                    title="Edit">
                                                     <i
                                                         class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
@@ -69,6 +71,13 @@
                                                     <i
                                                         class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
+                                                <a type="button"
+                                                    class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#show_item{{ $item->safe_item_id }}" title="Show">
+                                                    <i
+                                                        class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -76,9 +85,9 @@
                             </table>
                         </div>
                         {{-- Modal View Add Data --}}
-                        @include('master.items.create')
-                        @include('master.items.update')
+                        {{-- @include('master.items.update') --}}
                         @include('master.items.delete')
+                        @include('master.items.show')
                         {{-- End Modal View Add Data --}}
 
 

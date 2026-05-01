@@ -12,6 +12,11 @@ class BaseMargin extends Model
         'margin_percentage',
     ];
 
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'base_margin_id', 'id');
+    }
+
     // Fungsi Accesor untuk mendapatkan nilai margin_percentage dalam format persentase
     // Misalnya, jika disimpan 10%, maka akan disave dengan 0.10
     public function setMarginPercentageAttribute($value)

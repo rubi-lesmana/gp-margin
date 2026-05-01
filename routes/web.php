@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware('auth', 'verified')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::resource('/dashboard', DashboardController::class);
     Route::resource('/items', ItemController::class);
     Route::resource('/base-margin', BaseMarginController::class);
