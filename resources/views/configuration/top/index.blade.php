@@ -15,10 +15,10 @@
                         <h4 class="card-title">List Data Top</h4>
                     </div>
                     <div class="col d-flex justify-content-end gap-2 p-2">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#add_top">
+                        <a type="button" href="{{ route('term-of-payment.create') }}" class="btn btn-primary btn-sm"
+                            title="Add Data">
                             Add Data<i class=" mdi mdi-plus-box ms-1"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- Modal starts -->
@@ -51,9 +51,8 @@
                                         <td>
                                             <span class="d-none">Edit</span>
 
-                                            <a type="button"
+                                            <a type="button" href="{{ route('term-of-payment.edit', $top->id) }}"
                                                 class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                data-bs-toggle="modal" data-bs-target="#edit_top{{ $top->id }}"
                                                 title="Edit">
                                                 <i
                                                     class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
@@ -73,8 +72,8 @@
                             </tbody>
                         </table>
                         {{-- Modal View Add Data --}}
-                        @include('configuration.top.create')
-                        @include('configuration.top.update')
+                        {{-- @include('configuration.top.create') --}}
+                        {{-- @include('configuration.top.update') --}}
                         @include('configuration.top.delete')
                         {{-- End Modal View Add Data --}}
                     </div>

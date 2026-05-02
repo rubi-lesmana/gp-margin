@@ -10,6 +10,11 @@ class TermOfPayment extends Model
         'id',
         'days',
         'description',
+        'percent_id',
     ];
 
+    public function tgp_margins()
+    {
+        return $this->belongsTo(TgpMargin::class, 'percent_id', 'id');
+    }
 }
