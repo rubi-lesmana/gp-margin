@@ -24,7 +24,10 @@ class ItemController extends Controller
     public function create()
     {
         $data = Item::with('base_margin')->get();
-        $base_margins = BaseMargin::pluck('margin_percentage', 'id');
+        // $base_margins = BaseMargin::pluck('margin_percentage', 'id');
+        $base_margins = BaseMargin::all()->mapWithKeys(function ($margin) {
+            return [$margin->id => $margin->margin_percentage_format]; // hasil accessor, misal "10%"
+        });
         return view('master.items.create', compact('data', 'base_margins'));
     }
 
@@ -58,7 +61,10 @@ class ItemController extends Controller
     public function edit(string $id)
     {
         $item = Item::findOrFail($id);  
-        $base_margins = BaseMargin::pluck('margin_percentage', 'id');
+        // $base_margins = BaseMargin::pluck('margin_percentage', 'id');
+        $base_margins = BaseMargin::all()->mapWithKeys(function ($margin) {
+            return [$margin->id => $margin->margin_percentage_format]; // hasil accessor, misal "10%"
+        });
         return view('master.items.update', compact('item', 'base_margins'));
     }
 
@@ -83,7 +89,6 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
         Item::findorFail($id)->delete();
         Alert::success('Success', 'Item has been deleted!');
         return redirect()->route('items.index');

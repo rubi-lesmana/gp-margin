@@ -67,7 +67,7 @@
                                                 {{-- Logic 'selected' untuk menandai pilihan saat ini --}}
                                                 <option value="{{ $id }}"
                                                     {{ old('base_margin_id', $item->base_margin_id) == $id ? 'selected' : '' }}>
-                                                    {{ $margin_percentage }}%
+                                                    {{ $margin_percentage }}
                                                 </option>
                                             @endforeach
                                         </select>

@@ -61,7 +61,7 @@
                                             id="base_margin_id" name="base_margin_id">
                                             <option value="">Select Base Margin</option>
                                             @foreach ($base_margins as $key => $margin_percentage)
-                                                <option value="{{ $key }}">{{ $margin_percentage }}%</option>
+                                                <option value="{{ $key }}">{{ $margin_percentage }}</option>
                                             @endforeach
                                         </select>
                                     </div>
