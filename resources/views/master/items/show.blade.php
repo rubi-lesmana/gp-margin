@@ -17,19 +17,21 @@
 
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#gpmargin"
-                                        role="tab" aria-controls="home" aria-selected="true">General Info</a>
+                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                                        href="#gpmargin{{ $item->item_id }}" role="tab" aria-controls="home"
+                                        aria-selected="true">General Info</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="basemargin-tab" data-bs-toggle="tab" href="#basemargin"
-                                        role="tab" aria-controls="profile" aria-selected="false">Base Margin</a>
+                                    <a class="nav-link" id="basemargin-tab" data-bs-toggle="tab"
+                                        href="#basemargin{{ $item->item_id }}" role="tab" aria-controls="profile"
+                                        aria-selected="false">Base Margin</a>
                                 </li>
                             </ul>
 
                             <div class="tab-content">
                                 {{-- Tab Data Item (Read-Only) --}}
-                                <div class="tab-pane fade show active m-3" id="gpmargin" role="tabpanel"
-                                    aria-labelledby="home-tab">
+                                <div class="tab-pane fade show active m-3" id="gpmargin{{ $item->item_id }}"
+                                    role="tabpanel" aria-labelledby="home-tab">
                                     <div class="form-group">
                                         <label class="fw-bold">Item ID</label>
                                         <p class="form-control-plaintext border-bottom">{{ $item->item_id }}</p>
@@ -42,13 +44,13 @@
                                 </div>
 
                                 {{-- Tab Base Margin (Read-Only) --}}
-                                <div class="tab-pane fade m-3" id="basemargin" role="tabpanel"
+                                <div class="tab-pane fade m-3" id="basemargin{{ $item->item_id }}" role="tabpanel"
                                     aria-labelledby="basemargin-tab">
                                     <div class="form-group">
                                         <label class="fw-bold">Applied Base Margin</label>
                                         <p class="form-control-plaintext border-bottom">
                                             {{-- Menampilkan label dari relasi, bukan hanya ID --}}
-                                            {{ $item->base_margin->margin_percentage ?? 'N/A' }}%
+                                            {{ $item->base_margin->margin_percentage_format ?? 'N/A' }}
                                         </p>
                                     </div>
                                 </div>
