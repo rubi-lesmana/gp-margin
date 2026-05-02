@@ -66,6 +66,13 @@
                                                 <i
                                                     class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                             </a>
+
+                                            <a type="button"
+                                                class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
+                                                data-bs-toggle="modal" data-bs-target="#show_top{{ $top->id }}"
+                                                title="Show">
+                                                <i class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -75,6 +82,7 @@
                         {{-- @include('configuration.top.create') --}}
                         {{-- @include('configuration.top.update') --}}
                         @include('configuration.top.delete')
+                        @include('configuration.top.show')
                         {{-- End Modal View Add Data --}}
                     </div>
                 </div>

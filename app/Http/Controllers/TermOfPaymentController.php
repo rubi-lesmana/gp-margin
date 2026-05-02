@@ -14,7 +14,7 @@ class TermOfPaymentController extends Controller
      */
     public function index()
     {
-        $data = TermOfPayment::all();
+        $data = TermOfPayment::with('tgp_margins')->get();
         return view('configuration.top.index', compact('data'));
     }
 
