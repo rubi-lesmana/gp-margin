@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SellingPrice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SellingPriceController extends Controller
 {
@@ -12,7 +12,7 @@ class SellingPriceController extends Controller
      */
     public function index()
     {
-        $gpMargins = DB::table('vw_gp_margin')->get();
+        $gpMargins = SellingPrice::all();
         return view('transaction.sellingprice.index', compact('gpMargins'));
     }
 

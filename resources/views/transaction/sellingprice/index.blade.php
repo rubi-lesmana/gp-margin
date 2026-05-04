@@ -35,6 +35,7 @@
                                         <th>Description</th>
                                         <th>Status</th>
                                         <th>GP Margin</th>
+                                        <th>Target GP</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,11 +53,12 @@
                                                     {{ $gpMargin->category_status }}
                                                 </span>
                                             </td>
-                                            <td>{{ number_format($gpMargin->gp_margin, 2, ',', '.') }}%</td>
+                                            <td>{{ $gpMargin->gp_margin_percent }}</td>
+                                            <td>{{ $gpMargin->target_gp_percent }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">Tidak ada data</td>
+                                            <td colspan="6" class="text-center">Tidak ada data</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
