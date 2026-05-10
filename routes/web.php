@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoiPercentageController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MarketPriceController;
+use App\Http\Controllers\ParetoController;
 use App\Http\Controllers\SellingPriceController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard', DashboardController::class);
     Route::resource('/items', ItemController::class);
     Route::resource('/units', UnitController::class);
+    Route::resource('/pareto', ParetoController::class);
     Route::resource('/base-margin', BaseMarginController::class);
     Route::resource('/target-gp-margin', TgpMarginController::class);
     Route::resource('/category', CategoryController::class);

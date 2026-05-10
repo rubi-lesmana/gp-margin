@@ -106,7 +106,7 @@
                         <a class="nav-link" href="{{ route('units.index') }}">Unit</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pareto</a>
+                        <a class="nav-link" href="{{ route('pareto.index') }}">Pareto</a>
                     </li>
                 </ul>
             </div>
