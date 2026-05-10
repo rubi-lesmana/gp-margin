@@ -95,6 +95,24 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#Setup" aria-expanded="false" aria-controls="Setup">
+                <span class="menu-title">Setup</span>
+                <i class="menu-arrow"></i>
+                <i class="icon-wrench menu-icon"></i>
+            </a>
+            <div class="collapse" id="Setup">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('units.index') }}">Unit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pareto</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" href="{{ route('doi-percentage.index') }}">
                 <span class="menu-title">DOI Percentage</span>
                 <i class=" icon-graph menu-icon"></i>

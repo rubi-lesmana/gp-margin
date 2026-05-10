@@ -11,6 +11,7 @@ use App\Http\Controllers\MarketPriceController;
 use App\Http\Controllers\SellingPriceController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
+use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,6 +21,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::resource('/dashboard', DashboardController::class);
     Route::resource('/items', ItemController::class);
+    Route::resource('/units', UnitController::class);
     Route::resource('/base-margin', BaseMarginController::class);
     Route::resource('/target-gp-margin', TgpMarginController::class);
     Route::resource('/category', CategoryController::class);
