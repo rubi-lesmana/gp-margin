@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class UnitController extends Controller
 {
@@ -15,14 +14,6 @@ class UnitController extends Controller
     {
         $data =  Unit::all();
         return view('setup.unit.index', compact('data'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
