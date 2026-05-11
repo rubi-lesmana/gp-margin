@@ -26,12 +26,12 @@
         </li>
 
         {{-- Calculator --}}
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('calculator.index') }}">
                 <span class="menu-title">Calculator</span>
                 <i class="icon-calculator menu-icon"></i>
             </a>
-        </li>
+        </li> --}}
 
         {{-- Requestion --}}
         <li class="nav-item">
@@ -79,6 +79,14 @@
             </div>
         </li>
 
+        {{-- Base Margin --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('base-margin.index') }}">
+                <span class="menu-title">Base Margin</span>
+                <i class="mdi mdi-call-missed menu-icon"></i>
+            </a>
+        </li>
+
         {{-- Category --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ route('category.index') }}">
@@ -87,6 +95,7 @@
             </a>
         </li>
 
+        {{-- Term of Payment --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ route('term-of-payment.index') }}">
                 <span class="menu-title">TOP</span>
@@ -112,22 +121,11 @@
             </div>
         </li>
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('doi-percentage.index') }}">
                 <span class="menu-title">DOI Percentage</span>
                 <i class=" icon-graph menu-icon"></i>
             </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('base-margin.index') }}">
-                <span class="menu-title">Base Margin</span>
-                <i class="mdi mdi-call-missed menu-icon"></i>
-            </a>
-        </li>
-
-
-
-
+        </li> --}}
     </ul>
 </nav>
