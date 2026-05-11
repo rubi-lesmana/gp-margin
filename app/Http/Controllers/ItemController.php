@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseMargin;
 use App\Models\Item;
+use App\Models\Pareto;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -28,7 +30,15 @@ class ItemController extends Controller
         $base_margins = BaseMargin::all()->mapWithKeys(function ($margin) {
             return [$margin->id => $margin->margin_percentage_format]; // hasil accessor, misal "10%"
         });
-        return view('master.items.create', compact('data', 'base_margins'));
+        // $units = Unit::pluck('unit_name', 'unit_id');
+        $units = Unit::all()->mapWithKeys(function ($unit) {
+            return [$unit->unit_id => $unit->description];
+        });
+        // $paretos = Pareto::pluck('pareto_name', 'id');
+        $paretos = Pareto::all()->mapWithKeys(function ($pareto) {
+            return [$pareto->id => $pareto->description];
+        });
+        return view('master.items.create', compact('data', 'base_margins', 'units', 'paretos'));
     }
 
     /**
@@ -37,9 +47,11 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'item_id' => 'required|unique:item,item_id|max:25',
-            'description' => 'required|max:255',
-            'base_margin_id' => 'required|exists:base_margin,id',
+            'item_id'           => 'required|unique:item,item_id|max:25',
+            'description'       => 'required|max:255',
+            'base_margin_id'    => 'required|exists:base_margin,id',
+            'unit_id'           => 'required|exists:units,unit_id',
+            'pareto_id'         => 'required|exists:paretos,id',
         ]);
 
         Item::create($validatedData);
@@ -65,7 +77,15 @@ class ItemController extends Controller
         $base_margins = BaseMargin::all()->mapWithKeys(function ($margin) {
             return [$margin->id => $margin->margin_percentage_format]; // hasil accessor, misal "10%"
         });
-        return view('master.items.update', compact('item', 'base_margins'));
+        // $units = Unit::pluck('unit_name', 'unit_id');
+        $units = Unit::all()->mapWithKeys(function ($unit) {
+            return [$unit->unit_id => $unit->description];
+        });
+        // $paretos = Pareto::pluck('pareto_name', 'id');
+        $paretos = Pareto::all()->mapWithKeys(function ($pareto) {
+            return [$pareto->id => $pareto->description];
+        });
+        return view('master.items.update', compact('item', 'base_margins', 'units', 'paretos'));
     }
 
     /**
@@ -75,8 +95,10 @@ class ItemController extends Controller
     {
         $validatedData = $request->validate([
             // 'item_id'   => 'required|unique:item,item_id|max:25',
-            'description' => 'required|max:255',
-            'base_margin_id' => 'required|exists:base_margin,id',
+            'description'       => 'required|max:255',
+            'base_margin_id'    => 'required|exists:base_margin,id',
+            'unit_id'           => 'required|exists:units,unit_id',
+            'pareto_id'         => 'required|exists:paretos,id',
         ]);
         
         Item::findOrFail($id)->update($validatedData);

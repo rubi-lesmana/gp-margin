@@ -14,11 +14,25 @@ class Item extends Model
         'item_id',
         'description',
         'base_margin_id',
+        'unit_id',
+        'pareto_id',
     ];
 
     public function base_margin()
     {
         return $this->hasOne(BaseMargin::class, 'id', 'base_margin_id');
+    }
+
+    // Relasi ke Tabel Unit
+    public function unit()
+    {
+        return $this->hasOne(Unit::class, 'unit_id', 'unit_id');
+    }
+
+    // Relasi ke Tabel Pareto
+    public function pareto()
+    {
+        return $this->hasOne(Pareto::class, 'id', 'pareto_id');
     }
 
     // Method accessor yang berfungsi untuk mengganti karakter titik (.) dengan underscore (_)

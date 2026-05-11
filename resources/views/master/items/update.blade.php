@@ -23,6 +23,10 @@
                         <a class="nav-link" id="basemargin-tab" data-bs-toggle="tab" href="#basemargin" role="tab"
                             aria-controls="profile" aria-selected="false">Base Margin</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="setup-tab" data-bs-toggle="tab" href="#setup" role="tab"
+                            aria-controls="profile" aria-selected="false">Setup</a>
+                    </li>
                 </ul>
 
                 {{-- Action diarahkan ke items.update dengan parameter ID --}}
@@ -76,6 +80,41 @@
                             </div>
                         </div>
 
+                        {{-- Tab Setup (unitID & ParetoID) --}}
+                        <div class="tab-pane fade m-3" id="setup" role="tabpanel" aria-labelledby="setup-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="unit_id">Unit</label>
+                                        <select class="form-select form-select-lg js-example-basic-single" id="unit_id"
+                                            name="unit_id">
+                                            <option value="">Select Unit</option>
+                                            @foreach ($units as $id => $unit_name)
+                                                <option value="{{ $id }}"
+                                                    {{ old('unit_id', $item->unit_id) == $id ? 'selected' : '' }}>
+                                                    {{ $unit_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pareto_id">Pareto</label>
+                                        <select class="form-select form-select-lg js-example-basic-single" id="pareto_id"
+                                            name="pareto_id">
+                                            <option value="">Select Pareto</option>
+                                            @foreach ($paretos as $id => $pareto_name)
+                                                <option value="{{ $id }}"
+                                                    {{ old('pareto_id', $item->pareto_id) == $id ? 'selected' : '' }}>
+                                                    {{ $pareto_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="m-3">
                             <button type="submit" class="btn btn-primary me-2">Update Data</button>
                             <a href="{{ route('items.index') }}" class="btn btn-light">Cancel</a>

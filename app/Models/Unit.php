@@ -14,4 +14,10 @@ class Unit extends Model
         'unit_id',
         'description',
     ];
+
+    // Relasi ke Tabel Item
+    public function items()
+    {
+        return $this->belongsTo(Item::class, 'unit_id', 'unit_id');
+    }
 }

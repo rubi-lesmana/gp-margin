@@ -21,6 +21,10 @@
                         <a class="nav-link" id="basemargin-tab" data-bs-toggle="tab" href="#basemargin" role="tab"
                             aria-controls="profile" aria-selected="false">Base Margin</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="setup-tab" data-bs-toggle="tab" href="#setup" role="tab"
+                            aria-controls="profile" aria-selected="false">Setup</a>
+                    </li>
                 </ul>
 
                 {{-- Detail Tab Content --}}
@@ -50,7 +54,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         {{-- Tab base margin --}}
                         <div class="tab-pane fade m-3" id="basemargin" role="tabpanel" aria-labelledby="basemargin-tab">
@@ -67,7 +70,35 @@
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                        {{-- Tab Setup (Unit ID & Pareto ID) --}}
+                        <div class="tab-pane fade m-3" id="setup" role="tabpanel" aria-labelledby="setup-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-select form-select-lg js-example-basic-single" id="unit_id"
+                                            name="unit_id">
+                                            <option value="">Select Unit</option>
+                                            @foreach ($units as $key => $unit)
+                                                <option value="{{ $key }}">{{ $unit }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-select form-select-lg js-example-basic-single" id="pareto_id"
+                                            name="pareto_id">
+                                            <option value="">Select Pareto</option>
+                                            @foreach ($paretos as $key => $pareto)
+                                                <option value="{{ $key }}">{{ $pareto }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="m-3">
                             <button type="submit" class="btn btn-primary me-2">Submit</button>

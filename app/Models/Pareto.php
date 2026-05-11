@@ -12,4 +12,10 @@ class Pareto extends Model
         'id',
         'description',
     ];
+
+    // Relasi ke Tabel Item
+    public function items()
+    {
+        return $this->belongsTo(Item::class, 'pareto_id', 'id');
+    }
 }
