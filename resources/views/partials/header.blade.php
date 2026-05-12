@@ -85,6 +85,11 @@
             border-radius: 8px;
             /* Ubah angka ini untuk mengatur tingkat kelengkungan */
         }
+
+        /* Font Size tag label pada form */
+        .form-label {
+            font-size: 0.875rem;
+        }
     </style>
 
 </head>

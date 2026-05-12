@@ -37,12 +37,10 @@
                                 <thead>
                                     <tr>
                                         <th>No #</th>
-                                        <th>Item ID</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
-                                        <th>Quantity</th>
+                                        <th>ID</th>
                                         <th>Date Arrival</th>
-                                        <th class="col-wrap">Keterangan</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -50,18 +48,17 @@
                                     @foreach ($data as $arrival)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $arrival->item_id }}</td>
-                                            <td>{{ $arrival->item->description }}</td>
-                                            <td>{{ $arrival->status }}</td>
-                                            <td>{{ number_format($arrival->quantity, 0, ',', '.') }}</td>
+                                            <td>{{ $arrival->id }}</td>
                                             <td>{{ $arrival->date }}</td>
-                                            <td class="col-wrap">{{ $arrival->keterangan }}</td>
+                                            <td>{{ $arrival->item->description }}</td>
+                                            <td>{{ number_format($arrival->quantity, 0, ',', '.') . ' ' . $arrival->unit_id }}
+                                            </td>
                                             <td>
                                                 <span class="d-none">Edit</span>
 
                                                 <a type="button"
                                                     class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                    data-bs-toggle="modal" data-bs-target="#edit_arrival{{ $arrival->id }}"
+                                                    href="{{ route('arrival-inventory.edit', $arrival->id) }}"
                                                     title="Edit">
                                                     <i
                                                         class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
@@ -75,6 +72,15 @@
                                                     <i
                                                         class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
+                                                <span class="d-none">Show</span>
+
+                                                <a type="button"
+                                                    class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
+                                                    data-bs-toggle="modal" data-bs-target="#show_arrival{{ $arrival->id }}"
+                                                    title="Show">
+                                                    <i
+                                                        class="mdi mdi-eye-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -82,7 +88,7 @@
                             </table>
                         </div>
                         {{-- Modal View Add Data --}}
-                        @include('master.arrival.update')
+                        @include('master.arrival.show')
                         @include('master.arrival.delete')
                         {{-- End Modal View Add Data --}}
                     </div>

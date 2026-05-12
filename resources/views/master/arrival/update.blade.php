@@ -1,75 +1,207 @@
-@foreach ($data as $arrival)
-    <div class="modal fade" id="edit_arrival{{ $arrival->id }}" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel-2" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-2">Update Inventory Arrival</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="forms-sample" action="{{ route('arrival-inventory.update', $arrival->id) }}" method="POST">
-                        @method('PUT')
-                        @csrf
-                        <div class="form-group">
-                            <label for="item_id">Item ID</label>
-                            <input type="text" class="form-control" id="item_id" name="item_id"
-                                placeholder="Item ID" value="{{ old('item_id', $arrival->item_id . " ( " . $arrival->item->description . " ) ") }}" disabled>
-                        </div>
-                        {{-- Row 2 --}}
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select class="form-control" id="status" name="status" required>
-                                        <option value="">Select Status</option>
-                                        <option value="Local" @selected(old('status', $arrival->status) == 'Local')>Local</option>
-                                        <option value="Import" @selected(old('status', $arrival->status) == 'Import')>Import</option>
-                                    </select>
-                                </div>
+@extends('partials.main')
+@section('content')
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <i class="icon-basket"></i>
+                </span> Edit Inventory Arrival
+            </h3>
+        </div>
+        <form action="{{ route('arrival-inventory.update', $arrival->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="row">
+
+                {{-- Kolom 1 Header --}}
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Form Edit</h4>
+
+                            {{-- Tanggal --}}
+                            <div class="mb-3">
+                                <label class="form-label">Date Arrival</label>
+                                <input type="date" class="form-control" id="date" name="date"
+                                    value="{{ old('date', $arrival->date) }}" required>
                             </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="quantity">Quantity</label>
-                                    <input type="number" min="0" class="form-control" id="quantity" name="quantity"
-                                        placeholder="Quantity"
-                                        @error('quantity') is-invalid                              
-                                     @enderror
+
+                            {{-- Status --}}
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Local"
+                                        {{ old('status', $arrival->status) == 'Local' ? 'selected' : '' }}>Local</option>
+                                    <option value="Import"
+                                        {{ old('status', $arrival->status) == 'Import' ? 'selected' : '' }}>Import</option>
+                                </select>
+                            </div>
+
+                            {{-- Manual Reference --}}
+                            <div class="mb-3">
+                                <label class="form-label">Manual Reference <code>(Optional)</code></label>
+                                <input class="form-control" name="keterangan" placeholder="Enter manual reference"
+                                    value="{{ old('keterangan', $arrival->keterangan) }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Kolom 2 Details --}}
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Details</h4>
+
+                            {{-- Item --}}
+                            <div class="mb-3">
+                                <label class="form-label">Item</label>
+                                <select class="form-control" id="item-id" name="item_id" required>
+                                    <option value="">Select Item</option>
+                                    @foreach ($item as $key => $title)
+                                        <option value="{{ $key }}" data-description="{{ $title }}"
+                                            data-unit="{{ $itemUnits[$key] ?? '' }}"
+                                            {{ old('item_id', $arrival->item_id) == $key ? 'selected' : '' }}>
+                                            {{ $key }} - {{ $title }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Description --}}
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <input class="form-control" id="description-item" name="description" readonly
+                                    value="{{ old('description', $arrival->item->description ?? '') }}">
+                            </div>
+
+                            {{-- Quantity --}}
+                            <div class="row mt-3">
+                                <div class="col-md-8">
+                                    <label class="form-label">Quantity</label>
+                                    {{-- display: tampil format titik --}}
+                                    <input type="text" class="form-control" id="quantity-display" placeholder="0">
+                                    {{-- hidden: nilai asli untuk dikirim ke server --}}
+                                    <input type="hidden" id="quantity" name="quantity"
                                         value="{{ old('quantity', $arrival->quantity) }}">
                                 </div>
-                            </div>
-                        </div>
-                        {{-- Row 3 --}}
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="date">Date Arrival</label>
-                                    <input type="date" min="0" class="form-control" id="date" name="date"
-                                        placeholder="Date"
-                                        @error('date') is-invalid                              
-                                     @enderror
-                                        value="{{ old('date', $arrival->date) }}">
+                                <div class="col-md-4">
+                                    <label class="form-label">Unit</label>
+                                    <input type="text" class="form-control" id="unit_Id" name="unit_id" readonly
+                                        value="{{ old('unit_id', $arrival->item->unit->unit_id ?? '') }}">
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="keterangan">Keterangan</label>
-                                    <textarea type="text" class="form-control" id="keterangan" name="keterangan"
-                                        placeholder="Keterangan" rows="3"
-                                        @error('keterangan') is-invalid                              
-                                     @enderror
-                                        >{{ old('keterangan', $arrival->keterangan) }}</textarea>
+
+                            {{-- Cost Price & Net Amount --}}
+                            <div class="row mt-3">
+                                <div class="col-md-5">
+                                    <label class="form-label">Unit Price</label>
+                                    {{-- display: tampil format titik --}}
+                                    <input type="text" class="form-control" id="unit-price-display" placeholder="0">
+                                    {{-- hidden: nilai asli untuk dikirim ke server --}}
+                                    <input type="hidden" id="unit-price" name="unit_price"
+                                        value="{{ old('unit_price', $arrival->unit_price) }}">
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="form-label">Net Amount</label>
+                                    {{-- display: tampil format titik --}}
+                                    <input type="text" class="form-control" id="net-amount-display" readonly
+                                        placeholder="0">
+                                    {{-- hidden: nilai asli untuk dikirim ke server --}}
+                                    <input type="hidden" id="net-amount" name="net_amount"
+                                        value="{{ old('net_amount', $arrival->net_amount) }}">
                                 </div>
                             </div>
+
+                            <div class="d-flex justify-content-start mt-4">
+                                <button type="submit" class="btn btn-primary me-3">Update</button>
+                                <a href="{{ route('arrival-inventory.index') }}" class="btn btn-danger">Cancel</a>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-    {{-- End Modal --}}
-@endforeach
+@endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            $('#item-id').select2({
+                width: '100%',
+                templateResult: function(data) {
+                    return data.text;
+                },
+                templateSelection: function(data) {
+                    return data.id || data.text;
+                }
+            });
+
+            // isi otomatis input description & unit
+            $('#item-id').on('change', function() {
+                let selected = $(this).find(':selected');
+                let description = selected.attr('data-description');
+                let unit = selected.attr('data-unit');
+
+                $('#description-item').val(description ?? '');
+                $('#unit_Id').val(unit ?? '');
+            });
+
+            // format angka dengan pemisah titik (1.000.000)
+            function formatNumber(value) {
+                if (!value || isNaN(value)) return '';
+                return new Intl.NumberFormat('id-ID').format(value);
+            }
+
+            // ambil angka murni dari string berformat (hapus titik pemisah)
+            function parseNumber(value) {
+                return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
+            }
+
+            // hitung & update net amount
+            function hitungNetAmount() {
+                let quantity = parseNumber($('#quantity-display').val());
+                let unitPrice = parseNumber($('#unit-price-display').val());
+                let netAmount = quantity * unitPrice;
+
+                $('#net-amount-display').val(netAmount > 0 ? formatNumber(netAmount) : '');
+
+                $('#quantity').val(quantity);
+                $('#unit-price').val(unitPrice);
+                $('#net-amount').val(netAmount > 0 ? netAmount : '');
+            }
+
+            // format saat user mengetik di quantity
+            $('#quantity-display').on('input', function() {
+                let raw = $(this).val().replace(/\D/g, '');
+                let formatted = raw ? formatNumber(raw) : '';
+                $(this).val(formatted);
+                hitungNetAmount();
+            });
+
+            // format saat user mengetik di unit price
+            $('#unit-price-display').on('input', function() {
+                let raw = $(this).val().replace(/[^\d,]/g, '');
+                let formatted = raw ? formatNumber(parseNumber(raw)) : '';
+                $(this).val(formatted);
+                hitungNetAmount();
+            });
+
+            $('#status').select2({
+                width: '100%',
+            });
+
+            // *** pre-fill display input dengan data existing saat halaman load ***
+            let existingQty = $('#quantity').val();
+            let existingPrice = $('#unit-price').val();
+
+            if (existingQty) $('#quantity-display').val(formatNumber(existingQty));
+            if (existingPrice) $('#unit-price-display').val(formatNumber(existingPrice));
+
+            // hitung net amount dari data existing
+            if (existingQty || existingPrice) hitungNetAmount();
+        });
+    </script>
+@endpush

@@ -23,13 +23,18 @@ class ArrivalController extends Controller
      */
     public function create()
     {
-        $item       = Item::pluck('description', 'item_id')->toArray();
-        // Get ItemID yang sudah ada di tabel arrival
-        $usedItem   = Arrival::pluck('item_id')->unique()->toArray();
-        // Filter semua itemID yang belum ada di tabel arrival
-        $availableItem = array_diff_key($item, array_flip($usedItem));
-        ksort($availableItem);
-        return view('master.arrival.create', compact('item', 'usedItem', 'availableItem'));
+        // Get data Item with unit 
+        $items      = Item::with('unit')->get();
+
+        // Pluck data item_id dan description untuk dropdown select
+        $item       = $items->pluck('description', 'item_id')->toArray();
+
+        // map Item dengan unit untuk menampilkan satuan di dropdown select
+        $itemUnits = $items->mapWithKeys(function ($item) {
+            return [$item->item_id => $item->unit->unit_id ?? ''];
+        })->toArray();
+        
+        return view('master.arrival.create', compact('item', 'itemUnits'));
     }
 
     /**
@@ -43,14 +48,25 @@ class ArrivalController extends Controller
             'quantity'      => 'required|numeric',
             'date'          => 'required|date',
             'keterangan'    => 'nullable|string',
+            'unit_id'       => 'required|string|exists:units,unit_id',
+            'unit_price'    => 'required|numeric',
+            'net_amount'    => 'required|numeric',
         ]);
 
+        // Generate ID sequence dengan format ARR-YYYYMMDD-sequence
+        // $id = 'ARR-' . date('Ymd') . '-' . strtoupper(uniqid());
+        $id = 'ARR-' . str_pad(Arrival::count() + 1, 4, '0', STR_PAD_LEFT);
+
         Arrival::create([
+            'id'            => $id,
             'item_id'       => $request->item_id,
             'status'        => $request->status,
             'quantity'      => $request->quantity,
             'date'          => $request->date,
             'keterangan'    => $request->keterangan,
+            'unit_id'       => $request->unit_id,
+            'unit_price'    => $request->unit_price,
+            'net_amount'    => $request->net_amount,
         ]);
 
         Alert::success('Success', 'Inventory Arrival created successfully');
@@ -70,7 +86,15 @@ class ArrivalController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $arrival    = Arrival::findOrFail($id);
+
+        $items      = Item::with('unit')->get();
+        $item       = $items->pluck('description', 'item_id')->toArray();
+        $itemUnits  = $items->mapWithKeys(function ($item) {
+            return [$item->item_id => $item->unit->unit_id ?? ''];
+        })->toArray();
+
+        return view('master.arrival.update', compact('arrival', 'item', 'itemUnits'));
     }
 
     /**
@@ -79,18 +103,24 @@ class ArrivalController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'status' => 'required|string',
-            'quantity' => 'required|numeric',
-            'date' => 'required|date',
-            'keterangan' => 'nullable|string',
+            'status'        => 'required|string',
+            'quantity'      => 'required|numeric',
+            'date'          => 'required|date',
+            'keterangan'    => 'nullable|string',
+            'unit_id'       => 'required|string|exists:units,unit_id',
+            'unit_price'    => 'required|numeric',
+            'net_amount'    => 'required|numeric',
         ]);
 
         $arrival = Arrival::findOrFail($id);
         $arrival->update([
-            'status' => $request->status,
-            'quantity' => $request->quantity,
-            'date' => $request->date,
-            'keterangan' => $request->keterangan,
+            'status'        => $request->status,
+            'quantity'      => $request->quantity,
+            'date'          => $request->date,
+            'keterangan'    => $request->keterangan,
+            'unit_id'       => $request->unit_id,
+            'unit_price'    => $request->unit_price,
+            'net_amount'    => $request->net_amount,
         ]);
 
         Alert::success('Success', 'Inventory Arrival updated successfully');

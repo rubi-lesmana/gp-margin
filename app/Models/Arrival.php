@@ -7,17 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Arrival extends Model
 {
     protected $table = 'arrival';
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'item_id',
         'status',
         'quantity',
         'date',
         'keterangan',
+        'unit_id',
+        'unit_price',
+        'net_amount',
     ];
 
     protected $casts = [
-        'date' => 'datetime',
+        // 'date' => 'datetime',
         'quantity' => 'integer',
     ];
 
