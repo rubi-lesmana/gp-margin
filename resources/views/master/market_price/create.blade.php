@@ -1,89 +1,35 @@
-@extends('partials.main')
-@section('content')
-    <div class="content-wrapper">
-        <div class="page-header">
-            <h3 class="page-title">
-                <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="icon-basket"></i>
-                </span> Create Market Price
-            </h3>
-        </div>
-        <div class="row grid-margin">
-            <div class="col-10 mx-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Form Create</h4>
-                        <form action="{{ route('market-price.store') }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                {{-- Row 1 --}}
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Item</label>
-                                            <select class="form-control select2" id="item-id" name="item_id" required>
-                                                <option value="">Pilih Item</option>
-                                                    @foreach ($availableItem as $key => $title)
-                                                        <option value="{{ $key }}" data-description="{{ $title }}">
-                                                            {{ $key }} - {{ $title }}
-                                                        </option>
-                                                    @endforeach
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Description</label>
-                                            <input class="form-control" id="description-item"
-                                                    name="description" readonly>
-                                            </input>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- Row 2 --}}
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Price</label>
-                                            <input type="number" min="0" class="form-control" id="price" name="price" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">Keterangan <span>(Optional)</span></label>
-                                            <textarea class="form-control"
-                                                    name="keterangan" rows="3" required>
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>                                
-                            </div>
-
-                            <div class="d-flex justify-content-left mt-4">
-                                <button type="submit" class="btn btn-primary me-3">Submit</button>
-                                <a href="{{ route('market-price.index') }}" class="btn btn-danger">Cancel</a>
-                            </div>
-                        </form>
+<div class="modal fade" id="add_market_price" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel-2"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel-2">Add Market Price</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample" action="{{ route('market-price.store') }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="effective_date">Effective Date</label>
+                        <input type="date" class="form-control" id="effective_date" name="effective_date"
+                            @error('effective_date') is-invalid                              
+                                 @enderror
+                            value="{{ old('effective_date') }}">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="keterangan">Keterangan</label>
+                        <input type="text" value="{{ old('keterangan') }}" class="form-control" id="keterangan"
+                            name="keterangan" placeholder="Keterangan"
+                            @error('keterangan') is-invalid                              
+                             @enderror
+                            value="{{ old('keterangan') }}">
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                </form>
             </div>
         </div>
     </div>
-@endsection
-
-@push('scripts')
-<script>
-    $(document).ready(function () {
-
-        // kalau pakai select2 pastikan sudah di-init
-        $('#item-id').select2();
-
-        $('#item-id').on('change', function () {
-            let description = $(this).find(':selected').data('description');
-            $('#description-item').val(description ?? '');
-        });
-
-    });
-</script>
-@endpush
+</div>

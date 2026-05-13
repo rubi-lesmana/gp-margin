@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('market_price', function (Blueprint $table) {
-            $table->id();
-            $table->string('item_id', 25);
-            $table->foreign('item_id')->references('item_id')->on('item')->onDelete('cascade');
-            $table->decimal('price', 15, 2);
-            $table->text('keterangan', 100)->nullable();
+            $table->string('id_market_price', 25)->primary();
+            $table->date('effective_date');
+            $table->string('keterangan', 100)->nullable()->default('text');
             $table->timestamps();
         });
     }

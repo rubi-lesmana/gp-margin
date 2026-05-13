@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('purple/src/assets/vendors/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('purple/src/assets/vendors/summernote/summernote-bs5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('purple/src/assets/vendors/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet"
         href="{{ asset('purple/src/assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
 
@@ -21,7 +22,8 @@
     <link rel="stylesheet" href="{{ asset('purple/src/assets/vendors/font-awesome/css/font-awesome.min.css') }}" />
     <link rel="stylesheet"
         href="{{ asset('purple/src/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('purple/src/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('purple/src/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('purple/src/assets/vendors/simple-line-icons/css/simple-line-icons.css') }}">
     <!-- End plugin css for this page -->
     <!-- inject:css -->

@@ -7,20 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class MarketPrice extends Model
 {
     protected $table = 'market_price';
+    protected $primaryKey = 'id_market_price';
+    protected $keyType = 'string';
 
     protected $fillable = [
-        'item_id',
-        'price',
+        'id_market_price',
+        'effective_date',
         'keterangan',
     ];
 
-    public function getSafeItemIdAttribute($value)
-    {
-        return str_replace('.', '_', $value);
-    }
+    // public function getSafeItemIdAttribute($value)
+    // {
+    //     return str_replace('.', '_', $value);
+    // }
 
-    public function item()
-    {
-        return $this->belongsTo(Item::class, 'item_id', 'item_id');
-    }
+    // public function item()
+    // {
+    //     return $this->belongsTo(Item::class, 'item_id', 'item_id');
+    // }
 }
