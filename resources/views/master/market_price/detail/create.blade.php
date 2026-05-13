@@ -1,4 +1,4 @@
-<div class="col-md-5" id="detail-section" style="display: none;">
+<div class="col-md-6" id="detail-section" style="display: none;">
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">

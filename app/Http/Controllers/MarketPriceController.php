@@ -15,7 +15,7 @@ class MarketPriceController extends Controller
      */
     public function index()
     {
-        $data = MarketPrice::orderBy('effective_date', 'desc')->get();
+        $data = MarketPrice::orderBy('effective_date', 'desc')->paginate(5);
         $items = Item::all();
         $details = MarketPriceDetail::with('item')->get();
         return view('master.market_price.index', compact('data', 'items', 'details'));

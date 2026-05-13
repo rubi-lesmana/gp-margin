@@ -10,7 +10,7 @@
         </div>
         <div class="row">
             {{-- Market Price List (kiri) --}}
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-3">
@@ -93,6 +93,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div class="d-flex justify-content-end mt-5">
+                                {{ $data->links('components.pagination') }}
                             </div>
 
                             @include('master.market_price.create')
