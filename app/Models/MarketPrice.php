@@ -16,6 +16,11 @@ class MarketPrice extends Model
         'keterangan',
     ];
 
+    public function marketPriceDetails()
+    {
+        return $this->hasMany(MarketPriceDetail::class, 'market_price_id', 'id_market_price');
+    }
+
     // public function getSafeItemIdAttribute($value)
     // {
     //     return str_replace('.', '_', $value);

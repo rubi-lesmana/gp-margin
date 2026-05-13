@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\MarketPrice;
+use App\Models\MarketPriceDetail;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -14,7 +16,9 @@ class MarketPriceController extends Controller
     public function index()
     {
         $data = MarketPrice::orderBy('effective_date', 'desc')->get();
-        return view('master.market_price.index', compact('data'));
+        $items = Item::all();
+        $details = MarketPriceDetail::with('item')->get();
+        return view('master.market_price.index', compact('data', 'items', 'details'));
     }
 
     /**

@@ -55,4 +55,9 @@ class Item extends Model
     {
         return $this->hasMany(Suggest::class, 'item_id', 'item_id');
     }
+
+    public function marketPriceDetails()
+    {
+        return $this->hasMany(MarketPriceDetail::class, 'item_id', 'item_id');
+    }
 }
