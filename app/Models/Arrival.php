@@ -32,6 +32,11 @@ class Arrival extends Model
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
     }
+
+    public function cost_price()
+    {
+        return $this->hasOne(CostPrice::class, 'arrival_id', 'id');
+    }
     
     /**
      * Hitung selisih hari dari tanggal kedatangan sampai hari ini

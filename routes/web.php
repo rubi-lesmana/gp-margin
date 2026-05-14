@@ -4,6 +4,7 @@ use App\Http\Controllers\ArrivalController;
 use App\Http\Controllers\BaseMarginController;
 use App\Http\Controllers\CalculatorControler;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CostPriceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoiPercentageController;
 use App\Http\Controllers\ItemController;
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/market-price', MarketPriceController::class);
     Route::resource('/market-price-detail', MarketPriceDetailController::class);
     Route::resource('/arrival-inventory', ArrivalController::class);
+    Route::resource('/cost-price', CostPriceController::class);
     Route::get('/calculator/calculate', [CalculatorControler::class, 'calculate'])->name('calculator.calculate');
     Route::resource('/doi-percentage', DoiPercentageController::class);
     Route::resource('/calculator', CalculatorControler::class);

@@ -23,6 +23,7 @@
 <!-- endinject -->
 <!-- Custom js for this page -->
 <script src="{{ asset('purple/src/assets/js/dashboard.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 <!-- Custom js for this page -->
 <script src="{{ asset('purple/src/assets/js/data-table.js') }}"></script>
 <script src="{{ asset('purple/src/assets/js/paginate.js') }}"></script>

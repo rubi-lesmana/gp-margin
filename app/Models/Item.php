@@ -35,6 +35,12 @@ class Item extends Model
         return $this->hasOne(Pareto::class, 'id', 'pareto_id');
     }
 
+    // Relasi ke Master Item
+    public function cost_price()
+    {
+        return $this->hasMany(CostPrice::class, 'item_id', 'item_id');
+    }
+
     // Method accessor yang berfungsi untuk mengganti karakter titik (.) dengan underscore (_)
     // Pemanggilan blade: $item->safe_item_id
     public function  getSafeItemIdAttribute(){

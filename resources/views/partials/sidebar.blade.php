@@ -2,19 +2,19 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
 
+        {{-- Section Transaction --}}
+        <li class="nav-item  mt-5">
+            <span class="menu-title text-secondary">Home</span>
+            <div class="border-bottom mt-2">
+            </div>
+        </li>
+
         {{-- Dashboard --}}
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <span class="menu-title">Dashboard</span>
                 <i class="icon-home menu-icon"></i>
             </a>
-        </li>
-
-        {{-- Seection Transaction --}}
-        <li class="nav-item  mt-3">
-            <span class="menu-title text-secondary">Transaction</span>
-            <div class="border-bottom mt-2">
-            </div>
         </li>
 
         {{-- List Transaction --}}
@@ -25,19 +25,34 @@
             </a>
         </li>
 
-        {{-- Calculator --}}
-        {{-- <li class="nav-item">
-            <a class="nav-link" href="{{ route('calculator.index') }}">
-                <span class="menu-title">Calculator</span>
-                <i class="icon-calculator menu-icon"></i>
-            </a>
-        </li> --}}
+        {{-- Section Transaction --}}
+        <li class="nav-item  mt-3">
+            <span class="menu-title text-secondary">Transaction</span>
+            <div class="border-bottom mt-2">
+            </div>
+        </li>
 
         {{-- Requestion --}}
         <li class="nav-item">
             <a class="nav-link" href="#">
                 <span class="menu-title">Requestion</span>
                 <i class="icon-directions menu-icon"></i>
+            </a>
+        </li>
+
+        {{-- Inventory Arrival --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('arrival-inventory.index') }}">
+                <span class="menu-title">Inventory Arrival</span>
+                <i class="icon-calendar menu-icon"></i>
+            </a>
+        </li>
+
+        {{-- Cost Price --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('cost-price.index') }}">
+                <span class="menu-title">Cost Price</span>
+                <i class=" mdi mdi-currency-usd menu-icon"></i>
             </a>
         </li>
 
@@ -51,7 +66,7 @@
         {{-- Item --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ route('items.index') }}">
-                <span class="menu-title">Item</span>
+                <span class="menu-title">Product</span>
                 <i class="icon-tag menu-icon"></i>
             </a>
         </li>
@@ -61,14 +76,6 @@
             <a class="nav-link" href="{{ route('market-price.index') }}">
                 <span class="menu-title">Market Price</span>
                 <i class="icon-basket menu-icon"></i>
-            </a>
-        </li>
-
-        {{-- Inventory Arrival --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('arrival-inventory.index') }}">
-                <span class="menu-title">Inventory Arrival</span>
-                <i class="icon-calendar menu-icon"></i>
             </a>
         </li>
 
