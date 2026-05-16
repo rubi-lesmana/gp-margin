@@ -37,5 +37,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('/doi-percentage', DoiPercentageController::class);
     Route::resource('/calculator', CalculatorControler::class);
     Route::resource('/term-of-payment', TermOfPaymentController::class);
-    Route::resource('/selling-price', SellingPriceController::class);
+    // Route::resource('/selling-price', SellingPriceController::class);
+    // 
+    Route::prefix('selling-price')->name('selling-price.')->group(function () {
+    Route::get('/',
+        [SellingPriceController::class, 'index'])->name('index');
+
+    Route::get('/{itemId}/{costPriceId}',
+        [SellingPriceController::class, 'show'])->name('show');
+
+    Route::post('/{itemId}/{costPriceId}/approve',
+        [SellingPriceController::class, 'approve'])->name('approve');
+});
 });

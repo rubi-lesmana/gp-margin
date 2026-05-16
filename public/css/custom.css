@@ -5,13 +5,15 @@
 }
 
 /* Pada layar kecil (< 576px), tampilkan tabel vertikal (card style) */
+/* Pada layar kecil (< 576px), tampilkan tabel vertikal (card style) */
 @media (max-width: 575.98px) {
+    /* Hanya trigger untuk tr yang BUKAN .detail-row */
     .table-responsive table,
     .table-responsive thead,
     .table-responsive tbody,
     .table-responsive th,
-    .table-responsive td,
-    .table-responsive tr {
+    .table-responsive tr:not(.detail-row),
+    .table-responsive td:not(tr.detail-row td) {
         display: block;
     }
 
@@ -22,8 +24,8 @@
         left: -9999px;
     }
 
-    /* Setiap baris jadi "kartu" */
-    .table-responsive tbody tr {
+    /* Setiap baris data biasa jadi "kartu" */
+    .table-responsive tbody tr:not(.detail-row) {
         border: 1px solid #dee2e6;
         border-radius: 8px;
         margin-bottom: 12px;
@@ -32,8 +34,8 @@
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     }
 
-    /* Setiap cell tampil dengan label di kiri */
-    .table-responsive tbody td {
+    /* Setiap cell data biasa tampil dengan label di kiri */
+    .table-responsive tbody tr:not(.detail-row) td {
         border: none;
         padding: 6px 4px;
         display: flex;
@@ -41,20 +43,34 @@
         gap: 8px;
     }
 
-    .table-responsive tbody td::before {
+    .table-responsive tbody tr:not(.detail-row) td::before {
         content: attr(data-label);
         font-weight: 600;
         min-width: 110px;
+        max-width: 110px;
         color: #6c757d;
         font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 0.03em;
         padding-top: 2px;
         flex-shrink: 0;
+        white-space: normal;
+        word-break: break-word;
     }
 
-    /* Kolom action rata tengah di mobile */
-    .table-responsive tbody td:last-child {
-        justify-content: flex-start;
+    /* Kolom action rata kiri/start di mobile */
+    .table-responsive tbody tr:not(.detail-row) td:last-child {
+        justify-content: space-between; /* Menjaga teks kiri dan icon paling kanan */
+        width: 100%;
+    }
+
+    /* ── PERBAIKAN UTAMA UNTUK DETAIL ROW ── */
+    /* Pastikan baris detail tetap selebar card pembungkusnya dan tidak merusak layout */
+    .table-responsive tbody tr.detail-row {
+        display: table-row !important;
+    }
+    .table-responsive tbody tr.detail-row td {
+        display: table-cell !important;
+        width: 100% !important;
     }
 }

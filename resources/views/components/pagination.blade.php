@@ -12,7 +12,7 @@
             @else
                 <li class="page-item">
                     <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">
-                        <i class="mdi mdi-chevron-left"></i>
+                        <i class="mdi mdi-chevron-left">Previous</i>
                     </a>
                 </li>
             @endif
@@ -50,7 +50,7 @@
             @if ($paginator->hasMorePages())
                 <li class="page-item">
                     <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">
-                        <i class="mdi mdi-chevron-right"></i>
+                        <i class="mdi mdi-chevron-right">Next</i>
                     </a>
                 </li>
             @else

@@ -1,43 +1,43 @@
 <?php
 
+// app/Models/SellingPrice.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class SellingPrice extends Model
 {
-    protected $table = 'vw_selling_price';
-    public $timestamps = false;
-    public $incrementing = false;
-    protected $primaryKey = null;
+    protected $primaryKey = 'id_selling_price';
+    public    $incrementing = false;
+    protected $keyType      = 'string';
 
     protected $fillable = [
+        'id_selling_price',
         'item_id',
-        'description',
-        'margin_percentage',
-        'category_status',
-        'calculation',
-        'gp_margin',
+        'cost_price_id',
+        'cost_price_snapshot',
+        'market_price_detail_id',
+        'market_price_snapshot',
+        'status',
+        'calculated_by',
+        'approved_by',
+        'calculated_at',
+        'approved_at',
     ];
 
     protected $casts = [
-        'margin_percentage' => 'float',
-        'calculation'       => 'float',
-        'gp_margin'         => 'float',
-        'days'              => 'integer',
-        'top_margin_pct'    => 'float',
-        'target_gp'         => 'float',
+        'calculated_at' => 'datetime',
+        'approved_at'   => 'datetime',
     ];
 
-    // Format gp_margin * 100 via accessor
-    public function getGpMarginPercentAttribute(): string
+    public function details()
     {
-        return number_format($this->gp_margin * 100, 2) . '%';
+        return $this->hasMany(SellingPriceDetail::class, 'selling_price_id', 'id_selling_price');
     }
 
-    // Format target_gp * 100 via accessor
-    public function getTargetGpPercentAttribute(): string
+    public function item()
     {
-        return number_format($this->target_gp * 100, 2) . '%';
+        return $this->belongsTo(Item::class, 'item_id', 'item_id');
     }
 }

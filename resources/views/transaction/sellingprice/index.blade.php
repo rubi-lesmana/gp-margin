@@ -4,8 +4,8 @@
         <div class="page-header">
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="icon-calendar"></i>
-                </span> Selling Price Product
+                    <i class="icon-tag"></i>
+                </span> Selling Price
             </h3>
         </div>
         <div class="card">
@@ -27,42 +27,57 @@
                     @endif
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="order-listing" class="table table-striped dt-responsive nowrap w-100">
+                            <table id="order-listing" class="table table-hover dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
-                                        <th>No #</th>
-                                        <th>Item ID</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
-                                        <th>GP Margin</th>
-                                        <th>Target GP</th>
+                                        <th rowspan="2" class="align-middle">ID</th>
+                                        <th rowspan="2" class="align-middle">Date</th>
+                                        <th rowspan="2" class="align-middle">Item</th>
+                                        <th colspan="2" class="text-center">SuggestedSelling Price</th>
+                                        <th rowspan="2" class="align-middle">Status</th>
+                                        <th rowspan="2" class="align-middle">Action</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Min</th>
+                                        <th>Max</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($gpMargins as $gpMargin)
+                                    @forelse($drafts as $draft)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $gpMargin->item_id }}</td>
-                                            <td>{{ $gpMargin->description }}</td>
-                                            <td>
-                                                <span
-                                                    class="badge 
-                                                    @if ($gpMargin->category_status === 'Low') bg-warning
-                                                    @elseif($gpMargin->category_status === 'High') bg-danger
-                                                    @else bg-secondary @endif">
-                                                    {{ $gpMargin->category_status }}
-                                                </span>
+                                            <td data-label="ID">{{ $draft->id_cost_price }}</td>
+                                            <td data-label="Date">{{ $draft->cost_price_date }}</td>
+                                            <td data-label="Item" class="text-wrap">{{ $draft->item_id }} —
+                                                {{ $draft->description }}</td>
+                                            <td data-label="Min">{{ number_format($draft->ssp_min, 2) }}</td>
+                                            <td data-label="Max">{{ number_format($draft->ssp_max, 2) }}</td>
+                                            <td data-label="Status">
+                                                <span class="badge badge-outline-warning badge-pill">Preview</span>
                                             </td>
-                                            <td>{{ $gpMargin->gp_margin_percent }}</td>
-                                            <td>{{ $gpMargin->target_gp_percent }}</td>
+                                            <td data-label="Action">
+                                                <a href="{{ route('selling-price.show', [
+                                                    'itemId' => $draft->item_id,
+                                                    'costPriceId' => $draft->id_cost_price,
+                                                ]) }}"
+                                                    class="btn btn-gradient-success btn-rounded btn-icon position-relative"
+                                                    title="Show"><i
+                                                        class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center">Tidak ada data</td>
+                                            <td colspan="7" class="text-center">
+                                                Tidak ada item yang menunggu approval.
+                                            </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-5">
+                            {{ $drafts->links('components.pagination') }}
                         </div>
                     </div>
                 </div>
