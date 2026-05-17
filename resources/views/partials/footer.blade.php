@@ -83,19 +83,13 @@
 
 <script>
     $(document).ready(function() {
-        $('#summernote').summernote({
-            tabsize: 2,
-            height: 100
+        $('#price-list-table').DataTable({
+            order: [], // jangan sort ulang dari DataTables
+            aaSorting: [], // fallback untuk versi DataTables lama
+            autoWidth: false,
+            responsive: false,
+            pageLength: 10
         });
-        // $('.summernote').summernote({
-        //     tabsize: 2,
-        //     height: 100
-        // });
-
-        // Gunakan $ di sini untuk jQuery
-        // $('#select2').select2();
-        // $('.select2').select2();
-
     });
 </script>
 

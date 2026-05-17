@@ -46,6 +46,7 @@ class PriceListController extends Controller
                     $q->whereNull('sp.id_selling_price');
                 }
             })
+            // GroupBy disamakan persis dengan yang ada di Select (Non-Agregat)
             ->groupBy(
                 'i.item_id',
                 'i.description',
@@ -55,12 +56,11 @@ class PriceListController extends Controller
                 'sp.approved_at',
                 'sp.status',
                 'u.name',
-                'cp.date',
+                'cp.date'
             )
-            ->orderByRaw('sp.id_selling_price IS NULL ASC')
-            ->orderBy('i.item_id')
-            ->paginate(5)
-            ->withQueryString();
+            ->orderByRaw("CASE WHEN sp.id_selling_price IS NOT NULL THEN 1 ELSE 2 END ASC")
+            ->orderBy('sp.id_selling_price', 'desc') // Mengurutkan ID dari yang terbaru/terbesar
+            ->get();
 
         return view('price-list.index', compact('items'));
     }

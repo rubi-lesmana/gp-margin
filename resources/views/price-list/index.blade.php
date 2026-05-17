@@ -7,61 +7,19 @@
                     <i class=" icon-list "></i>
                 </span> Price List
             </h3>
-            <form method="GET" class="d-flex justify-content-end gap-2">
-                <input type="text" name="search" value="{{ request('search') }}" class="form-control form-control-ls"
-                    style="max-width:220px" placeholder="Cari item ID / nama...">
-
-                <div class="dropdown">
-                    <button class="btn btn-light btn-md dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class=" mdi mdi-filter-outline"></i>
-                        @if (request('status') === 'approved')
-                            <span>Has SSP</span>
-                        @elseif(request('status') === 'no_ssp')
-                            <span>No SSP</span>
-                        @else
-                            <span>All</span>
-                        @endif
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item {{ !request('status') ? 'active' : '' }}"
-                            href="{{ route('price-list.index', request()->except(['status', 'page'])) }}">
-                            All Item
-                        </a>
-                        <a class="dropdown-item {{ request('status') === 'approved' ? 'active' : '' }}"
-                            href="{{ route('price-list.index', array_merge(request()->except(['status', 'page']), ['status' => 'approved'])) }}">
-                            Approved
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item {{ request('status') === 'no_ssp' ? 'active' : '' }}"
-                            href="{{ route('price-list.index', array_merge(request()->except(['status', 'page']), ['status' => 'no_ssp'])) }}">
-                            No SSP yet
-                        </a>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-sm btn-primary">
-                    <i class="icon-magnifier"></i>
-                </button>
-
-                @if (request('search') || request('status'))
-                    <a href="{{ route('price-list.index') }}" class="btn btn-md btn-outline-secondary">Reset</a>
-                @endif
-            </form>
         </div>
-
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover dt-responsive nowrap w-100">
+                    <table id="price-list-table" class="table table-hover dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th rowspan="2">Item</th>
-                                <th rowspan="2">Description</th>
-                                <th rowspan="2">Market Price</th>
+                                <th rowspan="2" class="align-middle">ID</th>
+                                <th rowspan="2" class="align-middle">Item</th>
+                                <th rowspan="2" class="align-middle">Market Price</th>
                                 <th colspan="2" class="text-center">Selling Price</th>
-                                <th rowspan="2">Approved At</th>
-                                <th rowspan="2">Status</th>
+                                <th rowspan="2" class="align-middle">Approved At</th>
+                                <th rowspan="2" class="align-middle">Status</th>
                             </tr>
                             <tr>
                                 <th class="text-end">Min</th>
@@ -71,8 +29,9 @@
                         <tbody>
                             @forelse($items as $row)
                                 <tr>
-                                    <td data-label="Item">{{ $row->item_id }}</td>
-                                    <td data-label="Description" class="text-wrap">{{ $row->description }}</td>
+                                    <td data-label="ID">{{ $row->id_selling_price }}</td>
+                                    <td data-label="Item" class="text-wrap">{{ $row->item_id }} - {{ $row->description }}
+                                    </td>
                                     <td data-label="Market Price" class=" text-nowrap">
                                         @if ($row->market_price_snapshot)
                                             {{ number_format($row->market_price_snapshot, 2) }}
@@ -133,9 +92,9 @@
                     </table>
                 </div>
 
-                <div class="mt-3 justify-content-end d-flex">
+                {{-- <div class="mt-3 justify-content-end d-flex">
                     {{ $items->links('components.pagination') }}
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
