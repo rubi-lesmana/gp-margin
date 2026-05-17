@@ -43,22 +43,29 @@
                         </div>
 
                         <div class="d-flex gap-2 mt-4">
-                            <form method="POST"
-                                action="{{ route('selling-price.approve', [
-                                    'itemId' => $header->item_id,
-                                    'costPriceId' => $header->id_cost_price,
-                                ]) }}">
-                                @csrf
-                                <button type="button" class="btn btn-gradient-danger" data-bs-toggle="modal"
-                                    data-bs-target="#modalApprove">
-                                    <i class="icon-check me-1"></i> Approve
-                                </button>
+                            @if ($isDraft)
+                                {{-- Draft → tampilkan tombol approve --}}
+                                <form method="POST"
+                                    action="{{ route('selling-price.approve', [
+                                        'itemId' => $header->item_id,
+                                        'costPriceId' => $header->id_cost_price,
+                                    ]) }}">
+                                    @csrf
+                                    <button type="button" class="btn btn-gradient-danger" data-bs-toggle="modal"
+                                        data-bs-target="#modalApprove">
+                                        <i class="icon-check me-1"></i> Approve
+                                    </button>
 
-                                @include('transaction.sellingprice.modal.approve')
-                            </form>
-                            <a href="{{ route('selling-price.index') }}" class="btn btn-outline-secondary">
-                                Cancel
-                            </a>
+                                    @include('transaction.sellingprice.modal.approve')
+                                </form>
+                                <a href="{{ route('selling-price.index') }}" class="btn btn-outline-secondary">
+                                    Cancel
+                                </a>
+                            @else
+                                <a href="{{ route('selling-price.index') }}" class="btn btn-outline-secondary">
+                                    Back
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

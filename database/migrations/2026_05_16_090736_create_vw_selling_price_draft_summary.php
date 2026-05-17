@@ -19,6 +19,7 @@ return new class extends Migration
                 id_cost_price,
                 cost_price_date,
                 cost_price_snapshot,
+                market_price_snapshot,
                 MIN(suggested_selling_price) AS ssp_min,
                 MAX(suggested_selling_price) AS ssp_max
 
@@ -29,7 +30,8 @@ return new class extends Migration
                 description,
                 id_cost_price,
                 cost_price_date,
-                cost_price_snapshot
+                cost_price_snapshot,
+                market_price_snapshot
 
             ORDER BY cost_price_date DESC, item_id
         ");

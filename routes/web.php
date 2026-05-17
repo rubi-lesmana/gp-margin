@@ -40,11 +40,24 @@ Route::middleware('auth')->group(function () {
     Route::resource('/term-of-payment', TermOfPaymentController::class);
     // 
     Route::prefix('selling-price')->name('selling-price.')->group(function () {
-        Route::get('/',
-            [SellingPriceController::class, 'index'])->name('index');
+        // Route::get('/',
+        //     [SellingPriceController::class, 'index'])->name('index');
 
+        // Route::get('/{itemId}/{costPriceId}',
+        //     [SellingPriceController::class, 'show'])->name('show');
+
+        // Route::post('/{itemId}/{costPriceId}/approve',
+        //     [SellingPriceController::class, 'approve'])->name('approve');
+        Route::get('/',
+        [SellingPriceController::class, 'index'])->name('index');
+
+        // Draft show — tanpa sellingPriceId
         Route::get('/{itemId}/{costPriceId}',
             [SellingPriceController::class, 'show'])->name('show');
+
+        // Approved show — dengan sellingPriceId
+        Route::get('/{itemId}/{costPriceId}/{sellingPriceId}',
+            [SellingPriceController::class, 'show'])->name('show.approved');
 
         Route::post('/{itemId}/{costPriceId}/approve',
             [SellingPriceController::class, 'approve'])->name('approve');

@@ -4,10 +4,21 @@
 
 namespace App\Models;
 
+use App\Traits\HasPricingPercentage;
 use Illuminate\Database\Eloquent\Model;
 
 class SellingPriceDetail extends Model
 {
+    use HasPricingPercentage;
+
+    protected $appends = [
+        'base_margin_pct',
+        'category_calc_pct',
+        'top_percentage',
+        'gp_margin_pct',
+        'target_gp_pct',
+    ];
+
     protected $fillable = [
         'selling_price_id',
         'base_margin_id',

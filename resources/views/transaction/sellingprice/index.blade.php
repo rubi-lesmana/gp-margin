@@ -4,18 +4,13 @@
         <div class="page-header">
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="icon-tag"></i>
+                    <i class="icon-chart"></i>
                 </span> Selling Price
             </h3>
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col">
-                        <h4 class="card-title">List Data Selling Price</h4>
-                    </div>
-                </div>
-                <div class="row">
+                <div class="row mt-2">
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -25,6 +20,7 @@
                             </ul>
                         </div>
                     @endif
+
                     <div class="col-12">
                         <div class="table-responsive">
                             <table id="order-listing" class="table table-hover dt-responsive nowrap w-100">
@@ -33,7 +29,7 @@
                                         <th rowspan="2" class="align-middle">ID</th>
                                         <th rowspan="2" class="align-middle">Date</th>
                                         <th rowspan="2" class="align-middle">Item</th>
-                                        <th colspan="2" class="text-center">SuggestedSelling Price</th>
+                                        <th colspan="2" class="text-center">Suggested Selling Price</th>
                                         <th rowspan="2" class="align-middle">Status</th>
                                         <th rowspan="2" class="align-middle">Action</th>
                                     </tr>
@@ -43,35 +39,93 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($drafts as $draft)
+                                    @forelse($results as $row)
                                         <tr>
-                                            <td data-label="ID">{{ $draft->id_cost_price }}</td>
-                                            <td data-label="Date">{{ $draft->cost_price_date }}</td>
-                                            <td data-label="Item" class="text-wrap">{{ $draft->item_id }} —
-                                                {{ $draft->description }}</td>
-                                            <td data-label="Min">{{ number_format($draft->ssp_min, 2) }}</td>
-                                            <td data-label="Max">{{ number_format($draft->ssp_max, 2) }}</td>
-                                            <td data-label="Status">
-                                                <span class="badge badge-outline-warning badge-pill">Preview</span>
+                                            {{-- ID --}}
+                                            <td data-label="ID">
+                                                @if ($row->status === 'draft')
+                                                    {{ $row->id_cost_price }}
+                                                @else
+                                                    {{ $row->id_selling_price }}
+                                                @endif
                                             </td>
+
+                                            {{-- Date --}}
+                                            <td data-label="Date">
+                                                {{ $row->cost_price_date }}
+                                            </td>
+
+                                            {{-- Item --}}
+                                            <td data-label="Item" class="text-wrap">
+                                                {{ $row->item_id }} — {{ $row->description }}
+                                            </td>
+
+                                            {{-- SSP Min --}}
+                                            <td data-label="Min">
+                                                {{ $row->ssp_min ? number_format($row->ssp_min, 2) : '-' }}
+                                            </td>
+
+                                            {{-- SSP Max --}}
+                                            <td data-label="Max">
+                                                @if ($row->ssp_max)
+                                                    <strong class="{{ $row->status === 'approved' ? 'text-success' : '' }}">
+                                                        {{ number_format($row->ssp_max, 2) }}
+                                                    </strong>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Status --}}
+                                            <td data-label="Status">
+                                                @if ($row->status === 'draft')
+                                                    <span class="badge badge-outline-warning badge-pill">Preview</span>
+                                                @elseif($row->status === 'approved')
+                                                    <span class="badge badge-outline-success badge-pill">Approved</span>
+                                                @else
+                                                    <span class="badge badge-outline-secondary badge-pill">Superseded</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Action --}}
                                             <td data-label="Action">
-                                                <a href="{{ route('selling-price.show', [
-                                                    'itemId' => $draft->item_id,
-                                                    'costPriceId' => $draft->id_cost_price,
-                                                ]) }}"
-                                                    class="btn btn-gradient-success btn-rounded btn-icon position-relative"
-                                                    title="Show"><i
-                                                        class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
-                                                </a>
+                                                @if ($row->status === 'draft')
+                                                    <a href="{{ route('selling-price.show', [
+                                                        'itemId' => $row->item_id,
+                                                        'costPriceId' => $row->id_cost_price,
+                                                    ]) }}"
+                                                        class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
+                                                        title="Review & Approve">
+                                                        <i
+                                                            class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('selling-price.show.approved', [
+                                                        'itemId' => $row->item_id,
+                                                        'costPriceId' => $row->id_cost_price,
+                                                        'sellingPriceId' => $row->id_selling_price,
+                                                    ]) }}"
+                                                        class="btn btn-gradient-info btn-rounded btn-icon position-relative"
+                                                        title="Lihat Detail">
+                                                        <i
+                                                            class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
+                                                    </a>
+                                                @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-4">
+                                                Tidak ada data selling price.
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="d-flex justify-content-end mt-5">
-                            {{ $drafts->links('components.pagination') }}
+                            {{ $results->links('components.pagination') }}
                         </div>
                     </div>
                 </div>
