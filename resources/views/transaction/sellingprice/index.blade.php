@@ -43,7 +43,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($drafts as $draft)
+                                    @foreach ($drafts as $draft)
                                         <tr>
                                             <td data-label="ID">{{ $draft->id_cost_price }}</td>
                                             <td data-label="Date">{{ $draft->cost_price_date }}</td>
@@ -65,13 +65,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">
-                                                Tidak ada item yang menunggu approval.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

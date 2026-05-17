@@ -49,13 +49,12 @@
                                     'costPriceId' => $header->id_cost_price,
                                 ]) }}">
                                 @csrf
-                                <button type="submit" class="btn btn-gradient-danger"
-                                    onclick="return confirm(
-                                        'Approve SSP untuk {{ $header->item_id }}?\n' +
-                                        'Tindakan ini tidak dapat dibatalkan.'
-                                    )">
+                                <button type="button" class="btn btn-gradient-danger" data-bs-toggle="modal"
+                                    data-bs-target="#modalApprove">
                                     <i class="icon-check me-1"></i> Approve
                                 </button>
+
+                                @include('transaction.sellingprice.modal.approve')
                             </form>
                             <a href="{{ route('selling-price.index') }}" class="btn btn-outline-secondary">
                                 Cancel

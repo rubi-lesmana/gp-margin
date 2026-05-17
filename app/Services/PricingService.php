@@ -39,11 +39,7 @@ class PricingService
                 ->update(['status' => 'superseded']);
 
             // ── STEP 2: Generate ID selling price ────────────────────────
-            $sequence = str_pad(
-                SellingPrice::whereDate('created_at', today())->count() + 1,
-                3, '0', STR_PAD_LEFT
-            );
-            $sellingPriceId = 'SP-' . $sequence;
+            $sellingPriceId = 'SP-' . str_pad(SellingPrice::count() + 1, 3, '0', STR_PAD_LEFT);
 
             // ── STEP 3: Insert header selling_prices ─────────────────────
             SellingPrice::create([

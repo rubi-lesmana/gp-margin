@@ -80,6 +80,12 @@ class SellingPriceController extends Controller
             return redirect()
                 ->back()
                 ->with('error', $e->getMessage());
+            // dd([
+            //     'error_class'   => get_class($e),
+            //     'error_message' => $e->getMessage(),
+            //     'error_line'    => $e->getLine(),
+            //     'error_file'    => $e->getFile(),
+            // ]);
         }
     }
 }
