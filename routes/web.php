@@ -11,6 +11,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MarketPriceController;
 use App\Http\Controllers\MarketPriceDetailController;
 use App\Http\Controllers\ParetoController;
+use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\SellingPriceController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
@@ -37,16 +38,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('/doi-percentage', DoiPercentageController::class);
     Route::resource('/calculator', CalculatorControler::class);
     Route::resource('/term-of-payment', TermOfPaymentController::class);
-    // Route::resource('/selling-price', SellingPriceController::class);
     // 
     Route::prefix('selling-price')->name('selling-price.')->group(function () {
-    Route::get('/',
-        [SellingPriceController::class, 'index'])->name('index');
+        Route::get('/',
+            [SellingPriceController::class, 'index'])->name('index');
 
-    Route::get('/{itemId}/{costPriceId}',
-        [SellingPriceController::class, 'show'])->name('show');
+        Route::get('/{itemId}/{costPriceId}',
+            [SellingPriceController::class, 'show'])->name('show');
 
-    Route::post('/{itemId}/{costPriceId}/approve',
-        [SellingPriceController::class, 'approve'])->name('approve');
-});
+        Route::post('/{itemId}/{costPriceId}/approve',
+            [SellingPriceController::class, 'approve'])->name('approve');
+    });
+
+    // Price List
+    Route::resource('/price-list', PriceListController::class);
 });

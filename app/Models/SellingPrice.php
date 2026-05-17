@@ -40,4 +40,14 @@ class SellingPrice extends Model
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
     }
+
+    public function costPrice()
+    {
+        return $this->belongsTo(CostPrice::class, 'cost_price_id', 'id_cost_price');
+    }
+
+    public function approvedByUser()
+    {
+        return $this->belongsTo(User::class, 'approved_by', 'id');
+    }
 }

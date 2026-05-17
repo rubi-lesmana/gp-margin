@@ -45,4 +45,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function approvedSellingPrices()
+    {
+        return $this->hasMany(SellingPrice::class, 'approved_by', 'id');
+    }
 }

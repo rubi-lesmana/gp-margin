@@ -28,4 +28,9 @@ class CostPrice extends Model
     public function item(){
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
     }
+
+    public function sellingPrices()
+    {
+        return $this->hasMany(SellingPrice::class, 'cost_price_id', 'id_cost_price');
+    }
 }

@@ -17,11 +17,11 @@
             </a>
         </li>
 
-        {{-- List Transaction --}}
+        {{-- Price List --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('selling-price.index') }}">
-                <span class="menu-title">Selling Price</span>
-                <i class="icon-chart menu-icon"></i>
+            <a class="nav-link" href="{{ route('price-list.index') }}">
+                <span class="menu-title">Price List</span>
+                <i class="icon-list menu-icon"></i>
             </a>
         </li>
 
@@ -53,6 +53,14 @@
             <a class="nav-link" href="{{ route('cost-price.index') }}">
                 <span class="menu-title">Cost Price</span>
                 <i class=" mdi mdi-currency-usd menu-icon"></i>
+            </a>
+        </li>
+
+        {{-- List Transaction --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('selling-price.index') }}">
+                <span class="menu-title">Selling Price</span>
+                <i class="icon-chart menu-icon"></i>
             </a>
         </li>
 

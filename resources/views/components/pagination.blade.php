@@ -1,18 +1,18 @@
 @if ($paginator->hasPages())
     <nav aria-label="Page navigation">
-        <ul class="pagination rounded-flat pagination-primary">
+        <ul class="pagination">
 
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                        <i class="mdi mdi-chevron-left"></i>
+                        Previous
                     </a>
                 </li>
             @else
                 <li class="page-item">
                     <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">
-                        <i class="mdi mdi-chevron-left">Previous</i>
+                        Previous
                     </a>
                 </li>
             @endif
@@ -50,13 +50,13 @@
             @if ($paginator->hasMorePages())
                 <li class="page-item">
                     <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">
-                        <i class="mdi mdi-chevron-right">Next</i>
+                        Next
                     </a>
                 </li>
             @else
                 <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                        <i class="mdi mdi-chevron-right"></i>
+                        Next
                     </a>
                 </li>
             @endif
