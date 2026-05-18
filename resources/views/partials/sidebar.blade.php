@@ -78,6 +78,13 @@
                 <i class="icon-tag menu-icon"></i>
             </a>
         </li>
+        {{-- Customer --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('customers.index') }}">
+                <span class="menu-title">Customer</span>
+                <i class="icon-user menu-icon"></i>
+            </a>
+        </li>
 
         {{-- Market Price --}}
         <li class="nav-item">
