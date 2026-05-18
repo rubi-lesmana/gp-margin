@@ -4,73 +4,136 @@
     white-space: normal;
 }
 
-/* Pada layar kecil (< 576px), tampilkan tabel vertikal (card style) */
-/* Pada layar kecil (< 576px), tampilkan tabel vertikal (card style) */
+.badge-status {
+    white-space: normal !important; /* Membatalkan paksaan satu baris */
+    word-break: break-word; /* Memotong kata dengan aman jika terlalu panjang */
+}
+
 @media (max-width: 575.98px) {
-    /* Hanya trigger untuk tr yang BUKAN .detail-row */
-    .table-responsive table,
-    .table-responsive thead,
-    .table-responsive tbody,
-    .table-responsive th,
-    .table-responsive tr:not(.detail-row),
-    .table-responsive td:not(tr.detail-row td) {
-        display: block;
+    /* 1. Hilangkan fungsi scroll bawaan Bootstrap agar tidak double scroll */
+    .table-responsive {
+        overflow-x: visible !important;
     }
 
-    /* Sembunyikan header asli */
-    .table-responsive thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
+    /* 2. Sembunyikan header asli table */
+    .table-responsive thead {
+        display: none;
     }
 
-    /* Setiap baris data biasa jadi "kartu" */
+    /* 3. Ubah setiap baris biasa (bukan detail-row) menjadi Card modern */
     .table-responsive tbody tr:not(.detail-row) {
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        padding: 8px 12px;
-        background: #fff;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-    }
-
-    /* Setiap cell data biasa tampil dengan label di kiri */
-    .table-responsive tbody tr:not(.detail-row) td {
-        border: none;
-        padding: 6px 4px;
         display: flex;
-        align-items: flex-start;
-        gap: 8px;
+        flex-direction: column;
+        background: #ffffff;
+        border: 1px solid #e2e8f0; /* Warna border lebih segar & bersih */
+        border-radius: 10px;
+        margin-bottom: 16px;
+        padding: 14px; /* Sedikit diperlonggar agar lebih lega */
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.05),
+            0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Shadow lebih smooth */
     }
 
+    /* 4. Buat susunan teks atas-bawah yang smooth di dalam cell */
+    .table-responsive tbody tr:not(.detail-row) td {
+        display: flex;
+        flex-direction: column; /* Membuat Label di atas, Isi Data di bawah */
+        align-items: flex-start;
+        border: none;
+        padding: 6px 4px !important;
+        width: 100% !important;
+        color: #1a202c; /* Teks isi data dibuat Hitam Fresh (tidak murni #000 agar tetap modern) */
+        font-size: 0.95rem;
+    }
+
+    /* 5. UPDATE: Styling Label (data-label) Menjadi Lebih Hitam & Tegas */
     .table-responsive tbody tr:not(.detail-row) td::before {
         content: attr(data-label);
-        font-weight: 600;
-        min-width: 110px;
-        max-width: 110px;
-        color: #6c757d;
+        font-weight: 700; /* Diubah ke Bold kuat */
+        font-size: 0.75rem;
+        color: #2d3748; /* Menggunakan Slate-Dark yang jauh lebih hitam dan tajam dibanding abu-abu */
+        text-transform: uppercase;
+        letter-spacing: 0.8px; /* Sedikit renggang agar keterbacaannya tinggi */
+        margin-bottom: 4px; /* Jarak ke teks bawahnya */
+    }
+
+    /* 6. Modifikasi khusus untuk kolom Action */
+    .table-responsive tbody tr:not(.detail-row) td:last-child {
+        margin-top: 8px;
+        padding-top: 12px !important;
+        border-top: 1px dashed #e2e8f0; /* Pembatas putus-putus yang bersih */
+        flex-direction: row; /* Tombol aksi tetap berjejer ke samping */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* 7. HANDLING DETAIL ROW (Sangat Aman & Tidak Rusak) */
+    .table-responsive tbody tr.detail-row {
+        display: block !important;
+        margin-top: -12px;
+        margin-bottom: 16px;
+        background: #f8fafc; /* Warna background detail lebih fresh (cool gray) */
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+        padding: 12px 14px;
+    }
+
+    .table-responsive tbody tr.detail-row td {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 !important;
+        border: none !important;
+        color: #334155;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .table-detail-responsive tr {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #e9ecef; /* Memberi batas halus antar baris */
+    }
+
+    .table-detail-responsive th,
+    .table-detail-responsive td {
+        display: block;
+        width: 100% !important;
+        padding: 0.15rem 0.5rem !important;
+    }
+
+    /* Membuat teks judul (th) sedikit lebih kecil dan redup agar estetik */
+    .table-detail-responsive th {
         font-size: 0.8rem;
         text-transform: uppercase;
-        letter-spacing: 0.03em;
-        padding-top: 2px;
-        flex-shrink: 0;
-        white-space: normal;
-        word-break: break-word;
+        letter-spacing: 0.5px;
+        color: #6c757d;
     }
 
-    /* Kolom action rata kiri/start di mobile */
-    .table-responsive tbody tr:not(.detail-row) td:last-child {
-        justify-content: space-between; /* Menjaga teks kiri dan icon paling kanan */
-        width: 100%;
+    /* Membuat teks isi (td) menjadi ukuran normal */
+    .table-detail-responsive td {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
     }
 
-    /* ── PERBAIKAN UTAMA UNTUK DETAIL ROW ── */
-    /* Pastikan baris detail tetap selebar card pembungkusnya dan tidak merusak layout */
-    .table-responsive tbody tr.detail-row {
-        display: table-row !important;
+    /* Menangani baris garis pembatas (<hr>) agar tidak berantakan di mobile */
+    .table-detail-responsive tr:has(hr) {
+        border-bottom: none;
+        padding: 0;
     }
-    .table-responsive tbody tr.detail-row td {
-        display: table-cell !important;
-        width: 100% !important;
+    .table-detail-responsive tr:has(hr) td {
+        padding: 0 !important;
+    }
+}
+
+/* Opsional: Merapikan tampilan di layar desktop agar jarak th dan td proporsional */
+@media (min-width: 768px) {
+    .table-detail-responsive th {
+        width: 30%; /* Mengatur lebar kolom judul tetap rapi */
+        color: #495057;
+    }
+    .table-detail-responsive td {
+        width: 70%;
     }
 }

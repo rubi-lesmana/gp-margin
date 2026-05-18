@@ -13,6 +13,7 @@ use App\Http\Controllers\MarketPriceController;
 use App\Http\Controllers\MarketPriceDetailController;
 use App\Http\Controllers\ParetoController;
 use App\Http\Controllers\PriceListController;
+use App\Http\Controllers\SalesProposalController;
 use App\Http\Controllers\SellingPriceController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
@@ -40,31 +41,43 @@ Route::middleware('auth')->group(function () {
     Route::resource('/doi-percentage', DoiPercentageController::class);
     Route::resource('/calculator', CalculatorControler::class);
     Route::resource('/term-of-payment', TermOfPaymentController::class);
-    // 
     Route::prefix('selling-price')->name('selling-price.')->group(function () {
-        // Route::get('/',
-        //     [SellingPriceController::class, 'index'])->name('index');
-
-        // Route::get('/{itemId}/{costPriceId}',
-        //     [SellingPriceController::class, 'show'])->name('show');
-
-        // Route::post('/{itemId}/{costPriceId}/approve',
-        //     [SellingPriceController::class, 'approve'])->name('approve');
         Route::get('/',
         [SellingPriceController::class, 'index'])->name('index');
-
         // Draft show — tanpa sellingPriceId
         Route::get('/{itemId}/{costPriceId}',
             [SellingPriceController::class, 'show'])->name('show');
-
         // Approved show — dengan sellingPriceId
         Route::get('/{itemId}/{costPriceId}/{sellingPriceId}',
             [SellingPriceController::class, 'show'])->name('show.approved');
-
         Route::post('/{itemId}/{costPriceId}/approve',
             [SellingPriceController::class, 'approve'])->name('approve');
     });
-
     // Price List
     Route::resource('/price-list', PriceListController::class);
+    // routes/web.php
+
+    Route::prefix('proposal')->name('proposal.')->group(function () {
+        Route::get('/',
+            [SalesProposalController::class, 'index'])->name('index');
+        Route::get('/create',                   
+            [SalesProposalController::class, 'create'])->name('create');
+        Route::post('/', 
+            [SalesProposalController::class, 'store'])->name('store');
+        Route::get('/{proposalId}', 
+            [SalesProposalController::class, 'show'])
+            ->name('show')
+            ->where('proposalId', '[A-Za-z0-9\-\.]+');
+        Route::post('/{proposalId}/approve', 
+            [SalesProposalController::class, 'approve'])
+            ->name('approve')
+            ->where('proposalId', '[A-Za-z0-9\-\.]+');
+        Route::post('/{proposalId}/reject',     
+            [SalesProposalController::class, 'reject'])
+            ->name('reject')
+            ->where('proposalId', '[A-Za-z0-9\-\.]+');
+
+        // AJAX endpoint
+        Route::get('/ssp-info/{itemId}',        [SalesProposalController::class, 'getSspInfo'])->name('ssp-info');
+    });
 });

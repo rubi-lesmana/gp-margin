@@ -34,7 +34,7 @@
 
         {{-- Requestion --}}
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('proposal.index') }}">
                 <span class="menu-title">Requestion</span>
                 <i class="icon-directions menu-icon"></i>
             </a>

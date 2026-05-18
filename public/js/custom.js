@@ -1,19 +1,17 @@
 (function () {
     function getDecimals(element) {
         const decimals = parseInt(element.dataset.decimals || "2", 10);
-
         return Number.isNaN(decimals) ? 2 : decimals;
     }
 
     function cleanCurrency(value, decimals = 2) {
         value = String(value || "");
 
-        // Hapus koma dan karakter selain angka/titik
+        // Hapus koma pemisah ribuan dan karakter non-angka kecuali titik
         let cleaned = value.replace(/,/g, "").replace(/[^\d.]/g, "");
 
-        // Cegah titik lebih dari satu
+        // Cegah titik desimal lebih dari satu
         const firstDotIndex = cleaned.indexOf(".");
-
         if (firstDotIndex !== -1) {
             cleaned =
                 cleaned.substring(0, firstDotIndex + 1) +
@@ -24,7 +22,7 @@
         let integerPart = parts[0] || "";
         let decimalPart = parts[1];
 
-        // Hapus nol di depan, contoh: 00039000 menjadi 39000
+        // Hapus angka 0 di depan (contoh: 00035000 -> 35000)
         integerPart = integerPart.replace(/^0+(?=\d)/, "");
 
         if (cleaned.startsWith(".")) {
@@ -65,6 +63,7 @@
         let integerPart = parts[0] || "0";
         let decimalPart = parts[1];
 
+        // Menggunakan format en-US agar pemisah ribuan menggunakan koma (,)
         let formattedInteger = Number(integerPart || 0).toLocaleString("en-US");
 
         if (hasDot) {
@@ -77,11 +76,9 @@
 
     function getTargetInput(displayInput) {
         const targetSelector = displayInput.dataset.target;
-
         if (!targetSelector) {
             return null;
         }
-
         return document.querySelector(targetSelector);
     }
 
@@ -89,14 +86,24 @@
         const decimals = getDecimals(displayInput);
         const targetInput = getTargetInput(displayInput);
 
-        const rawValue = cleanCurrency(displayInput.value, decimals);
+        // --- PENYELAMAT POSISI KURSOR (Mencegah kursor lompat ke kanan saat edit di tengah) ---
+        let cursorPosition = displayInput.selectionStart;
+        let originalLength = displayInput.value.length;
 
+        const rawValue = cleanCurrency(displayInput.value, decimals);
         displayInput.value = formatTyping(rawValue, decimals);
+
+        // Kembalikan kursor ke posisi yang seharusnya
+        let newLength = displayInput.value.length;
+        cursorPosition = cursorPosition + (newLength - originalLength);
+        displayInput.setSelectionRange(cursorPosition, cursorPosition);
+        // ---------------------------------------------------------------------------------
 
         if (targetInput) {
             if (rawValue === "") {
                 targetInput.value = "";
             } else {
+                // Simpan angka murni dengan desimal titik ke hidden input untuk disubmit ke backend
                 targetInput.value = Number(rawValue).toFixed(decimals);
             }
         }
@@ -116,16 +123,12 @@
 
         if (rawValue === "") {
             displayInput.value = "";
-
-            if (targetInput) {
-                targetInput.value = "";
-            }
-
+            if (targetInput) targetInput.value = "";
             return;
         }
 
+        // Saat blur (keluar dari input), paksa format desimal sesuai jumlah data-decimals
         const formattedValue = formatCurrency(rawValue, decimals);
-
         displayInput.value = formattedValue;
 
         if (targetInput) {
@@ -160,7 +163,7 @@
         }
     });
 
-    // Blur tidak bubble, jadi pakai capture true
+    // Blur menggunakan capture true karena tidak bubble
     document.addEventListener(
         "blur",
         function (event) {
@@ -178,16 +181,13 @@
         });
     });
 
-    // Optional: supaya bisa dipakai dari script lain
+    // Ekspos ke global window agar bisa dipanggil manual dari script lain
     window.AppCurrency = {
         clean: cleanCurrency,
         format: formatCurrency,
         setValue: function (displaySelector, value) {
             const displayInput = document.querySelector(displaySelector);
-
-            if (!displayInput) {
-                return;
-            }
+            if (!displayInput) return;
 
             const decimals = getDecimals(displayInput);
             const targetInput = getTargetInput(displayInput);
