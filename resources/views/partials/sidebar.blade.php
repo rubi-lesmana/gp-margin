@@ -11,7 +11,7 @@
 
         {{-- Dashboard --}}
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('dashboard.index') }}">
                 <span class="menu-title">Dashboard</span>
                 <i class="icon-home menu-icon"></i>
             </a>
@@ -76,6 +76,14 @@
             <a class="nav-link" href="{{ route('items.index') }}">
                 <span class="menu-title">Product</span>
                 <i class="icon-tag menu-icon"></i>
+            </a>
+        </li>
+
+        {{-- Item History --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('item-history.index') }}">
+                <span class="menu-title">Product History</span>
+                <i class="icon-social-dropbox  menu-icon"></i>
             </a>
         </li>
         {{-- Customer --}}

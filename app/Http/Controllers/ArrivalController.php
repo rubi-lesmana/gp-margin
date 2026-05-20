@@ -53,9 +53,20 @@ class ArrivalController extends Controller
             'net_amount'    => 'required|numeric',
         ]);
 
-        // Generate ID sequence dengan format ARR-YYYYMMDD-sequence
-        // $id = 'ARR-' . date('Ymd') . '-' . strtoupper(uniqid());
-        $id = 'ARR-' . str_pad(Arrival::count() + 1, 4, '0', STR_PAD_LEFT);
+        // 1. Ambil record terakhir berdasarkan ID terbesar
+        $lastArrival = Arrival::orderBy('id', 'desc')->first();
+
+        if ($lastArrival) {
+            // Mengambil angka dari ID terakhir (misal 'ARR-0004' diambil '0004' lalu diubah ke integer jadi 4)
+            $lastNumber = (int) substr($lastArrival->id, 4);
+            $nextNumber = $lastNumber + 1;
+        } else {
+            // Jika belum ada data sama sekali di database
+            $nextNumber = 1;
+        }
+
+        // 2. Generate ID baru dengan format ARR-XXXX
+        $id = 'ARR-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
 
         Arrival::create([
             'id'            => $id,

@@ -60,8 +60,8 @@
                                             <td>{{ $cost_price->id_cost_price }}</td>
                                             <td>{{ $cost_price->arrival_id }}</td>
                                             <td>{{ $cost_price->date }}</td>
-                                            <td>{{ $cost_price->item->description }}</td>
-                                            <td>{{ number_format($cost_price->cost_price, 2, ',', '.') }}</td>
+                                            <td class="text-wrap">{{ $cost_price->item->description }}</td>
+                                            <td>{{ number_format($cost_price->cost_price, 2, '.', ',') }}</td>
                                             <td>
                                                 <span class="d-none">Edit</span>
 

@@ -71,4 +71,9 @@ class Item extends Model
     {
         return $this->hasMany(SellingPrice::class, 'item_id', 'item_id');
     }
+
+    public function itemHistories()
+    {
+        return $this->hasMany(ItemHistory::class, 'item_id', 'item_id');
+    }
 }

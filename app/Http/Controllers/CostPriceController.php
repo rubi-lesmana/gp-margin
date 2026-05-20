@@ -35,8 +35,8 @@ class CostPriceController extends Controller
     {
         // Bersihkan format price jika user/input mengirim nilai seperti 39,000.00
         $request->merge([
-            'ost_price' => $request->filled('price')
-                ? str_replace(',', '', $request->price)
+            'cost_price' => $request->filled('cost_price')
+                ? str_replace(',', '', $request->cost_price)
                 : null,
         ]);
 

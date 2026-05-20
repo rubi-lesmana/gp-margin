@@ -79,7 +79,7 @@
                                             {{-- Status --}}
                                             <td data-label="Status">
                                                 @if ($row->status === 'draft')
-                                                    <span class="badge badge-outline-warning badge-pill">Preview</span>
+                                                    <span class="badge badge-outline-warning badge-pill">Review</span>
                                                 @elseif($row->status === 'approved')
                                                     <span class="badge badge-outline-success badge-pill">Approved</span>
                                                 @else

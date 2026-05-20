@@ -40,17 +40,17 @@
                                 <label class="form-label">Cost Price</label>
                                 <div class="input-group">
                                     <span class="input-group-text">Rp</span>
-                                    <input class="form-control" type="text" id="price_display" placeholder="0"
-                                        inputmode="numeric" autocomplete="off">
+                                    <input class="form-control currency-input" type="text" name="cost_price"
+                                        placeholder="0" inputmode="numeric" autocomplete="off">
                                     <span class="input-group-text px-3" id="unit_id-display">
                                         <span class="text-muted">unit</span>
                                     </span>
                                 </div>
                                 {{-- Hidden input tanpa value default, hanya terisi jika user mengetik --}}
-                                <input type="hidden" name="cost_price" id="price_real">
+                                {{-- <input type="hidden" name="cost_price" id="price_real"> --}}
                             </div>
 
-                            <script>
+                            {{-- <script>
                                 document.addEventListener('DOMContentLoaded', function() {
                                     const display = document.getElementById('price_display');
                                     const real = document.getElementById('price_real');
@@ -67,7 +67,7 @@
                                         if (!/^\d$/.test(e.key)) e.preventDefault();
                                     });
                                 });
-                            </script>
+                            </script> --}}
 
                             {{-- Manual Reference --}}
                             <div class="mt-3">

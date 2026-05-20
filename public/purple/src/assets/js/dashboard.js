@@ -17,7 +17,7 @@
             0,
             0,
             0,
-            181
+            181,
         );
         gradientStrokeViolet.addColorStop(0, "rgba(218, 140, 255, 1)");
         gradientStrokeViolet.addColorStop(1, "rgba(154, 85, 255, 1)");
@@ -28,7 +28,7 @@
             0,
             0,
             0,
-            360
+            360,
         );
         gradientStrokeBlue.addColorStop(0, "rgba(54, 215, 232, 1)");
         gradientStrokeBlue.addColorStop(1, "rgba(177, 148, 250, 1)");
@@ -39,7 +39,7 @@
             0,
             0,
             0,
-            300
+            300,
         );
         gradientStrokeRed.addColorStop(0, "rgba(255, 191, 150, 1)");
         gradientStrokeRed.addColorStop(1, "rgba(254, 112, 150, 1)");
@@ -169,7 +169,7 @@
 
         // ambil nama kursus & jumlah user
         const labelsRaw = raw.map(
-            (c, i) => c.name || c.title || `Course ${i + 1}`
+            (c, i) => c.name || c.title || `Course ${i + 1}`,
         );
         const counts = raw.map((c) => c.user_courses_count ?? 0);
 
@@ -196,7 +196,7 @@
             0,
             0,
             0,
-            181
+            181,
         );
         gradientStrokeBlue.addColorStop(0, "rgba(54, 215, 232, 1)");
         gradientStrokeBlue.addColorStop(1, "rgba(177, 148, 250, 1)");
@@ -206,7 +206,7 @@
             0,
             0,
             0,
-            50
+            50,
         );
         gradientStrokeRed.addColorStop(0, "rgba(255, 191, 150, 1)");
         gradientStrokeRed.addColorStop(1, "rgba(254, 112, 150, 1)");
@@ -216,7 +216,7 @@
             0,
             0,
             0,
-            300
+            300,
         );
         gradientStrokeGreen.addColorStop(0, "rgba(6, 185, 157, 1)");
         gradientStrokeGreen.addColorStop(1, "rgba(132, 217, 210, 1)");
