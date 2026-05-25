@@ -39,7 +39,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($results as $row)
+                                    @foreach ($results as $row)
                                         <tr>
                                             {{-- ID --}}
                                             <td data-label="ID">
@@ -113,19 +113,9 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center text-muted py-4">
-                                                Tidak ada data selling price.
-                                            </td>
-                                        </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
-                        </div>
-
-                        <div class="d-flex justify-content-end mt-5">
-                            {{ $results->links('components.pagination') }}
                         </div>
                     </div>
                 </div>
