@@ -153,7 +153,7 @@
                                                                                 <code
                                                                                     class="text-dark bg-white border rounded p-1 px-2 d-inline-block">
                                                                                     ({{ $row->top_days_snapshot }}/365 *
-                                                                                    {{ $row->top_pct_pct }})
+                                                                                    {{ $row->top_percentage }})
                                                                                     &plus; {{ $row->gp_margin_pct }} =
                                                                                     {{ $row->target_gp_pct }}
                                                                                 </code>
