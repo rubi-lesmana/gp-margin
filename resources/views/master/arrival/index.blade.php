@@ -50,7 +50,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $arrival->id }}</td>
                                             <td>{{ $arrival->date }}</td>
-                                            <td>{{ $arrival->item->description }}</td>
+                                            <td class="col-wrap">{{ $arrival->item->description }}</td>
                                             <td>{{ number_format($arrival->quantity, 0, ',', '.') . ' ' . $arrival->unit_id }}
                                             </td>
                                             <td>
