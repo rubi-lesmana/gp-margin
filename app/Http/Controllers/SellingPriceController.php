@@ -113,7 +113,7 @@ class SellingPriceController extends Controller
 
             $details = SellingPriceDraft::where('item_id', $itemId)
                 ->where('id_cost_price', $costPriceId)
-                ->orderBy('category_status')
+                ->orderBy('adj_gp_margin_price')
                 ->orderBy('top_days_snapshot')
                 ->get();
 
@@ -137,7 +137,7 @@ class SellingPriceController extends Controller
             ];
 
             $details = SellingPriceDetail::where('selling_price_id', $sellingPriceId)
-                ->orderBy('category_status')
+                ->orderBy('adj_gp_margin_price')
                 ->orderBy('top_days_snapshot')
                 ->get();
         }

@@ -37,6 +37,105 @@
 
         {{-- </div> --}}
 
+        {{-- ── ROW 2: DISTRIBUSI HARGA + TOP SALES ────────────────────────────────── --}}
+        <div class="row">
+
+            {{-- Distribusi Kesesuaian Harga --}}
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Distribusi Kesesuaian Harga</h4>
+                        <p class="card-description text-muted">Proposed vs SSP range (semua waktu)</p>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Dalam range</small>
+                                <small class="fw-bold text-success">{{ $pctInRange }}%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: {{ $pctInRange }}%"></div>
+                            </div>
+                            <small class="text-muted">{{ $inRange }} proposal</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Di bawah SSP Min</small>
+                                <small class="fw-bold text-danger">{{ $pctBelowMin }}%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-danger" style="width: {{ $pctBelowMin }}%"></div>
+                            </div>
+                            <small class="text-muted">{{ $belowMin }} proposal</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Di atas SSP Max</small>
+                                <small class="fw-bold text-warning">{{ $pctAboveMax }}%</small>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-warning" style="width: {{ $pctAboveMax }}%"></div>
+                            </div>
+                            <small class="text-muted">{{ $aboveMax }} proposal</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Top Sales Bulan Ini --}}
+            <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Top Sales — Request Terbanyak</h4>
+                        <p class="card-description text-muted">{{ now()->translatedFormat('F Y') }}</p>
+
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr class="text-muted" style="font-size: 12px;">
+                                        <th>Nama</th>
+                                        <th class="text-center">Request</th>
+                                        <th class="text-center">Approved</th>
+                                        <th class="text-center">Approval Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($topSales as $sales)
+                                        <tr>
+                                            <td>{{ $sales['name'] }}</td>
+                                            <td class="text-center">{{ $sales['total_request'] }}</td>
+                                            <td class="text-center">{{ $sales['approved'] }}</td>
+                                            <td class="text-center">
+                                                @php
+                                                    $badgeMap = [
+                                                        'success' => 'badge bg-success',
+                                                        'warning' => 'badge bg-warning text-dark',
+                                                        'danger' => 'badge bg-danger',
+                                                    ];
+                                                    $badgeClass =
+                                                        $badgeMap[$sales['badge_class']] ?? 'badge bg-secondary';
+                                                @endphp
+                                                <span class="{{ $badgeClass }}">
+                                                    {{ $sales['approval_rate'] }}%
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">Belum ada request bulan ini
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         {{-- ── ROW 3: PENDING + ITEM NO SSP ───────────────────────────── --}}
         <div class="row mb-4">
             {{-- Item SSP --}}

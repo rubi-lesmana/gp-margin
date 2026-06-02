@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'external_api' => [
+        'base_url' => env('API_BASE_URL'),
+        'username' => env('API_USERNAME'),
+        'password' => env('API_PASSWORD'),
+    ],
+
 ];

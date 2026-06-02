@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\SalesProposal;
 use App\Models\SellingPrice;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -111,6 +112,60 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // ── 4. DISTRIBUSI KESESUAIAN HARGA (untuk progress bar) ───────────────
+        // Breakdown berdasarkan price_position dari SEMUA proposal
+        $priceDistribution = SalesProposal::select('price_position', DB::raw('count(*) as total'))
+            ->groupBy('price_position')
+            ->pluck('total', 'price_position');
+
+        // Hitung persentase tiap posisi
+        $totalForDist = $totalProposal > 0 ? $totalProposal : 1; // hindari div/0
+
+        // "Dalam range" = between + at_max + above_max
+        $inRange   = ($priceDistribution['between']   ?? 0)
+                   + ($priceDistribution['at_max']    ?? 0)
+                   + ($priceDistribution['above_max'] ?? 0);
+
+        $belowMin  = $priceDistribution['below_min']  ?? 0;
+
+        $pctInRange  = round(($inRange  / $totalForDist) * 100);
+        $pctBelowMin = round(($belowMin / $totalForDist) * 100);
+
+        // "Di atas range" = above_max saja
+        $aboveMax    = $priceDistribution['above_max'] ?? 0;
+        $pctAboveMax = round(($aboveMax / $totalForDist) * 100);
+
+        // ── 5. TOP SALES — REQUEST TERBANYAK BULAN INI ───────────────────────
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth   = Carbon::now()->endOfMonth();
+
+        $topSales = SalesProposal::select(
+                'submitted_by',
+                DB::raw('count(*) as total_request'),
+                DB::raw('sum(case when status = "approved" then 1 else 0 end) as total_approved')
+            )
+            ->whereBetween('submitted_at', [$startOfMonth, $endOfMonth])
+            ->groupBy('submitted_by')
+            ->orderByDesc('total_request')
+            ->limit(5)
+            ->with('submittedBy:id,name') // eager load relasi user
+            ->get()
+            ->map(function ($row) {
+                $approvalRate = $row->total_request > 0
+                    ? round(($row->total_approved / $row->total_request) * 100)
+                    : 0;
+
+                return [
+                    'name'          => $row->submittedBy->name ?? '-',
+                    'total_request' => $row->total_request,
+                    'approved'      => $row->total_approved,
+                    'approval_rate' => $approvalRate,
+                    // Badge warna: hijau ≥80%, kuning 50–79%, merah <50%
+                    'badge_class'   => $approvalRate >= 80 ? 'success'
+                                     : ($approvalRate >= 50 ? 'warning' : 'danger'),
+                ];
+            });
+
         return view('dashboard.index', compact(
             'totalItem',
             'totalItemWithSsp',
@@ -128,6 +183,19 @@ class DashboardController extends Controller
             'pendingProposals',
             'trendData',
             'recentProposals',
+
+            // Distribusi kesesuaian harga
+            'pctInRange',
+            'pctBelowMin',
+            'pctAboveMax',
+            'inRange',
+            'belowMin',
+            'aboveMax',
+
+            // Tabel & list
+            'recentProposals',
+            'topSales',
+            // 'oldestPending',
         ));
     }
 }
