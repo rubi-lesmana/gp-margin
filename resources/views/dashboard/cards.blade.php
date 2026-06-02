@@ -16,12 +16,12 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-4">
                         <h2 class="fw-bold mb-0 text-light">{{ $totalItemWithSsp }}</h2>
                     </div>
 
-                    <div class="col-9 d-flex justify-content-end align-items-center">
-                        <small>
+                    <div class="col-8 d-flex justify-content-end align-items-center">
+                        <small class="text-nowrap">
                             {{ $totalItem > 0 ? round(($totalItemWithSsp / $totalItem) * 100) : 0 }}% from total item
                         </small>
                     </div>

@@ -44,12 +44,12 @@
             <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Distribusi Kesesuaian Harga</h4>
-                        <p class="card-description text-muted">Proposed vs SSP range (semua waktu)</p>
+                        <h4 class="card-title">Price Matching Distribution</h4>
+                        <p class="card-description text-muted">Proposed vs SSP Range</p>
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <small>Dalam range</small>
+                                <small>In Range</small>
                                 <small class="fw-bold text-success">{{ $pctInRange }}%</small>
                             </div>
                             <div class="progress" style="height: 6px;">
@@ -60,7 +60,7 @@
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <small>Di bawah SSP Min</small>
+                                <small>Below SSP Min</small>
                                 <small class="fw-bold text-danger">{{ $pctBelowMin }}%</small>
                             </div>
                             <div class="progress" style="height: 6px;">
@@ -71,7 +71,7 @@
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <small>Di atas SSP Max</small>
+                                <small>Above SSP Max</small>
                                 <small class="fw-bold text-warning">{{ $pctAboveMax }}%</small>
                             </div>
                             <div class="progress" style="height: 6px;">
@@ -87,14 +87,14 @@
             <div class="col-md-8 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Top Sales — Request Terbanyak</h4>
+                        <h4 class="card-title">Top Sales — Most Requests</h4>
                         <p class="card-description text-muted">{{ now()->translatedFormat('F Y') }}</p>
 
                         <div class="table-responsive">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr class="text-muted" style="font-size: 12px;">
-                                        <th>Nama</th>
+                                        <th>Name</th>
                                         <th class="text-center">Request</th>
                                         <th class="text-center">Approved</th>
                                         <th class="text-center">Approval Rate</th>
@@ -123,7 +123,8 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted">Belum ada request bulan ini
+                                            <td colspan="4" class="text-center text-muted">There are no requests this
+                                                month
                                             </td>
                                         </tr>
                                     @endforelse
