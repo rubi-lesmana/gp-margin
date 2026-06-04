@@ -11,6 +11,7 @@ class SellingPrice extends Model
 {
     use HasPricingPercentage;
 
+    protected $table = 'selling_prices';
     protected $primaryKey = 'id_selling_price';
     public    $incrementing = false;
     protected $keyType      = 'string';
