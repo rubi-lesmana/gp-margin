@@ -39,117 +39,119 @@
                 <i class="icon-directions menu-icon"></i>
             </a>
         </li>
+        @if (auth()->user()->role === 'admin')
+            {{-- Inventory Arrival --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('arrival-inventory.index') }}">
+                    <span class="menu-title">Inventory Arrival</span>
+                    <i class="icon-calendar menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Inventory Arrival --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('arrival-inventory.index') }}">
-                <span class="menu-title">Inventory Arrival</span>
-                <i class="icon-calendar menu-icon"></i>
-            </a>
-        </li>
+            {{-- Cost Price --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('cost-price.index') }}">
+                    <span class="menu-title">Cost Price</span>
+                    <i class=" mdi mdi-currency-usd menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Cost Price --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('cost-price.index') }}">
-                <span class="menu-title">Cost Price</span>
-                <i class=" mdi mdi-currency-usd menu-icon"></i>
-            </a>
-        </li>
+            {{-- List Transaction --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('selling-price.index') }}">
+                    <span class="menu-title">Selling Price</span>
+                    <i class="icon-chart menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- List Transaction --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('selling-price.index') }}">
-                <span class="menu-title">Selling Price</span>
-                <i class="icon-chart menu-icon"></i>
-            </a>
-        </li>
+            {{-- Master Data section --}}
+            <li class="nav-item  mt-3">
+                <span class="menu-title text-secondary">Master Data</span>
+                <div class="border-bottom mt-2">
+                </div>
+            </li>
 
-        {{-- Master Data section --}}
-        <li class="nav-item  mt-3">
-            <span class="menu-title text-secondary">Master Data</span>
-            <div class="border-bottom mt-2">
-            </div>
-        </li>
+            {{-- Item --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('items.index') }}">
+                    <span class="menu-title">Product</span>
+                    <i class="icon-tag menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Item --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('items.index') }}">
-                <span class="menu-title">Product</span>
-                <i class="icon-tag menu-icon"></i>
-            </a>
-        </li>
+            {{-- Item History --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('item-history.index') }}">
+                    <span class="menu-title">Product History</span>
+                    <i class="icon-social-dropbox  menu-icon"></i>
+                </a>
+            </li>
+            {{-- Customer --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('customers.index') }}">
+                    <span class="menu-title">Customer</span>
+                    <i class="icon-user menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Item History --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('item-history.index') }}">
-                <span class="menu-title">Product History</span>
-                <i class="icon-social-dropbox  menu-icon"></i>
-            </a>
-        </li>
-        {{-- Customer --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('customers.index') }}">
-                <span class="menu-title">Customer</span>
-                <i class="icon-user menu-icon"></i>
-            </a>
-        </li>
+            {{-- Market Price --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('market-price.index') }}">
+                    <span class="menu-title">Market Price</span>
+                    <i class="icon-basket menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Market Price --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('market-price.index') }}">
-                <span class="menu-title">Market Price</span>
-                <i class="icon-basket menu-icon"></i>
-            </a>
-        </li>
+            {{-- Configuration Section --}}
+            <li class="nav-item mt-3">
+                <span class="menu-title text-secondary">Configuration</span>
+                <div class="border-bottom mt-2">
+                </div>
+            </li>
 
-        {{-- Configuration Section --}}
-        <li class="nav-item mt-3">
-            <span class="menu-title text-secondary">Configuration</span>
-            <div class="border-bottom mt-2">
-            </div>
-        </li>
+            {{-- Base Margin --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('base-margin.index') }}">
+                    <span class="menu-title">Base Margin</span>
+                    <i class="mdi mdi-call-missed menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Base Margin --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('base-margin.index') }}">
-                <span class="menu-title">Base Margin</span>
-                <i class="mdi mdi-call-missed menu-icon"></i>
-            </a>
-        </li>
+            {{-- Category --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('category.index') }}">
+                    <span class="menu-title">Category</span>
+                    <i class="icon-equalizer menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Category --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('category.index') }}">
-                <span class="menu-title">Category</span>
-                <i class="icon-equalizer menu-icon"></i>
-            </a>
-        </li>
+            {{-- Term of Payment --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('term-of-payment.index') }}">
+                    <span class="menu-title">TOP</span>
+                    <i class="icon-credit-card menu-icon"></i>
+                </a>
+            </li>
 
-        {{-- Term of Payment --}}
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('term-of-payment.index') }}">
-                <span class="menu-title">TOP</span>
-                <i class="icon-credit-card menu-icon"></i>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#Setup" aria-expanded="false" aria-controls="Setup">
-                <span class="menu-title">Setup</span>
-                <i class="menu-arrow"></i>
-                <i class="icon-wrench menu-icon"></i>
-            </a>
-            <div class="collapse" id="Setup">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('units.index') }}">Unit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('pareto.index') }}">Pareto</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#Setup" aria-expanded="false"
+                    aria-controls="Setup">
+                    <span class="menu-title">Setup</span>
+                    <i class="menu-arrow"></i>
+                    <i class="icon-wrench menu-icon"></i>
+                </a>
+                <div class="collapse" id="Setup">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('units.index') }}">Unit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('pareto.index') }}">Pareto</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endauth
 
         {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('doi-percentage.index') }}">
@@ -157,5 +159,5 @@
                 <i class=" icon-graph menu-icon"></i>
             </a>
         </li> --}}
-    </ul>
+</ul>
 </nav>
