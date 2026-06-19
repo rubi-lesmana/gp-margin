@@ -29,7 +29,7 @@ class SellingPriceDraft extends Model
         return number_format($this->category_calc_snapshot * 100, 2) . '%';
     }
 
-    public function getTopPctAttribute(): string
+    public function getTopPercentageAttribute(): string
     {
         return number_format($this->top_pct_snapshot * 100, 2) . '%';
     }
