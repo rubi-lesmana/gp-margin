@@ -85,7 +85,6 @@ class SellingPriceController extends Controller
             })
             ->orderByRaw("FIELD(status, 'draft', 'approved', 'superseded')")
             ->orderBy('item_id')
-            ->paginate(10)
             ->withQueryString();
 
         return view('transaction.sellingprice.index', compact('results'));
