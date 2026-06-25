@@ -18,8 +18,7 @@
                                 <th rowspan="2" class="align-middle">Item</th>
                                 <th rowspan="2" class="align-middle">Market Price</th>
                                 <th colspan="2" class="text-center">Selling Price</th>
-                                <th rowspan="2" class="align-middle">Approved At</th>
-                                <th rowspan="2" class="align-middle">Status</th>
+                                <th rowspan="2" class="align-middle">Details</th>
                             </tr>
                             <tr>
                                 <th class="text-end">Min</th>
@@ -27,7 +26,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($items as $row)
+                            @foreach ($data as $row)
                                 <tr>
                                     <td data-label="ID">{{ $row->id_selling_price }}</td>
                                     <td data-label="Item" class="text-wrap">{{ $row->item_id }} - {{ $row->description }}
@@ -60,41 +59,25 @@
                                         @endif
                                     </td>
 
-                                    {{-- Approved At --}}
-                                    <td data-label="Approved At" class="text-nowrap">
-                                        @if ($row->approved_at)
-                                            {{ \Carbon\Carbon::parse($row->approved_at)->format('d M Y') }}<br>
-                                            <small class="text-muted">
-                                                {{ \Carbon\Carbon::parse($row->approved_at)->format('H:i') }}
-                                            </small>
+                                    {{-- Details --}}
+                                    <td data-label="Details" class="text-nowrap">
+                                        @if ($row->id_selling_price)
+                                            <a href="{{ route('price-list.show', ['price_list' => $row->id_selling_price]) }}"
+                                                class="btn btn-gradient-primary btn-rounded btn-icon position-relative"
+                                                title="Show">
+                                                <i
+                                                    class="mdi mdi-eye-outline position-absolute top-50 start-50 translate-middle"></i>
+                                            </a>
                                         @else
                                             <span class="text-muted">-</span>
                                         @endif
                                     </td>
-
-                                    {{-- Status --}}
-                                    <td data-label="Status">
-                                        @if ($row->id_selling_price)
-                                            <span class="badge bg-success">Approved</span>
-                                        @else
-                                            <span class="badge bg-secondary">Belum ada SSP</span>
-                                        @endif
-                                    </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" class="text-center text-muted py-4">
-                                        Tidak ada data item.
-                                    </td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
+                    {{-- @include('price-list.detail') --}}
                 </div>
-
-                {{-- <div class="mt-3 justify-content-end d-flex">
-                    {{ $items->links('components.pagination') }}
-                </div> --}}
             </div>
         </div>
     </div>
