@@ -36,7 +36,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('proposal.index') }}">
                 <span class="menu-title">Requestion</span>
-                <i class="icon-directions menu-icon"></i>
+                <i class="icon-paper-plane menu-icon"></i>
             </a>
         </li>
         @if (auth()->user()->role === 'admin')

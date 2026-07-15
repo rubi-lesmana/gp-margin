@@ -53,6 +53,7 @@ return new class extends Migration
             $table->enum('status', [
                 'approved',
                 'pending_approval',
+                'manager_approved',
                 'rejected',
             ])->default('pending_approval');
 

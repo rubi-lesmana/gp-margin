@@ -59,28 +59,27 @@ Route::middleware('auth')->group(function () {
     // routes/web.php
 
     Route::prefix('proposal')->name('proposal.')->group(function () {
-        Route::get('/',
-            [SalesProposalController::class, 'index'])->name('index');
-        Route::get('/create',                   
-            [SalesProposalController::class, 'create'])->name('create');
-        Route::post('/', 
-            [SalesProposalController::class, 'store'])->name('store');
-        Route::get('/{proposalId}', 
-            [SalesProposalController::class, 'show'])
+        Route::get('/', [SalesProposalController::class, 'index'])->name('index');
+        Route::get('/create', [SalesProposalController::class, 'create'])->name('create');
+        Route::post('/', [SalesProposalController::class, 'store'])->name('store');
+        Route::get('/{proposalId}', [SalesProposalController::class, 'show'])
             ->name('show')
             ->where('proposalId', '[A-Za-z0-9\-\.]+');
-        Route::post('/{proposalId}/approve', 
-            [SalesProposalController::class, 'approve'])
+        Route::get('/{proposalId}/edit', [SalesProposalController::class, 'edit'])
+            ->name('edit')
+            ->where('proposalId', '[A-Za-z0-9\-\.]+');
+        Route::put('/{proposalId}', [SalesProposalController::class, 'update'])
+            ->name('update')
+            ->where('proposalId', '[A-Za-z0-9\-\.]+');
+        Route::post('/{proposalId}/approve', [SalesProposalController::class, 'approve'])
             ->name('approve')
             ->where('proposalId', '[A-Za-z0-9\-\.]+');
-        Route::post('/{proposalId}/reject',     
-            [SalesProposalController::class, 'reject'])
+        Route::post('/{proposalId}/reject', [SalesProposalController::class, 'reject'])
             ->name('reject')
             ->where('proposalId', '[A-Za-z0-9\-\.]+');
 
         // AJAX endpoint
-        Route::get('/ssp-info/{itemId}',        [SalesProposalController::class, 'getSspInfo'])->name('ssp-info');
+        Route::get('/ssp-info/{itemId}', [SalesProposalController::class, 'getSspInfo'])->name('ssp-info');
     });
-
-    });
+});
     Route::get('/stock', [\App\Http\Controllers\StockController::class, 'getStock'])->name('stock.get');

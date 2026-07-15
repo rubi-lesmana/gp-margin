@@ -17,4 +17,9 @@ class TermOfPayment extends Model
     {
         return $this->belongsTo(TgpMargin::class, 'percent_id', 'id');
     }
+
+    public function sales_proposals()
+    {
+        return $this->hasMany(SalesProposal::class, 'top_id', 'id');
+    }
 }

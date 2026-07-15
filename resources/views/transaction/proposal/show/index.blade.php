@@ -5,15 +5,23 @@
             <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
                     <i class="icon-paper-plane"></i>
-                </span> Detail Pengajuan Harga
+                </span> Detail Proposal
             </h3>
         </div>
 
         <div class="row">
-            @include('transaction.proposal.detail.propose')
+            {{-- Header --}}
+            <div class="col-12 col-md-4 mb-4">
+                @include('transaction.proposal.show.header')
+            </div>
+
+            {{-- Detail Item --}}
+            <div class="col-12 col-md-8 mb-4">
+                @include('transaction.proposal.show.detail')
+            </div>
 
             {{-- ── CARD SSP REFERENSI ───────────────────────────────── --}}
-            @include('transaction.proposal.detail.sellingprice')
+            {{-- @include('transaction.proposal.show.sellingprice') --}}
         </div>
     </div>
 

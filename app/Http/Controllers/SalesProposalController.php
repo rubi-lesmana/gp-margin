@@ -9,10 +9,12 @@ use App\Models\Item;
 use App\Models\SalesProposal;
 use App\Models\SellingPrice;
 use App\Models\SellingPriceDetail;
+use App\Models\TermOfPayment;
 use App\Services\SalesProposalService;
 use App\Traits\HasPricingPercentage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SalesProposalController extends Controller
 {
@@ -27,28 +29,15 @@ class SalesProposalController extends Controller
      * Sales hanya lihat miliknya sendiri.
      * Manager lihat semua + filter pending.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $proposals = SalesProposal::with(['customer', 'item', 'submittedBy'])
-            ->when(auth()->user()->role !== 'admin', function ($q) {
-                // Sales hanya lihat pengajuan miliknya
-                $q->where('submitted_by', auth()->id());
-            })
-            ->when($request->filled('status'), function ($q) use ($request) {
-                $q->where('status', $request->status);
-            })
-            ->when($request->filled('search'), function ($q) use ($request) {
-                $q->where(function ($q) use ($request) {
-                    $q->whereHas('item', fn($q) =>
-                        $q->where('item_id', 'like', "%{$request->search}%")
-                          ->orWhere('description', 'like', "%{$request->search}%")
-                    )->orWhereHas('customer', fn($q) =>
-                        $q->where('name', 'like', "%{$request->search}%")
-                    );
-                });
-            })
-            ->orderByRaw("FIELD(status, 'pending_approval', 'approved', 'manager_approved', 'rejected')")
-            ->orderBy('submitted_at', 'desc')
+        $proposals = SalesProposal::with(['customer', 'sales_proposal_details',  'term_of_payment','submittedBy'])
+            ->withSum('sales_proposal_details', 'proposed_price')
+            ->withSum('sales_proposal_details', 'price_diff')
+            ->when(auth()->user()->role !== 'admin', fn($q) =>
+                $q->where('submitted_by', auth()->id())
+            )
+            ->orderBy('id_proposal', 'desc')
             ->get();
 
         return view('transaction.proposal.index', compact('proposals'));
@@ -59,12 +48,15 @@ class SalesProposalController extends Controller
      */
     public function create()
     {
-        $customers = Customer::pluck('name', 'id_customer');
-        $items     = Item::whereHas('sellingPrices', fn($q) =>
-                        $q->where('status', 'approved')
-                     )->orderBy('item_id')->get();
+        $customers = Customer::orderBy('name')->pluck('name', 'id_customer');
 
-        return view('transaction.proposal.create', compact('customers', 'items'));
+        $items = Item::whereHas('sellingPrices', fn($q) =>
+                    $q->where('status', 'approved')
+                )->orderBy('item_id')->get();
+
+        $tops = TermOfPayment::orderBy('days')->pluck('days', 'id');
+
+        return view('transaction.proposal.create.index', compact('customers', 'items', 'tops'));
     }
 
     /**
@@ -73,52 +65,119 @@ class SalesProposalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id'    => 'required|exists:customers,id_customer',
-            'item_id'        => 'required|exists:item,item_id',
-            'proposed_price' => 'required|numeric|min:1',
+            'customer_id'              => 'required|exists:customers,id_customer',
+            'top_id'                   => 'required|exists:term_of_payments,id',
+            'items'                    => 'required|array|min:1',
+            'items.*.item_id'          => 'required|exists:item,item_id|distinct',
+            'items.*.selling_price_id' => 'required|exists:selling_prices,id_selling_price',
+            'items.*.qty'              => 'required|numeric|min:0.0001',
+            'items.*.proposed_price'   => 'required|numeric|min:1',
         ]);
 
         try {
-            $proposal = $this->service->submit(
-                customerId    : $request->customer_id,
-                itemId        : $request->item_id,
-                proposedPrice : (float) $request->proposed_price,
-                submittedBy   : Auth::id(),
+            $result = $this->service->submit($request->only([
+                'customer_id', 'top_id', 'items',
+            ]));
+
+            $idProposal = $result['proposal']->id_proposal;
+
+            Alert::success('Success', $result['hasBelow']
+                ? "Submission {$idProposal} has been successfully submitted. Awaiting manager approval due to prices below SSP."
+                : "Submission {$idProposal} has been successfully submitted and automatically approved."
             );
 
-            $message = $proposal->is_below_ssp
-                ? "Pengajuan {$proposal->id_proposal} berhasil disubmit. Menunggu approval manager karena harga di bawah SSP."
-                : "Pengajuan {$proposal->id_proposal} berhasil disubmit dan otomatis diapprove.";
-
-            return redirect()
-                ->route('proposal.index')
-                ->with('success', $message);
+            return redirect()->route('proposal.index');
 
         } catch (\Throwable $e) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', $e->getMessage());
+            Alert::error('Error', 'Failed to save proposal: ' . $e->getMessage());
+            return redirect()->back()->withInput();
         }
     }
-
+    
     /**
      * Show — detail pengajuan.
      */
     public function show(string $proposalId)
     {
         $proposal = SalesProposal::with([
-            'customer', 'item', 'sellingPrice',
-            'submittedBy', 'reviewedBy'
+            'customer',
+            'submittedBy',
+            'reviewedBy',
+            'term_of_payment',
+            'sales_proposal_details.item',
+            'sales_proposal_details.selling_price.details',
         ])->findOrFail($proposalId);
 
-        // SSP detail untuk referensi
-        $sspDetails = SellingPriceDetail::where('selling_price_id', $proposal->selling_price_id)
-            ->orderBy('category_status')
-            ->orderBy('top_days_snapshot')
-            ->get();
+        // Ambil semua selling_price_id dari detail proposal
+        $sellingPriceIds = $proposal->sales_proposal_details
+            ->pluck('selling_price_id')
+            ->filter()
+            ->unique()
+            ->values();
 
-        return view('transaction.proposal.show', compact('proposal', 'sspDetails'));
+        // Get selling price details, group by selling_price_id lalu by category_status
+        $sspDetails = SellingPriceDetail::whereIn('selling_price_id', $sellingPriceIds)
+            ->orderByRaw("FIELD(category_status, 'High', 'Medium', 'Low')")
+            ->orderBy('top_days_snapshot')
+            ->get()
+            ->groupBy(['selling_price_id', 'category_status']);
+
+
+        return view('transaction.proposal.show.index', compact('proposal', 'sspDetails'));
+
+    }
+
+    public function edit(string $proposalId)
+    {
+        $proposal = SalesProposal::with([
+            'customer',
+            'submittedBy',
+            'reviewedBy',
+            'term_of_payment',
+            'sales_proposal_details.item',
+            'sales_proposal_details.selling_price.details',
+        ])->findOrFail($proposalId);
+
+        $customers = Customer::orderBy('name')->pluck('name', 'id_customer');
+
+        $items = Item::whereHas('sellingPrices', fn($q) =>
+                    $q->where('status', 'approved')
+                )->orderBy('item_id')->get();
+
+        $tops = TermOfPayment::orderBy('days')->pluck('days', 'id');
+
+        return view('transaction.proposal.update.index', compact('proposal', 'customers', 'items', 'tops'));
+    }
+
+    public function update(Request $request, string $proposalId)
+    {
+        $proposal = SalesProposal::findOrFail($proposalId);
+        $request->validate([
+            'customer_id'              => 'required|exists:customers,id_customer',
+            'top_id'                   => 'required|exists:term_of_payments,id',
+            'items'                    => 'required|array|min:1',
+            'items.*.item_id'          => 'required|exists:item,item_id|distinct',
+            'items.*.selling_price_id' => 'required|exists:selling_prices,id_selling_price',
+            'items.*.qty'              => 'required|numeric|min:0.0001',
+            'items.*.proposed_price'   => 'required|numeric|min:1',
+        ]);
+
+        try {
+            $result = $this->service->update($proposal, $request->only([
+                'customer_id', 'top_id', 'items',
+            ]));
+
+            Alert::success('Success', $result['hasBelow']
+                ? "Submission {$proposalId} has been successfully updated. Awaiting manager approval due to prices below SSP."
+                : "Submission {$proposalId} has been successfully updated and automatically approved."
+            );
+
+            return redirect()->route('proposal.index');
+
+        } catch (\Throwable $e) {
+            Alert::error('Error', 'Failed to update proposal: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
     }
 
     /**

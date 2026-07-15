@@ -3,10 +3,11 @@
         <div class="card-body">
             <h6 class="card-title">Reference SSP</h6>
             <p class="text-muted small mb-3">
-                SSP referensi untuk item <strong>{{ $proposal->item_id }}</strong> ({{ $proposal->item->description }})
+                SSP referensi untuk item <strong>{{ $proposal->item_id }}</strong>
                 dengan selling price ID
                 <strong>{{ $proposal->selling_price_id }}</strong>
             </p>
+            {{-- ({{ $proposal->item->description }})    --}}
 
             @foreach ($sspDetails->groupBy('category_status') as $categoryStatus => $rows)
                 <div class="card">

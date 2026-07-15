@@ -13,11 +13,8 @@ class SalesProposal extends Model
     protected $keyType      = 'string';
 
     protected $fillable = [
-        'id_proposal', 'customer_id', 'item_id',
-        'selling_price_id','ssp_min_snapshot', 'ssp_max_snapshot',
-        'proposed_price', 'price_diff', 'price_diff_pct', 'price_position',
-        'is_below_ssp', 'status', 'submitted_by',
-        'reviewed_by', 'rejection_note',
+        'id_proposal', 'customer_id', 'top_id', 'top_days_snapshot', 
+        'status', 'submitted_by', 'reviewed_by', 'rejection_note', 
         'submitted_at', 'reviewed_at',
     ];
 
@@ -51,6 +48,16 @@ class SalesProposal extends Model
     public function reviewedBy()
     {
         return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    public function sales_proposal_details()
+    {
+        return $this->hasMany(SalesProposalDetail::class, 'proposal_id', 'id_proposal');
+    }
+
+    public function term_of_payment()
+    {
+        return $this->belongsTo(TermOfPayment::class, 'top_id');
     }
 
     // ── Accessor status label ────────────────────────────────────
