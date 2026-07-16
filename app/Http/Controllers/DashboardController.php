@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\SalesProposal;
+use App\Models\SalesProposalDetail;
 use App\Models\SellingPrice;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -12,57 +13,61 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index');
-    }
-
-    public function getIndex()
-    {
         // ── SUMMARY CARDS ─────────────────────────────────────────
         $totalItem = Item::count();
-
         $totalItemWithSsp = SellingPrice::where('status', 'approved')
             ->distinct('item_id')
             ->count('item_id');
-
         $totalItemWithoutSsp = $totalItem - $totalItemWithSsp;
-
         $totalProposal = SalesProposal::count();
-
         $totalProposalPending = SalesProposal::where('status', 'pending_approval')->count();
-
         $totalApproved = SalesProposal::whereIn('status', ['approved', 'manager_approved'])->count();
-
-        $totalProposalBelowMin = SalesProposal::where('price_position', 'below_min')->count();
+        $totalProposalBelowMin = SalesProposalDetail::where('price_position', 'below_min')->count();
 
         // ── GP COMPLIANCE ─────────────────────────────────────────
-        // Distribusi price_position dari semua pengajuan
-        $complianceData = SalesProposal::select('price_position', DB::raw('COUNT(*) as total'))
-            ->whereIn('status', ['approved', 'manager_approved'])
+        // Distribusi price_position dari sales_proposal_details
+        // hanya untuk proposal yang approved/manager_approved
+        $complianceData = SalesProposalDetail::select(
+                'price_position',
+                DB::raw('COUNT(*) as total')
+            )
+            ->whereHas('sales_proposal', fn($q) =>
+                $q->whereIn('status', ['approved', 'manager_approved'])
+            )
             ->groupBy('price_position')
             ->get()
             ->keyBy('price_position');
 
         $complianceChart = [
-            'above_max'  => $complianceData->get('above_max')?->total  ?? 0,
-            'at_max'     => $complianceData->get('at_max')?->total     ?? 0,
-            'between'    => $complianceData->get('between')?->total    ?? 0,
-            'below_min'  => $complianceData->get('below_min')?->total  ?? 0,
+            'above_max' => $complianceData->get('above_max')?->total ?? 0,
+            'at_max'    => $complianceData->get('at_max')?->total    ?? 0,
+            'between'   => $complianceData->get('between')?->total   ?? 0,
+            'below_min' => $complianceData->get('below_min')?->total ?? 0,
         ];
 
-        // Ambil sum negatif dan positif dalam satu kali query ke database
-        $priceDiffSum = SalesProposal::where('status', '=', 'approved')
-            ->orWhere('status', '=', 'manager_approved')
+        // Ambil sum price_diff_pct dari sales_proposal_details
+        // hanya proposal approved/manager_approved
+        $priceDiffSum = SalesProposalDetail::whereHas('sales_proposal', fn($q) =>
+                $q->whereIn('status', ['approved', 'manager_approved'])
+            )
             ->selectRaw("
                 SUM(CASE WHEN price_diff_pct < 0 THEN price_diff_pct ELSE 0 END) as total_negatif,
                 SUM(CASE WHEN price_diff_pct > 0 THEN price_diff_pct ELSE 0 END) as total_positif
             ")
             ->first();
 
-        $totalNegatif = number_format($priceDiffSum->total_negatif ?? 0, 2) . '%'; // Hasilnya akan berupa angka minus (misal: -25.5)
+        $totalNegatif = number_format($priceDiffSum->total_negatif ?? 0, 2) . '%';
         $totalPositif = number_format($priceDiffSum->total_positif ?? 0, 2) . '%';
 
-        $compliancePct = $totalProposal > 0
-            ? round((($complianceChart['above_max'] + $complianceChart['at_max'] + $complianceChart['between']) / $totalProposal) * 100, 1)
+        // Compliance dihitung dari total detail (bukan proposal)
+        // agar mencerminkan distribusi per item, bukan per dokumen
+        $totalDetail = array_sum($complianceChart);
+
+        $compliancePct = $totalDetail > 0
+            ? round(
+                (($complianceChart['above_max'] + $complianceChart['at_max'] + $complianceChart['between']) / $totalDetail) * 100,
+                1
+            )
             : 0;
 
         // ── ITEM TANPA SSP ────────────────────────────────────────
@@ -102,42 +107,48 @@ class DashboardController extends Controller
         // ── TREND PENGAJUAN 6 BULAN TERAKHIR ─────────────────────
         $trendData = SalesProposal::select(
                 DB::raw('DATE_FORMAT(submitted_at, "%Y-%m") as month'),
-                DB::raw('COUNT(*) as total'),
-                DB::raw('SUM(CASE WHEN price_position = "below_min" THEN 1 ELSE 0 END) as below_min'),
-                DB::raw('SUM(CASE WHEN price_position IN ("above_max","at_max","between") THEN 1 ELSE 0 END) as compliant')
+                DB::raw('COUNT(DISTINCT sales_proposals.id_proposal) as total')
             )
-            ->where('submitted_at', '>=', now()->subMonths(6))
+            ->leftJoin('sales_proposal_details', 'sales_proposals.id_proposal', '=', 'sales_proposal_details.proposal_id')
+            ->addSelect([
+                DB::raw('SUM(CASE WHEN sales_proposal_details.price_position = "below_min" THEN 1 ELSE 0 END) as below_min'),
+                DB::raw('SUM(CASE WHEN sales_proposal_details.price_position IN ("above_max","at_max","between") THEN 1 ELSE 0 END) as compliant'),
+            ])
+            ->where('sales_proposals.submitted_at', '>=', now()->subMonths(6))
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
         // ── RECENT ACTIVITY ───────────────────────────────────────
-        $recentProposals = SalesProposal::with(['customer', 'item', 'submittedBy'])
+        $recentProposals = SalesProposal::with([
+                'customer',
+                'submittedBy',
+                'sales_proposal_details.item',
+            ])
             ->orderBy('submitted_at', 'desc')
             ->limit(5)
             ->get();
 
         // ── 4. DISTRIBUSI KESESUAIAN HARGA (untuk progress bar) ───────────────
-        // Breakdown berdasarkan price_position dari SEMUA proposal
-        $priceDistribution = SalesProposal::select('price_position', DB::raw('count(*) as total'))
+        // Breakdown berdasarkan price_position dari sales_proposal_details
+        $priceDistribution = \App\Models\SalesProposalDetail::select(
+                'price_position',
+                DB::raw('COUNT(*) as total')
+            )
             ->groupBy('price_position')
             ->pluck('total', 'price_position');
 
-        // Hitung persentase tiap posisi
-        $totalForDist = $totalProposal > 0 ? $totalProposal : 1; // hindari div/0
+        $totalForDist = $priceDistribution->sum() ?: 1; // hindari div/0
 
-        // "Dalam range" = between + at_max + above_max
-        $inRange   = ($priceDistribution['between']   ?? 0)
-                   + ($priceDistribution['at_max']    ?? 0)
-                   + ($priceDistribution['above_max'] ?? 0);
+        $inRange  = ($priceDistribution['between']   ?? 0)
+                + ($priceDistribution['at_max']    ?? 0)
+                + ($priceDistribution['above_max'] ?? 0);
 
         $belowMin  = $priceDistribution['below_min']  ?? 0;
+        $aboveMax  = $priceDistribution['above_max']  ?? 0;
 
         $pctInRange  = round(($inRange  / $totalForDist) * 100);
         $pctBelowMin = round(($belowMin / $totalForDist) * 100);
-
-        // "Di atas range" = above_max saja
-        $aboveMax    = $priceDistribution['above_max'] ?? 0;
         $pctAboveMax = round(($aboveMax / $totalForDist) * 100);
 
         // ── 5. TOP SALES — REQUEST TERBANYAK BULAN INI ───────────────────────
