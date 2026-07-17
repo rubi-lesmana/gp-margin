@@ -8,6 +8,7 @@ use App\Models\SellingPriceDraft;
 use App\Services\PricingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SellingPriceController extends Controller
 {
@@ -163,14 +164,13 @@ class SellingPriceController extends Controller
                 approvedBy  : $request->user()->id,
             );
 
-            return redirect()
-                ->route('selling-price.index')
-                ->with('success', "SSP item {$itemId} berhasil diapprove.");
+            Alert::success('Success', "Selling Price item {$itemId} berhasil diapprove.");
+            return redirect()->route('selling-price.index');
+                
 
         } catch (\Throwable $e) {
-            return redirect()
-                ->back()
-                ->with('error', $e->getMessage());
+            Alert::error('Error', $e->getMessage());
+            return redirect()->back();
         }
     }
 }
