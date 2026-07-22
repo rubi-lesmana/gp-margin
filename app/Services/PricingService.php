@@ -38,9 +38,23 @@ class PricingService
                 ->where('status', 'approved')
                 ->update(['status' => 'superseded']);
 
-            // ── STEP 2: Generate ID selling price ────────────────────────
-            $sellingPriceId = 'SP-' . str_pad(SellingPrice::count() + 1, 3, '0', STR_PAD_LEFT);
+            // ── STEP 2: Generate ID selling price (AMON DARI DUPLICATE) ──
+            // Ambil ID terakhir dengan mengunci baris (Locking) agar aman dari Race Condition
+            $lastRecord = SellingPrice::lockForUpdate()
+                ->orderBy('id_selling_price', 'desc')
+                ->first();
 
+            if (! $lastRecord) {
+                $nextNumber = 1;
+            } else {
+                // 💡 Ambil HANYA digit angka (mengabaikan tanda strip/minus)
+                // Contoh: 'SP-008' atau 'SP-0-9' akan diambil angkanya saja secara bersih
+                $cleanNumber = preg_replace('/[^0-9]/', '', $lastRecord->id_selling_price);
+                $lastNumber  = (int) $cleanNumber;
+                $nextNumber  = $lastNumber + 1;
+            }
+
+            $sellingPriceId = 'SP-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
             // ── STEP 3: Insert header selling_prices ─────────────────────
             SellingPrice::create([
                 'id_selling_price'       => $sellingPriceId,
