@@ -65,9 +65,8 @@ class CostPriceController extends Controller
             'cost_price'    => $request->cost_price,
         ]);
 
-        return redirect()
-            ->route('cost-price.index')
-            ->with('success', 'Cost Price created successfully.');
+        Alert::success('Success','Cost price has been created successfully.');
+        return redirect()->route('cost-price.index');
     }
 
     /**
@@ -115,9 +114,8 @@ class CostPriceController extends Controller
             'manual_reference' => $validated['manual_reference'] ?? null,
         ]);
  
-        return redirect()
-            ->route('cost-price.index')
-            ->with('success', 'Cost Price berhasil diperbarui.');
+        Alert::success('Success','Cost price has been updated successfully.');
+        return redirect()->route('cost-price.index');
     }
 
     /**
