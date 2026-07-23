@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Arrival;
 use App\Models\CostPrice;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CostPriceController extends Controller
 {
@@ -13,7 +14,10 @@ class CostPriceController extends Controller
      */
     public function index()
     {
-        $data = CostPrice::with('arrival', 'item')->orderBy('id_cost_price', 'desc')->get();
+        $data = CostPrice::with('arrival', 'item', 'selling_prices')
+            ->withCount('selling_prices')
+            ->orderBy('id_cost_price', 'desc')
+            ->get();
         return view('transaction.cost-price.index', compact('data'));
     }
 
@@ -67,19 +71,18 @@ class CostPriceController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        $costPrice = CostPrice::with(['arrival.item',])->findOrFail($id);
+        $costPrice = CostPrice::with(['arrival.item', 'selling_prices'])->findOrFail($id);
+
+        // Pengecekan apakah cost price sudah dipakai di selling price, jika sudah maka tidak bisa diedit
+        if ($costPrice->selling_prices()->exists()) {
+            $sellingPriceIds = $costPrice->selling_prices->pluck('id_selling_price')->implode(', ');
+            Alert::warning('Warning',"This cost price has been used in selling prices : {$sellingPriceIds}  and cannot be edited.");
+            return redirect()->route('cost-price.index');
+        }
 
         $arrivals = Arrival::with('item')
                 ->whereDoesntHave('cost_price')
@@ -123,9 +126,16 @@ class CostPriceController extends Controller
     public function destroy(string $id)
     {
         $cost_price = CostPrice::findOrFail($id);
-        $cost_price->delete();
 
-        return redirect()->route('cost-price.index')
-                     ->with('success', 'Cost Price deleted successfully.');
+        // Pengecekan apakah cost price sudah dipakai di selling price, jika sudah maka tidak bisa dihapus
+        if ($cost_price->selling_prices()->exists()) {
+            // Tampilkan pesan error jika sudah digunakan di selling price
+            Alert::error('Error','This cost price has been used in selling prices and cannot be deleted.');
+            return redirect()->route('cost-price.index');
+        }
+        $cost_price->delete();
+        
+        Alert::success('Deleted','Cost price has been deleted successfully.');
+        return redirect()->route('cost-price.index');
    }
 }

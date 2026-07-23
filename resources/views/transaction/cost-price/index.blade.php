@@ -46,8 +46,8 @@
                                     <tr>
                                         <th>No #</th>
                                         <th>ID</th>
-                                        <th>Arrival ID</th>
                                         <th>Date</th>
+                                        <th>Arrival ID</th>
                                         <th>Item</th>
                                         <th>Price</th>
                                         <th>Action</th>
@@ -56,13 +56,13 @@
                                 <tbody>
                                     @foreach ($data as $cost_price)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $cost_price->id_cost_price }}</td>
-                                            <td>{{ $cost_price->arrival_id }}</td>
-                                            <td>{{ $cost_price->date }}</td>
+                                            <td data-label="No #">{{ $loop->iteration }}</td>
+                                            <td data-label="ID">{{ $cost_price->id_cost_price }}</td>
+                                            <td data-label="Date">{{ $cost_price->date }}</td>
+                                            <td data-label="Arrival ID">{{ $cost_price->arrival_id }}</td>
                                             <td class="text-wrap">{{ $cost_price->item->description }}</td>
                                             <td>{{ number_format($cost_price->cost_price, 2, '.', ',') }}</td>
-                                            <td>
+                                            <td data-label="Action">
                                                 <span class="d-none">Edit</span>
 
                                                 <a type="button"
@@ -72,8 +72,8 @@
                                                     <i
                                                         class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
-                                                <span class="d-none">Delete</span>
 
+                                                <span class="d-none">Delete</span>
                                                 <a type="button"
                                                     class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
                                                     data-bs-toggle="modal"
@@ -82,6 +82,7 @@
                                                     <i
                                                         class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
+
                                                 <span class="d-none">Show</span>
 
                                                 <a type="button"
