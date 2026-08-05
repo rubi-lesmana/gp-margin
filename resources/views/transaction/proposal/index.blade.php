@@ -16,6 +16,9 @@
                         <h4 class="card-title mb-0">Price Proposal List</h4>
                     </div>
                     <div class="col-auto">
+                        <a href="#" class="btn btn-gradient-success btn-sm">
+                            <i class="mdi mdi-file-excel"></i> Export
+                        </a>
                         <a href="{{ route('proposal.create') }}" class="btn btn-gradient-primary btn-sm">
                             <i class="icon-plus me-1"></i> Create
                         </a>
@@ -74,7 +77,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
