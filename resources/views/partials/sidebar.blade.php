@@ -146,6 +146,9 @@
                             <a class="nav-link" href="{{ route('units.index') }}">Unit</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('currencies.index') }}">Currency</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('pareto.index') }}">Pareto</a>
                         </li>
                     </ul>

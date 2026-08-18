@@ -6,6 +6,7 @@ use App\Http\Controllers\CalculatorControler;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CostPriceController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoiPercentageController;
 use App\Http\Controllers\ItemController;
@@ -32,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/pareto', ParetoController::class);
     Route::resource('/item-history', ItemHistoryController::class);
     Route::resource('/customers', CustomerController::class);
+    Route::resource('/currencies', CurrencyController::class);
     Route::resource('/base-margin', BaseMarginController::class);
     Route::resource('/target-gp-margin', TgpMarginController::class);
     Route::resource('/category', CategoryController::class);
