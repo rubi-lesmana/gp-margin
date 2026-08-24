@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArrivalController;
+use App\Http\Controllers\ArrivalStatusController;
 use App\Http\Controllers\BaseMarginController;
 use App\Http\Controllers\CalculatorControler;
 use App\Http\Controllers\CategoryController;
@@ -40,9 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/market-price', MarketPriceController::class);
     Route::resource('/market-price-detail', MarketPriceDetailController::class);
     Route::resource('/arrival-inventory', ArrivalController::class);
+    Route::resource('/arrival-statuses', ArrivalStatusController::class);
     Route::resource('/cost-price', CostPriceController::class);
     Route::resource('/doi-percentage', DoiPercentageController::class);
-    Route::resource('/calculator', CalculatorControler::class);
+    // Route::resource('/calculator', CalculatorControler::class);
     Route::resource('/term-of-payment', TermOfPaymentController::class);
     Route::prefix('selling-price')->name('selling-price.')->group(function () {
         Route::get('/',

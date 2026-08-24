@@ -4,6 +4,11 @@
     white-space: normal;
 }
 
+/* Mengecilkan teks opsi di semua select large */
+.form-select-lg option {
+    font-size: 12px; /* Sesuaikan ukuran, misal: 14px / 0.875rem */
+}
+
 .badge-status {
     white-space: normal !important; /* Membatalkan paksaan satu baris */
     word-break: break-word; /* Memotong kata dengan aman jika terlalu panjang */

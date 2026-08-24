@@ -151,16 +151,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('pareto.index') }}">Pareto</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('arrival-statuses.index') }}">Arrival Status</a>
+                        </li>
                     </ul>
                 </div>
             </li>
         @endauth
-
-        {{-- <li class="nav-item">
-            <a class="nav-link" href="{{ route('doi-percentage.index') }}">
-                <span class="menu-title">DOI Percentage</span>
-                <i class=" icon-graph menu-icon"></i>
-            </a>
-        </li> --}}
-</ul>
+    </ul>
 </nav>
