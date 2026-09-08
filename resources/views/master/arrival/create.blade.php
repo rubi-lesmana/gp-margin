@@ -24,15 +24,28 @@
                                     required>
                             </div>
 
-                            {{-- Status --}}
-                            <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <select class="form-control" id="status" name="status" required>
-                                    <option value="">Select Status</option>
-                                    <option value="Local">Local</option>
-                                    <option value="Import">Import</option>
-                                </select>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <option value="">Status</option>
+                                        @foreach ($arrivalStatuses as $code => $description)
+                                            <option value="{{ $code }}">{{ $code }}</option>                                            
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Currency</label>
+                                    <select class="form-select" id="currency" name="currency" required>
+                                        <option value="">Currency</option>
+                                        @foreach ($currency as $id_currency => $description)                                            
+                                        <option value="{{ $id_currency }}">{{ $id_currency }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+                            {{-- Status --}}
 
                             {{-- Manual Reference --}}
                             <div class="mb-3">
@@ -49,31 +62,30 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Details</h4>
-                            {{-- Item --}}
-                            <div class="mb-3">
-                                <label class="form-label">Item</label>
-                                <select class="form-control" id="item-id" name="item_id" required>
-                                    <option value="">Select Item</option>
-                                    @foreach ($item as $key => $title)
-                                        <option value="{{ $key }}" data-description="{{ $title }}"
-                                            data-unit="{{ $itemUnits[$key] ?? '' }}">
-                                            {{ $key }} - {{ $title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- Description --}}
-                            <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <input class="form-control" id="description-item" name="description" readonly>
-                                </input>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-5 mb-3 mb-md-0">
+                                    <label class="form-label">Item</label>
+                                    <select class="form-select" id="item-id" name="item_id" required>
+                                        <option value="">Select Item</option>
+                                        @foreach ($item as $key => $title)
+                                            <option value="{{ $key }}" data-description="{{ $title }}"
+                                                data-unit="{{ $itemUnits[$key] ?? '' }}">
+                                                {{ $key }} - {{ $title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    <label class="form-label">Description</label>
+                                    <input class="form-control" id="description-item" name="description" readonly>
+                                    </input>
+                                </div>
                             </div>
 
                             {{-- Quantity --}}
                             {{-- <div class="mb-3"> --}}
                             <div class="row mt-3">
-                                <div class="col-md-8">
+                                <div class="col-md-8 mb-3 mb-md-0">
                                     <label class="form-label">Quantity</label>
                                     {{-- display: tampil format titik --}}
                                     <input type="text" class="form-control" id="quantity-display" placeholder="0">
@@ -90,7 +102,7 @@
 
                             {{-- CostPrice & Net Amount --}}
                             <div class="row mt-3">
-                                <div class="col-md-5">
+                                <div class="col-md-5 mb-3 mb-md-0">
                                     <label class="form-label">Unit Price</label>
                                     {{-- display: tampil format titik --}}
                                     <input type="text" class="form-control" id="unit-price-display" placeholder="0">
@@ -106,8 +118,8 @@
                                     <input type="hidden" id="net-amount" name="net_amount">
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-start mt-4">
-                                <button type="submit" class="btn btn-primary me-3">Submit</button>
+                            <div class="d-flex flex-column flex-sm-row justify-content-start gap-3 mt-4">
+                                <button type="submit" class="btn btn-primary">Submit</button>
                                 <a href="{{ route('arrival-inventory.index') }}" class="btn btn-danger">Cancel</a>
                             </div>
                         </div>
@@ -185,10 +197,26 @@
                 $(this).val(formatted);
                 hitungNetAmount();
             });
-
-            $('#status').select2({
-                width: '100%',
-            });
         });
+
+        // Fungsi untuk menampilkan default currency
+        document.addEventListener('DOMContentLoaded', function () {
+        // Mapping status code => default_currency_id dari controller
+        const statusDefaultCurrency = @json($defaultCurrency);
+
+        const statusSelect = document.getElementById('status');
+        const currencySelect = document.getElementById('currency');
+
+        statusSelect.addEventListener('change', function () {
+            const selectedCode = this.value;
+            const defaultCurrencyValue  = statusDefaultCurrency[selectedCode];
+
+            if (defaultCurrencyValue) {
+                currencySelect.value = defaultCurrencyValue;
+            } else {
+                currencySelect.value = '';
+            }
+        });
+    });
     </script>
 @endpush

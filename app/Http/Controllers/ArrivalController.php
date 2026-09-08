@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Arrival;
+use App\Models\ArrivalStatus;
+use App\Models\Currency;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -33,8 +35,15 @@ class ArrivalController extends Controller
         $itemUnits = $items->mapWithKeys(function ($item) {
             return [$item->item_id => $item->unit->unit_id ?? ''];
         })->toArray();
+
+        // Dropdown select untuk status arrival
+        $arrivalStatuses = ArrivalStatus::pluck('description', 'code')->toArray();
+        // Dropdown Currency
+        $currency = Currency::pluck('description', 'id_currency')->toArray();
+        // Status Default Currency
+        $defaultCurrency = ArrivalStatus::pluck('default_currency_id', 'code')->toArray();
         
-        return view('master.arrival.create', compact('item', 'itemUnits'));
+        return view('master.arrival.create', compact('item', 'itemUnits', 'arrivalStatuses', 'currency', 'defaultCurrency'));
     }
 
     /**
