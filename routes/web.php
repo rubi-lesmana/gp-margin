@@ -3,7 +3,6 @@
 use App\Http\Controllers\ArrivalController;
 use App\Http\Controllers\ArrivalStatusController;
 use App\Http\Controllers\BaseMarginController;
-use App\Http\Controllers\CalculatorControler;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CostPriceController;
 use App\Http\Controllers\CustomerController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\SellingPriceController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UnitConversionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard', DashboardController::class);
     Route::resource('/items', ItemController::class);
     Route::resource('/units', UnitController::class);
+    Route::resource('/unit-conversions', UnitConversionController::class);
     Route::resource('/pareto', ParetoController::class);
     Route::resource('/item-history', ItemHistoryController::class);
     Route::resource('/customers', CustomerController::class);

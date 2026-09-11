@@ -80,12 +80,12 @@
             </li>
 
             {{-- Item History --}}
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="{{ route('item-history.index') }}">
                     <span class="menu-title">Product History</span>
                     <i class="icon-social-dropbox  menu-icon"></i>
                 </a>
-            </li>
+            </li> --}}
             {{-- Customer --}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('customers.index') }}">
@@ -144,6 +144,9 @@
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('units.index') }}">Unit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('unit-conversions.index') }}">Unit Conversion</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('currencies.index') }}">Currency</a>
