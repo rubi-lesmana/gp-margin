@@ -22,4 +22,9 @@ class UnitConversion extends Model
     {
         return $this->hasMany(UnitConversionDetail::class, 'unit_conversion_id', 'id_unit_conversion');
     }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'unit_conversion_id', 'id_unit_conversion');
+    }
 }

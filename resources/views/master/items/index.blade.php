@@ -14,11 +14,7 @@
                     <div class="col">
                         <h4 class="card-title">List Data Item</h4>
                     </div>
-                    <div class="col d-flex justify-content-end gap-2 p-2">
-                        {{-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#add_item">
-                            Add Data<i class=" mdi mdi-plus-box ms-1"></i>
-                        </button> --}}
+                    <div class="col-auto">
                         <a href="{{ route('items.create') }}" class="btn btn-primary btn-sm">
                             Add Data<i class="mdi mdi-plus-box ms-1"></i>
                         </a>
@@ -43,17 +39,20 @@
                                         <th>No #</th>
                                         <th>Item ID</th>
                                         <th>Description</th>
+                                        <th>Inventory</th>
+                                        <th>Conversion</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->item_id }}</td>
-                                            <td>{{ $item->description }}</td>
-                                            {{-- <td>{{ $data->total_course }}</td> --}}
-                                            <td>
+                                            <td data-label="No #">{{ $loop->iteration }}</td>
+                                            <td data-label="Item ID">{{ $item->item_id }}</td>
+                                            <td data-label="Description" class="text-wrap">{{ $item->description }}</td>
+                                            <td data-label="Inventory">{{ $item->unit->description }}</td>
+                                            <td data-label="Conversion">{{ $item->unit_conversion->description ?? '-' }}</td>
+                                            <td data-label="Action"> 
                                                 <span class="d-none">Edit</span>
 
                                                 <a type="button" href="{{ route('items.edit', $item->item_id) }}"
@@ -71,10 +70,11 @@
                                                     <i
                                                         class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
-                                                <a type="button"
+
+                                                <span class="d-none">Show</span>
+                                                <a type="button" href="{{ route('items.show', $item->item_id) }}" 
                                                     class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#show_item{{ $item->safe_item_id }}" title="Show">
+                                                    title="Show">
                                                     <i
                                                         class="icon-eye position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
@@ -85,9 +85,7 @@
                             </table>
                         </div>
                         {{-- Modal View Add Data --}}
-                        {{-- @include('master.items.update') --}}
                         @include('master.items.delete')
-                        @include('master.items.show')
                         {{-- End Modal View Add Data --}}
 
 

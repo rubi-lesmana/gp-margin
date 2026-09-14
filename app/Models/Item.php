@@ -15,6 +15,7 @@ class Item extends Model
         'description',
         'base_margin_id',
         'unit_id',
+        'unit_conversion_id',
         'pareto_id',
     ];
 
@@ -27,6 +28,12 @@ class Item extends Model
     public function unit()
     {
         return $this->hasOne(Unit::class, 'unit_id', 'unit_id');
+    }
+
+    // Relasi ke Tabel Unit Conversion
+    public function unit_conversion()
+    {
+        return $this->hasOne(UnitConversion::class, 'id_unit_conversion', 'unit_conversion_id');
     }
 
     // Relasi ke Tabel Pareto

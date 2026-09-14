@@ -1,70 +1,77 @@
-@foreach ($data as $item)
-    <div class="modal fade" id="show_item{{ $item->safe_item_id }}" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel-2" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel-2">View Item</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+@extends('partials.main')
+@section('content')
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <i class="mdi mdi-call-missed"></i>
+                </span> Item Detail
+            </h3>
+        </div>
+
+        <div class="row">
+            {{-- Kolom 1 Header --}}
+            <div class="col-12 col-md-5 mb-md-0 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Item Info</h4>
+
+                        <div class="mb-3">
+                            <label class="form-label">ID Item</label>
+                            <input class="form-control" value="{{ $item->item_id }}" readonly>
+                        </div>
+
+                        <div class="mt-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" rows="3" readonly>{{ $item->description }}</textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">View Item: {{ $item->description }}</h4>
-                            <p class="card-description">Detailed information about this resource.</p>
+            </div>
 
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                        href="#gpmargin{{ $item->item_id }}" role="tab" aria-controls="home"
-                                        aria-selected="true">General Info</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="basemargin-tab" data-bs-toggle="tab"
-                                        href="#basemargin{{ $item->item_id }}" role="tab" aria-controls="profile"
-                                        aria-selected="false">Base Margin</a>
-                                </li>
-                            </ul>
+            {{-- Kolom 2 Details --}}
+            <div class="col-12 col-md-7 mb-md-0 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="card-title mb-0">Setup</h6>
+                        </div>
 
-                            <div class="tab-content">
-                                {{-- Tab Data Item (Read-Only) --}}
-                                <div class="tab-pane fade show active m-3" id="gpmargin{{ $item->item_id }}"
-                                    role="tabpanel" aria-labelledby="home-tab">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Item ID</label>
-                                        <p class="form-control-plaintext border-bottom">{{ $item->item_id }}</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="fw-bold">Description</label>
-                                        <p class="form-control-plaintext border-bottom">{{ $item->description }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {{-- Tab Base Margin (Read-Only) --}}
-                                <div class="tab-pane fade m-3" id="basemargin{{ $item->item_id }}" role="tabpanel"
-                                    aria-labelledby="basemargin-tab">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Applied Base Margin</label>
-                                        <p class="form-control-plaintext border-bottom">
-                                            {{-- Menampilkan label dari relasi, bukan hanya ID --}}
-                                            {{ $item->base_margin->margin_percentage_format ?? 'N/A' }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="m-3">
-                                    {{-- Tombol untuk kembali ke index --}}
-                                    <a href="{{ route('items.index') }}" class="btn btn-light border">Back to List</a>
-                                </div>
+                        <div class="row mt-3 mb-3 align-items-center">
+                            <label class="col-sm-3 form-label">Base Margin</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" value="{{ $item->base_margin->margin_percentage ?? '-' }}" readonly>
+                                {{-- sesuaikan 'margin_percentage' dengan nama kolom asli di tabel base_margin --}}
                             </div>
+                        </div>
+
+                        <div class="row mt-3 mb-3 align-items-center">
+                            <label class="col-sm-3 form-label">Unit Inventory</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" value="{{ $item->unit->description ?? '-' }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 mb-3 align-items-center">
+                            <label class="col-sm-3 form-label">Unit Conversion</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" value="{{ $item->unit_conversion->description ?? '-' }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 mb-3 align-items-center">
+                            <label class="col-sm-3 form-label">Pareto</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" value="{{ $item->pareto->description ?? '-' }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row gap-2 mt-3">
+                            <a href="{{ route('items.index') }}" class="btn btn-secondary">Back</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{-- End Modal --}}
-@endforeach
+@endsection

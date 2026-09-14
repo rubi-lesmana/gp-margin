@@ -10,20 +10,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="forms-sample" action="{{ route('items.destroy', $item->item_id) }}" method="POST">
-                        @method('DELETE')
-                        @csrf
-
-                        @if ($item->course_count > 0)
-                            <p>Item with name <b>{{ $item->description }}</b> cannot be deleted because it has
-                                associated.</p>
+                    @if ($item->arrivals_count > 0)
+                        <div class="alert alert-danger mb-3">
+                            <i class="mdi mdi-alert-circle-outline me-1"></i>
+                            This Item cannot be deleted because it has already been used in
+                            Transaction
+                        </div>
+                        <div class="text-end">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        @else
-                            <p>Are you sure want to delete item with name <b>{{ $item->description }}</b> ? </p>
-                            <button type="submit" class="btn btn-gradient-primary me-2">Delete</button>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                        @endif
-                    </form>
+                        </div>
+                    @else
+                        <form class="forms-sample" action="{{ route('items.destroy', $item->item_id) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+
+                            @if ($item->course_count > 0)
+                                <p>Item with name <b>{{ $item->description }}</b> cannot be deleted because it has
+                                    associated.</p>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            @else
+                                <p>Are you sure want to delete item with name <b>{{ $item->description }}</b> ? </p>
+                                <button type="submit" class="btn btn-gradient-primary me-2">Delete</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            @endif
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
