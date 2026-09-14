@@ -14,7 +14,7 @@
                     <div class="col">
                         <h4 class="card-title">List Data Top</h4>
                     </div>
-                    <div class="col d-flex justify-content-end gap-2 p-2">
+                    <div class="col-auto">
                         <a type="button" href="{{ route('term-of-payment.create') }}" class="btn btn-primary btn-sm"
                             title="Add Data">
                             Add Data<i class=" mdi mdi-plus-box ms-1"></i>

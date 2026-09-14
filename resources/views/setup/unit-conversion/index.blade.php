@@ -14,7 +14,7 @@
                     <div class="col">
                         <h4 class="card-title">List Data Unit Conversion</h4>
                     </div>
-                    <div class="col d-flex justify-content-end gap-2 p-2">
+                    <div class="col-auto">
                         <a type="button" href="{{ route('unit-conversions.create') }}" class="btn btn-gradient-primary btn-sm">
                             Add Data<i class=" mdi mdi-plus-box ms-1"></i>
                         </a>

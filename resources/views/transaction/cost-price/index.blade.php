@@ -14,7 +14,7 @@
                     <div class="col">
                         <h4 class="card-title">List Data Cost Price </h4>
                     </div>
-                    <div class="col d-flex justify-content-end gap-2 p-2">
+                    <div class="col-auto">
                         <a href="{{ route('cost-price.create') }}" class="btn btn-primary btn-sm">
                             Add Data<i class=" mdi mdi-plus-box ms-1"></i>
                         </a>
