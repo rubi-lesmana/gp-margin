@@ -28,7 +28,7 @@ class ArrivalController extends Controller
             ->withCount('cost_price')
             ->orderBy('id', 'desc')
             ->get();
-        return view('master.arrival.index', compact('data'));
+        return view('transaction.arrival.index', compact('data'));
     }
 
     /**
@@ -49,7 +49,7 @@ class ArrivalController extends Controller
         // Status Default Currency
         $defaultCurrency = ArrivalStatus::pluck('default_currency_id', 'code')->toArray();
         
-        return view('master.arrival.create', compact('item', 'arrivalStatuses', 'currency', 'defaultCurrency'));
+        return view('transaction.arrival.create', compact('item', 'arrivalStatuses', 'currency', 'defaultCurrency'));
     }
 
     /**
@@ -95,7 +95,7 @@ class ArrivalController extends Controller
         $currency        = Currency::pluck('description', 'id_currency')->toArray();
         $defaultCurrency = ArrivalStatus::pluck('default_currency_id', 'code')->toArray();
 
-        return view('master.arrival.update', compact(
+        return view('transaction.arrival.update', compact(
             'arrival', 'item', 'unitOptions', 'arrivalStatuses', 'currency', 'defaultCurrency'
         ));
     }

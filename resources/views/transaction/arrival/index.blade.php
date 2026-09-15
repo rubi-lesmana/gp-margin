@@ -88,8 +88,8 @@
                             </table>
                         </div>
                         {{-- Modal View Add Data --}}
-                        @include('master.arrival.show')
-                        @include('master.arrival.delete')
+                        @include('transaction.arrival.show')
+                        @include('transaction.arrival.delete')
                         {{-- End Modal View Add Data --}}
                     </div>
                 </div>
