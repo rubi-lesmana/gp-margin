@@ -69,9 +69,9 @@
                                                     class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#delete_arrival{{ $arrival->id }}" title="Delete">
-                                                    <i
-                                                        class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                    <i class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
+
                                                 <span class="d-none">Show</span>
 
                                                 <a type="button"
@@ -97,3 +97,17 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function showSwal(itemDescription) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Dapat Dihapus',
+                html: `Inventory Arrival dengan item <b>${itemDescription}</b> tidak dapat dihapus karena sudah digunakan pada transaksi <b>Cost Price</b>.`,
+                confirmButtonText: 'Mengerti',
+                confirmButtonColor: '#3085d6',
+            });
+        }
+    </script>
+@endpush

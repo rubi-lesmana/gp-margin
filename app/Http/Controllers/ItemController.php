@@ -97,4 +97,23 @@ class ItemController extends Controller
         Alert::success('Success', 'Item has been deleted!');
         return redirect()->route('items.index');
     }
+
+    public function unitConversionDetails(Item $item)
+    {
+        $item->load('unit_conversion.details');
+
+        if (!$item->unit_conversion) {
+            return response()->json([]);
+        }
+
+        $details = $item->unit_conversion->details->map(function ($d) {
+            return [
+            'id'               => $d->unit->unit_id ?? $d->unit_id, // "PAIL", "Zak" ← ini yang dikirim ke <option value>
+            'label'            => $d->unit->description ?? $d->unit_id, // "Pail", "Zak" ← tampilan dropdown
+            'conversion_value' => $d->conversion_value,
+        ];
+        });
+
+        return response()->json($details);
+    }
 }

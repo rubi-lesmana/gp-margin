@@ -27,7 +27,7 @@
                             </div>
 
                             {{-- Status --}}
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label class="form-label">Status</label>
                                 <select class="form-control" id="status" name="status" required>
                                     <option value="">Select Status</option>
@@ -36,6 +36,27 @@
                                     <option value="Import"
                                         {{ old('status', $arrival->status) == 'Import' ? 'selected' : '' }}>Import</option>
                                 </select>
+                            </div> --}}
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select select2" id="status" name="status" required>
+                                        <option value="">Status</option>
+                                        @foreach ($arrivalStatuses as $code => $description)
+                                            <option value="{{ $code }}" {{ old('status', $arrival->status) == $code ? 'selected' : '' }}>{{ $code }}</option>                                            
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Currency</label>
+                                    <select class="form-select select2" id="currency" name="currency_id" required>
+                                        <option value="">Currency</option>
+                                        @foreach ($currency as $id_currency => $description)                                            
+                                        <option value="{{ $id_currency }}" {{ old('currency_id', $arrival->currency_id) == $id_currency ? 'selected' : '' }}>{{ $id_currency }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             {{-- Manual Reference --}}
@@ -53,43 +74,46 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Details</h4>
-
-                            {{-- Item --}}
-                            <div class="mb-3">
-                                <label class="form-label">Item</label>
-                                <select class="form-control" id="item-id" name="item_id" required>
-                                    <option value="">Select Item</option>
-                                    @foreach ($item as $key => $title)
-                                        <option value="{{ $key }}" data-description="{{ $title }}"
-                                            data-unit="{{ $itemUnits[$key] ?? '' }}"
-                                            {{ old('item_id', $arrival->item_id) == $key ? 'selected' : '' }}>
-                                            {{ $key }} - {{ $title }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- Description --}}
-                            <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <input class="form-control" id="description-item" name="description" readonly
-                                    value="{{ old('description', $arrival->item->description ?? '') }}">
+                            
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-5 mb-3 mb-md-0">
+                                    <label class="form-label">Item</label>
+                                    <select class="form-select" id="item-id" disabled>
+                                        <option value="">Select Item</option>
+                                        @foreach ($item as $key => $title)
+                                            <option value="{{ $key }}" data-description="{{ $title }}"
+                                                {{ $arrival->item_id == $key ? 'selected' : '' }}>
+                                                {{ $key }} - {{ $title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    {{-- item_id tidak diubah, tapi tetap perlu dikirim kalau controller butuh referensi (opsional) --}}
+                                    <input type="hidden" name="item_id" value="{{ $arrival->item_id }}">
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    <label class="form-label">Description</label>
+                                    <input class="form-control" id="description-item" value="{{ $arrival->item->description }}" readonly>
+                                </div>
                             </div>
 
                             {{-- Quantity --}}
                             <div class="row mt-3">
-                                <div class="col-md-8">
+                                <div class="col-md-8 mb-3 mb-md-0">
                                     <label class="form-label">Quantity</label>
-                                    {{-- display: tampil format titik --}}
-                                    <input type="text" class="form-control" id="quantity-display" placeholder="0">
-                                    {{-- hidden: nilai asli untuk dikirim ke server --}}
-                                    <input type="hidden" id="quantity" name="quantity"
-                                        value="{{ old('quantity', $arrival->quantity) }}">
+                                    <input type="text" class="form-control" id="quantity-display" value="{{ number_format($arrival->quantity, 0, ',', '.') }}">
+                                    <input type="hidden" id="quantity" name="quantity" value="{{ $arrival->quantity }}">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Unit</label>
-                                    <input type="text" class="form-control" id="unit_Id" name="unit_id" readonly
-                                        value="{{ old('unit_id', $arrival->item->unit->unit_id ?? '') }}">
+                                    <select class="form-select select2" id="unit-id" name="unit_id" required>
+                                        <option value="">Select Unit</option>
+                                        @foreach ($unitOptions as $opt)
+                                            <option value="{{ $opt['id'] }}" {{ $arrival->unit_id == $opt['id'] ? 'selected' : '' }}>
+                                                {{ $opt['label'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('unit_id') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
                             </div>
 

@@ -42,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('/market-price', MarketPriceController::class);
     Route::resource('/market-price-detail', MarketPriceDetailController::class);
     Route::resource('/arrival-inventory', ArrivalController::class);
+    // Endpoint khusus untuk ambil unit conversion detail berdasarkan item
+    Route::get('/items/{item}/unit-conversion-details', [ItemController::class, 'unitConversionDetails'])
+    ->name('items.unit-conversion-details');
     Route::resource('/arrival-statuses', ArrivalStatusController::class);
     Route::resource('/cost-price', CostPriceController::class);
     Route::resource('/doi-percentage', DoiPercentageController::class);

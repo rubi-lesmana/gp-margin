@@ -14,15 +14,16 @@
                         @method('DELETE')
                         @csrf
 
-                        {{-- @if ($arrival->course_count > 0)
-                            <p>Market Price with name <b>{{ $arrival->description }}</b> cannot be deleted because it has
-                                associated.</p>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        @else --}}
+                        @if ($arrival->cost_price_count > 0)
+                            <h3 class="text-danger m-3">Warning !</h3>
+                            <p class="alert">Inventory Arrival <b>{{ $arrival->id }}</b> cannot be deleted because it has
+                                associated Cost Prices.</p>
+                            <button type="button" class="btn btn-light m-3" data-bs-dismiss="modal">Close</button>
+                        @else
                             <p>Are you sure want to delete Inventory Arrival with name <b>{{ $arrival->item->description }}</b> ? </p>
                             <button type="submit" class="btn btn-gradient-primary me-2">Delete</button>
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                        {{-- @endif --}}
+                        @endif
                     </form>
                 </div>
             </div>

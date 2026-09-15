@@ -15,6 +15,7 @@ class Arrival extends Model
         'id',
         'item_id',
         'status',
+        'currency_id',
         'quantity',
         'date',
         'keterangan',
@@ -31,6 +32,11 @@ class Arrival extends Model
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(UnitConversionDetail::class, 'unit_id', 'unit_id');
     }
 
     public function cost_price()

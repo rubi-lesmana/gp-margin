@@ -27,7 +27,7 @@
                             <div class="row mb-3">
                                 <div class="col-12 col-md-6 mb-3 mb-md-0">
                                     <label class="form-label">Status</label>
-                                    <select class="form-select" id="status" name="status" required>
+                                    <select class="form-select select2" id="status" name="status" required>
                                         <option value="">Status</option>
                                         @foreach ($arrivalStatuses as $code => $description)
                                             <option value="{{ $code }}">{{ $code }}</option>                                            
@@ -37,7 +37,7 @@
 
                                 <div class="col-12 col-md-6">
                                     <label class="form-label">Currency</label>
-                                    <select class="form-select" id="currency" name="currency" required>
+                                    <select class="form-select select2" id="currency" name="currency_id" required>
                                         <option value="">Currency</option>
                                         @foreach ($currency as $id_currency => $description)                                            
                                         <option value="{{ $id_currency }}">{{ $id_currency }}</option>
@@ -69,11 +69,12 @@
                                         <option value="">Select Item</option>
                                         @foreach ($item as $key => $title)
                                             <option value="{{ $key }}" data-description="{{ $title }}"
-                                                data-unit="{{ $itemUnits[$key] ?? '' }}">
+                                                {{ old('item_id') == $key ? 'selected' : '' }}>
                                                 {{ $key }} - {{ $title }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('item_id') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
                                 <div class="col-12 col-md-7">
                                     <label class="form-label">Description</label>
@@ -94,8 +95,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Unit</label>
-                                    <input type="text" class="form-control" id="unit_Id" name="unit_id" readonly>
-                                    </input>
+                                    <select class="form-select select2" id="unit-id" name="unit_id" required>
+                                        <option value="">Select Unit</option>
+                                    </select>
+                                    @error('unit_id') <div class="text-danger small">{{ $message }}</div> @enderror
                                 </div>
                             </div>
                             {{-- </div> --}}
@@ -131,30 +134,34 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('js/item-unit-conversion.js') }}"></script>
     <script>
         $(function() {
             $('#item-id').select2({
                 width: '100%',
                 templateResult: function(data) {
-                    // tampilan DI dropdown list -> tetap "itemid - description"
                     return data.text;
                 },
                 templateSelection: function(data) {
-                    // tampilan SETELAH dipilih (kotak select) -> hanya itemid
-                    return data.id || data.text; // untuk placeholder
+                    return data.id || data.text;
                 }
             });
 
-            // isi otomatis input description & unit
-            $('#item-id').on('change', function() {
-                // let description = $(this).find(':selected').attr('data-description');
-                // $('#description-item').val(description ?? '');
-                let selected = $(this).find(':selected');
-                let description = selected.attr('data-description');
-                let unit = selected.attr('data-unit');
+            // fetch & populate unit setiap kali item dipilih (logic dari module reusable)
+            ItemUnitConversion.bindItemChange({
+                itemSelector: '#item-id',
+                unitSelector: '#unit-id',
+                descriptionSelector: '#description-item'
+            });
 
-                $('#description-item').val(description ?? '');
-                $('#unit_Id').val(unit ?? '');
+            // ==== Auto isi default currency berdasarkan status (Select2-safe) ====
+            const statusDefaultCurrency = @json($defaultCurrency);
+
+            $('#status').on('change', function () {
+                const selectedCode = $(this).val();
+                const defaultCurrencyValue = statusDefaultCurrency[selectedCode];
+
+                $('#currency').val(defaultCurrencyValue ?? '').trigger('change');
             });
 
             // format angka dengan pemisah titik (1.000.000)
@@ -163,12 +170,10 @@
                 return new Intl.NumberFormat('id-ID').format(value);
             }
 
-            // ambil angka murni dari string berformat (hapus titik pemisah)
             function parseNumber(value) {
                 return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
             }
 
-            // hitung & update net amount
             function hitungNetAmount() {
                 let quantity = parseNumber($('#quantity-display').val());
                 let unitPrice = parseNumber($('#unit-price-display').val());
@@ -176,47 +181,24 @@
 
                 $('#net-amount-display').val(netAmount > 0 ? formatNumber(netAmount) : '');
 
-                // simpan nilai asli ke hidden input untuk dikirim ke server
                 $('#quantity').val(quantity);
                 $('#unit-price').val(unitPrice);
                 $('#net-amount').val(netAmount > 0 ? netAmount : '');
             }
 
-            // format saat user mengetik di quantity
             $('#quantity-display').on('input', function() {
-                let raw = $(this).val().replace(/\D/g, ''); // hanya angka
+                let raw = $(this).val().replace(/\D/g, '');
                 let formatted = raw ? formatNumber(raw) : '';
                 $(this).val(formatted);
                 hitungNetAmount();
             });
 
-            // format saat user mengetik di unit price
             $('#unit-price-display').on('input', function() {
-                let raw = $(this).val().replace(/[^\d,]/g, ''); // angka & koma
+                let raw = $(this).val().replace(/[^\d,]/g, '');
                 let formatted = raw ? formatNumber(parseNumber(raw)) : '';
                 $(this).val(formatted);
                 hitungNetAmount();
             });
         });
-
-        // Fungsi untuk menampilkan default currency
-        document.addEventListener('DOMContentLoaded', function () {
-        // Mapping status code => default_currency_id dari controller
-        const statusDefaultCurrency = @json($defaultCurrency);
-
-        const statusSelect = document.getElementById('status');
-        const currencySelect = document.getElementById('currency');
-
-        statusSelect.addEventListener('change', function () {
-            const selectedCode = this.value;
-            const defaultCurrencyValue  = statusDefaultCurrency[selectedCode];
-
-            if (defaultCurrencyValue) {
-                currencySelect.value = defaultCurrencyValue;
-            } else {
-                currencySelect.value = '';
-            }
-        });
-    });
     </script>
 @endpush
