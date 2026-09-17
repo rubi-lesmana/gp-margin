@@ -14,7 +14,7 @@
             <div class="row">
 
                 {{-- Kolom 1 Header --}}
-                <div class="col-md-6">
+                <div class="col-md-5 mb-3 mb-md-0">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Form Edit</h4>
@@ -45,9 +45,9 @@
                                     <input class="form-control" type="text" id="price_display" placeholder="0"
                                         inputmode="numeric" autocomplete="off"
                                         value="{{ number_format($costPrice->cost_price, 0, '.', ',') }}">
-                                    <span class="input-group-text px-3" id="unit_id-display">
+                                    {{-- <span class="input-group-text px-3" id="unit_id-display">
                                         <span class="text-muted">{{ $costPrice->arrival->item->unit_id ?? 'unit' }}</span>
-                                    </span>
+                                    </span> --}}
                                 </div>
                                 <input type="hidden" name="cost_price" id="price_real"
                                     value="{{ $costPrice->cost_price }}">
@@ -78,8 +78,8 @@
                                 <textarea class="form-control" type="text" name="manual_reference" placeholder="Manual Reference" rows="3">{{ $costPrice->manual_reference }}</textarea>
                             </div>
 
-                            <div class="d-flex justify-content-start mt-4">
-                                <button type="submit" class="btn btn-primary me-3">Update</button>
+                            <div class="d-flex flex-column flex-sm-row justify-content-start gap-3 mt-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
                                 <a href="{{ route('cost-price.index') }}" class="btn btn-danger">Cancel</a>
                             </div>
                         </div>
@@ -87,16 +87,24 @@
                 </div>
 
                 {{-- Kolom 2 Details --}}
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Details</h4>
                             {{-- Tanggal --}}
-                            <div class="mb-3">
-                                <label class="form-label">Tanggal</label>
-                                <input class="form-control" type="date" id="date_display" value="{{ $costPrice->date }}">
-                                <input type="hidden" id="date" name="date" value="{{ $costPrice->date }}">
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <label class="form-label">Date</label>
+                                    <input class="form-control" type="date" id="date_display" value="{{ $costPrice->date }}" readonly>
+                                    <input type="hidden" id="date" name="date" value="{{ $costPrice->date }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Status</label>
+                                    <input class="form-control" type="text" id="status_display" value="{{ $costPrice->arrival->status ?? '' }}" readonly>
+                                    <input type="hidden" id="status" name="status" value="{{ $costPrice->arrival->status ?? '' }}">
+                                </div>
                             </div>
+                            
                             {{-- Item --}}
                             <div class="row mt-3">
                                 <div class="col-md-5">

@@ -73,7 +73,7 @@
                                                         class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
 
-                                                <span class="d-none">Delete</span>
+                                                {{-- <span class="d-none">Delete</span>
                                                 <a type="button"
                                                     class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
                                                     data-bs-toggle="modal"
@@ -81,14 +81,31 @@
                                                     title="Delete">
                                                     <i
                                                         class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
-                                                </a>
+                                                </a> --}}
+                                                <span class="d-none">Delete</span>
+
+                                                @if($cost_price->selling_prices_count > 0)
+                                                    <a type="button"
+                                                        class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
+                                                        href="{{ route('cost-price.delete-check', $cost_price->id_cost_price) }}"
+                                                        title="Delete">
+                                                        <i class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                    </a>
+                                                @else
+                                                    <a type="button"
+                                                        class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#delete_cost_price{{ $cost_price->id_cost_price }}"
+                                                        title="Delete">
+                                                        <i class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                    </a>
+                                                @endif
 
                                                 <span class="d-none">Show</span>
 
                                                 <a type="button"
                                                     class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#show_cost_price{{ $cost_price->id_cost_price }}"
+                                                    href="{{ route('cost-price.show', $cost_price->id_cost_price) }}"
                                                     title="Show">
                                                     <i
                                                         class="mdi mdi-eye-outline position-absolute top-50 start-50 translate-middle"></i>
@@ -100,7 +117,6 @@
                             </table>
                         </div>
                         {{-- Modal View Add Data --}}
-                        @include('transaction.cost-price.show')
                         @include('transaction.cost-price.delete')
                         {{-- End Modal View Add Data --}}
                     </div>

@@ -13,7 +13,7 @@
             <div class="row">
 
                 {{-- Kolom 1 Header --}}
-                <div class="col-md-6">
+                <div class="col-md-5 mb-3 mb-md-0">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Form Create</h4>
@@ -42,32 +42,11 @@
                                     <span class="input-group-text">Rp</span>
                                     <input class="form-control currency-input" type="text" name="cost_price"
                                         placeholder="0" inputmode="numeric" autocomplete="off">
-                                    <span class="input-group-text px-3" id="unit_id-display">
+                                    {{-- <span class="input-group-text px-3" id="unit_id-display">
                                         <span class="text-muted">unit</span>
-                                    </span>
+                                    </span> --}}
                                 </div>
-                                {{-- Hidden input tanpa value default, hanya terisi jika user mengetik --}}
-                                {{-- <input type="hidden" name="cost_price" id="price_real"> --}}
                             </div>
-
-                            {{-- <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const display = document.getElementById('price_display');
-                                    const real = document.getElementById('price_real');
-
-                                    display.addEventListener('input', function() {
-                                        let raw = this.value.replace(/[^\d]/g, '');
-                                        this.value = raw !== '' ? raw.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
-                                        real.value = raw; // kosong jika tidak ada input
-                                    });
-
-                                    display.addEventListener('keydown', function(e) {
-                                        const allowed = [8, 9, 35, 36, 37, 38, 39, 40, 46];
-                                        if (allowed.includes(e.keyCode)) return;
-                                        if (!/^\d$/.test(e.key)) e.preventDefault();
-                                    });
-                                });
-                            </script> --}}
 
                             {{-- Manual Reference --}}
                             <div class="mt-3">
@@ -75,8 +54,8 @@
                                 <textarea class="form-control" type="text" name="manual_reference" placeholder="Manual Reference" rows="3"></textarea>
                             </div>
 
-                            <div class="d-flex justify-content-start mt-4">
-                                <button type="submit" class="btn btn-primary me-3">Submit</button>
+                            <div class="d-flex flex-column flex-sm-row justify-content-start gap-3 mt-4">
+                                <button type="submit" class="btn btn-primary">Submit</button>
                                 <a href="{{ route('cost-price.index') }}" class="btn btn-danger">Cancel</a>
                             </div>
                         </div>
@@ -84,20 +63,27 @@
                 </div>
 
                 {{-- Kolom 2 Details --}}
-                <div class="col-md-6">
+                <div class="col-md-7">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Details</h4>
                             {{-- Status --}}
-                            <div class="mb-3">
-                                <label class="form-label">Tanggal</label>
-                                <input class="form-control" type="date" id="date_display">
-                                {{-- hidden: nilai asli untuk dikirim ke server --}}
-                                <input type="hidden" id="date" name="date">
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <label class="form-label">Date</label>
+                                    <input class="form-control" type="date" id="date_display" readonly>
+                                    <input type="hidden" id="date" name="date">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Status</label>
+                                    <input class="form-control" type="text" id="status_display" readonly>
+                                    <input type="hidden" id="status" name="status">
+                                </div>
                             </div>
+                            
                             {{-- Item --}}
                             <div class="row mt-3">
-                                <div class="col-md-5">
+                                <div class="col-md-5 mb-3 mb-md-0">
                                     <label class="form-label">Item ID</label>
                                     <input class="form-control" type="text" id="item_id_display" placeholder="Item ID"
                                         readonly>
@@ -153,6 +139,9 @@
 
                     setValue('date_display', date);
                     setValue('date', date);
+
+                    setValue('status', status);
+                    setValue('status_display', status);
 
                     setValue('item_id_display', itemId);
                     setValue('item_id', itemId);

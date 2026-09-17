@@ -10,17 +10,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @if ($cost_price->selling_prices_count > 0)
-                        <div class="alert alert-danger mb-3">
-                            <i class="mdi mdi-alert-circle-outline me-1"></i>
-                            This cost price cannot be deleted because it has already been used in
-                            selling price
-                            <b>{{ $cost_price->selling_prices->pluck('id_selling_price')->implode(', ') }}</b>
-                        </div>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    @else
                         <form class="forms-sample"
                             action="{{ route('cost-price.destroy', $cost_price->id_cost_price) }}" method="POST">
                             @method('DELETE')
@@ -32,7 +21,6 @@
                             <button type="submit" class="btn btn-gradient-primary me-2">Delete</button>
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                         </form>
-                    @endif
                 </div>
             </div>
         </div>

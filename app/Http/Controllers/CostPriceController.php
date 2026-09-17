@@ -69,6 +69,12 @@ class CostPriceController extends Controller
         return redirect()->route('cost-price.index');
     }
 
+    public function show(string $id)
+    {
+        $costPrice = CostPrice::with(['arrival.item', 'selling_prices'])->findOrFail($id);
+        return view('transaction.cost-price.show', compact('costPrice'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -135,5 +141,17 @@ class CostPriceController extends Controller
         
         Alert::success('Deleted','Cost price has been deleted successfully.');
         return redirect()->route('cost-price.index');
-   }
+    }
+
+    public function deleteCheck(string $id)
+    {
+        $costPrice = CostPrice::with('selling_prices')->findOrFail($id);
+
+        if ($costPrice->selling_prices()->exists()) {
+            $sellingPriceIds = $costPrice->selling_prices->pluck('id_selling_price')->implode(', ');
+            Alert::warning('Warning', "This cost price has been used in selling prices: {$sellingPriceIds} and cannot be deleted.");
+        }
+
+        return redirect()->route('cost-price.index');
+    }
 }

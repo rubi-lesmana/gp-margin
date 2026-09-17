@@ -44,9 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/arrival-inventory', ArrivalController::class);
     // Endpoint khusus untuk ambil unit conversion detail berdasarkan item
     Route::get('/items/{item}/unit-conversion-details', [ItemController::class, 'unitConversionDetails'])
-    ->name('items.unit-conversion-details');
+        ->name('items.unit-conversion-details');
     Route::resource('/arrival-statuses', ArrivalStatusController::class);
     Route::resource('/cost-price', CostPriceController::class);
+    Route::get('cost-price/{id}/delete-check', [CostPriceController::class, 'deleteCheck'])
+        ->name('cost-price.delete-check');
     Route::resource('/doi-percentage', DoiPercentageController::class);
     // Route::resource('/calculator', CalculatorControler::class);
     Route::resource('/term-of-payment', TermOfPaymentController::class);
