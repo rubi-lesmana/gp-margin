@@ -93,6 +93,13 @@
                     <i class="icon-user menu-icon"></i>
                 </a>
             </li>
+            {{-- Supplier --}}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('suppliers.index') }}">
+                    <span class="menu-title">Supplier</span>
+                    <i class="icon-people menu-icon"></i>
+                </a>
+            </li>
 
             {{-- Market Price --}}
             <li class="nav-item">

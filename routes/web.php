@@ -17,6 +17,7 @@ use App\Http\Controllers\ParetoController;
 use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\SalesProposalController;
 use App\Http\Controllers\SellingPriceController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TermOfPaymentController;
 use App\Http\Controllers\TgpMarginController;
 use App\Http\Controllers\UnitController;
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/base-margin', BaseMarginController::class);
     Route::resource('/target-gp-margin', TgpMarginController::class);
     Route::resource('/category', CategoryController::class);
+    Route::resource('/suppliers', SupplierController::class);
     Route::resource('/market-price', MarketPriceController::class);
     Route::resource('/market-price-detail', MarketPriceDetailController::class);
     Route::resource('/arrival-inventory', ArrivalController::class);
