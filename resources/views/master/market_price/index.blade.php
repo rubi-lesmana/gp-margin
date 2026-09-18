@@ -95,9 +95,9 @@
                                 </table>
                             </div>
 
-                            <div class="d-flex justify-content-end mt-5">
+                            {{-- <div class="d-flex justify-content-end mt-5">
                                 {{ $data->links('components.pagination') }}
-                            </div>
+                            </div> --}}
 
                             @include('master.market_price.create')
                             @include('master.market_price.update')

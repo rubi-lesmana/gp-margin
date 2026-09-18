@@ -92,4 +92,3 @@ Route::middleware('auth')->group(function () {
         Route::get('/ssp-info/{itemId}', [SalesProposalController::class, 'getSspInfo'])->name('ssp-info');
     });
 });
-    Route::get('/stock', [\App\Http\Controllers\StockController::class, 'getStock'])->name('stock.get');
