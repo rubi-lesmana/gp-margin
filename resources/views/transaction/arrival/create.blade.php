@@ -13,15 +13,26 @@
             <div class="row">
 
                 {{-- Kolom 1 Header --}}
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Form Create</h4>
                             {{-- Tanggal --}}
-                            <div class="mb-3">
-                                <label class="form-label">Date Arrival</label>
-                                <input type="date" min="0" class="form-control" id="date" name="date"
-                                    required>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6 md-md-0">
+                                    <label class="form-label">Date Arrival</label>
+                                    <input type="date" min="0" class="form-control" id="date" name="date"
+                                        required>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label">Supplier</label>
+                                    <select class="form-select select2" name="supplier_id" required>
+                                        <option value="">Select Supplier</option>
+                                        @foreach ($suppliers as $id_supplier => $supplier_name)
+                                            <option value="{{ $id_supplier }}">{{ $supplier_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="row mb-3">
@@ -30,7 +41,7 @@
                                     <select class="form-select select2" id="status" name="status" required>
                                         <option value="">Status</option>
                                         @foreach ($arrivalStatuses as $code => $description)
-                                            <option value="{{ $code }}">{{ $code }}</option>                                            
+                                            <option value="{{ $code }}">{{ $code }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -39,8 +50,8 @@
                                     <label class="form-label">Currency</label>
                                     <select class="form-select select2" id="currency" name="currency_id" required>
                                         <option value="">Currency</option>
-                                        @foreach ($currency as $id_currency => $description)                                            
-                                        <option value="{{ $id_currency }}">{{ $id_currency }}</option>
+                                        @foreach ($currency as $id_currency => $description)
+                                            <option value="{{ $id_currency }}">{{ $id_currency }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -50,15 +61,14 @@
                             {{-- Manual Reference --}}
                             <div class="mb-3">
                                 <label class="form-label">Manual Reference <code>(Optional)</code></label>
-                                <input class="form-control" name="keterangan" placeholder="Enter manual reference">
-                                </input>
+                                <textarea class="form-control" name="keterangan" rows="3" placeholder="Enter manual reference"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- Kolom 2 Details --}}
-                <div class="col-md-7">
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Details</h4>
@@ -74,7 +84,9 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('item_id') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    @error('item_id')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-12 col-md-7">
                                     <label class="form-label">Description</label>
@@ -98,7 +110,9 @@
                                     <select class="form-select select2" id="unit-id" name="unit_id" required>
                                         <option value="">Select Unit</option>
                                     </select>
-                                    @error('unit_id') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    @error('unit_id')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             {{-- </div> --}}
@@ -157,7 +171,7 @@
             // ==== Auto isi default currency berdasarkan status (Select2-safe) ====
             const statusDefaultCurrency = @json($defaultCurrency);
 
-            $('#status').on('change', function () {
+            $('#status').on('change', function() {
                 const selectedCode = $(this).val();
                 const defaultCurrencyValue = statusDefaultCurrency[selectedCode];
 

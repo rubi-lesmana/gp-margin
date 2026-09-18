@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArrivalRequest;
 use App\Models\Arrival;
 use App\Models\ArrivalStatus;
 use App\Models\Currency;
 use App\Models\Item;
+use App\Models\Supplier;
 use App\Services\ArrivalService;
-use App\Http\Requests\ArrivalRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ArrivalController extends Controller
@@ -44,12 +45,14 @@ class ArrivalController extends Controller
 
         // Dropdown select untuk status arrival
         $arrivalStatuses = ArrivalStatus::pluck('description', 'code')->toArray();
+        // Dropdown Supplier
+        $suppliers = Supplier::pluck('supplier_name', 'id_supplier')->toArray();
         // Dropdown Currency
         $currency = Currency::pluck('description', 'id_currency')->toArray();
         // Status Default Currency
         $defaultCurrency = ArrivalStatus::pluck('default_currency_id', 'code')->toArray();
         
-        return view('transaction.arrival.create', compact('item', 'arrivalStatuses', 'currency', 'defaultCurrency'));
+        return view('transaction.arrival.create', compact('item', 'arrivalStatuses', 'currency', 'defaultCurrency', 'suppliers'));
     }
 
     /**
@@ -68,7 +71,8 @@ class ArrivalController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $arrival = Arrival::with('item.unit_conversion.details.unit', 'supplier', 'currency')->findOrFail($id);
+        return view('transaction.arrival.show', compact('arrival'));
     }
 
     /**
@@ -76,7 +80,16 @@ class ArrivalController extends Controller
      */
     public function edit(string $id)
     {
-        $arrival = Arrival::with('item.unit_conversion.details.unit')->findOrFail($id);
+        $arrival = Arrival::with('item.unit_conversion.details.unit', 'cost_price', 'supplier', 'currency')
+                    ->withCount('cost_price')
+                    ->findOrFail($id);
+
+        // Pengecekan apakah arrival ini sudah memiliki cost price, jika sudah maka tidak bisa diedit
+        if ($arrival->cost_price_count > 0) {
+            $costPriceId = $arrival->cost_price->id_cost_price;
+            Alert::warning('Warning', "This Inventory Arrival has associated Cost Price : { $costPriceId } and cannot be edited.");
+            return redirect()->route('arrival-inventory.index');
+        }
 
         // Daftar item untuk dropdown (item_id tidak bisa diubah, tapi tetap ditampilkan)
         $items = Item::all();
@@ -92,11 +105,12 @@ class ArrivalController extends Controller
         }) ?? collect();
 
         $arrivalStatuses = ArrivalStatus::pluck('description', 'code')->toArray();
+        $suppliers       = Supplier::pluck('supplier_name', 'id_supplier')->toArray();
         $currency        = Currency::pluck('description', 'id_currency')->toArray();
         $defaultCurrency = ArrivalStatus::pluck('default_currency_id', 'code')->toArray();
 
         return view('transaction.arrival.update', compact(
-            'arrival', 'item', 'unitOptions', 'arrivalStatuses', 'currency', 'defaultCurrency'
+            'arrival', 'item', 'unitOptions', 'arrivalStatuses', 'currency', 'defaultCurrency', 'suppliers'
         ));
     }
 
@@ -108,7 +122,7 @@ class ArrivalController extends Controller
         $arrival = Arrival::findOrFail($id);
         $this->arrivalService->update($arrival, $request->validated());
         Alert::success('Success', 'Inventory Arrival updated successfully');
-        return redirect()->route('arrival-inventory.index');
+        return redirect()->route('transaction.arrival.index');
     }
 
     /**
@@ -125,6 +139,18 @@ class ArrivalController extends Controller
         $arrival->delete();
 
         Alert::success('Success', 'Inventory Arrival deleted successfully');
+        return redirect()->route('arrival-inventory.index');
+    }
+
+    public function deleteCheck(string $id)
+    {
+        $arrival = Arrival::withCount('cost_price')->findOrFail($id);
+
+        if ($arrival->cost_price()->exists()) {
+            $costPriceId = $arrival->cost_price->id_cost_price;
+            Alert::error('Error', "This Inventory Arrival has associated Cost Price : { $costPriceId } and cannot be deleted.");
+        }
+
         return redirect()->route('arrival-inventory.index');
     }
 }

@@ -29,6 +29,7 @@ class ArrivalService
             'id'            => $this->generateNextId(),
             'item_id'       => $validated['item_id'],
             'status'        => $validated['status'],
+            'supplier_id'   => $validated['supplier_id'],
             'currency_id'   => $validated['currency_id'],
             'quantity'      => $validated['quantity'],
             'date'          => $validated['date'],
@@ -46,6 +47,7 @@ class ArrivalService
     {
         $arrival->update([
             'status'        => $validated['status'],
+            'supplier_id'   => $validated['supplier_id'],
             'currency_id'   => $validated['currency_id'],
             'quantity'      => $validated['quantity'],
             'date'          => $validated['date'],

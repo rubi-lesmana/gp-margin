@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/items/{item}/unit-conversion-details', [ItemController::class, 'unitConversionDetails'])
         ->name('items.unit-conversion-details');
     Route::resource('/arrival-statuses', ArrivalStatusController::class);
+    Route::get('/arrival-inventory/{id}/delete-check', [ArrivalController::class, 'deleteCheck'])
+        ->name('arrival-inventory.delete-check');
     Route::resource('/cost-price', CostPriceController::class);
     Route::get('cost-price/{id}/delete-check', [CostPriceController::class, 'deleteCheck'])
         ->name('cost-price.delete-check');

@@ -25,6 +25,7 @@ class ArrivalRequest extends FormRequest
         return [
             'item_id'       => 'required|string|exists:item,item_id',
             'status'        => 'required|string',
+            'supplier_id'   => 'required|string|exists:suppliers,id_supplier',
             'currency_id'   => 'required|string|exists:currencies,id_currency',
             'quantity'      => 'required|numeric',
             'date'          => 'required|date',
@@ -41,6 +42,7 @@ class ArrivalRequest extends FormRequest
             'item_id.exists'     => 'Selected item does not exist in the database.',
             'currency_id.exists' => 'Selected currency does not exist in the database.',
             'unit_id.exists'     => 'Selected unit does not exist in the database.',
+            'supplier_id.exists' => 'Selected supplier does not exist in the database.',
         ];
     }
 

@@ -14,7 +14,7 @@ class Arrival extends Model
     protected $fillable = [
         'id',
         'item_id',
-        'status',
+        'status', 'supplier_id',
         'currency_id',
         'quantity',
         'date',
@@ -32,6 +32,16 @@ class Arrival extends Model
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'item_id');
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'id_supplier');
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id', 'id_currency');
     }
 
     public function unit()

@@ -22,4 +22,9 @@ class Supplier extends Model
     {
         return str_replace('.', '_', $this->id_supplier);
     }
+
+    public function arrivals()
+    {
+        return $this->hasMany(Arrival::class, 'supplier_id', 'id_supplier');
+    }
 }

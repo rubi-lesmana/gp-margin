@@ -63,20 +63,34 @@
                                                     <i
                                                         class="mdi mdi-pencil-outline position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
-                                                <span class="d-none">Delete</span>
 
-                                                <a type="button"
-                                                    class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#delete_arrival{{ $arrival->id }}" title="Delete">
-                                                    <i class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
-                                                </a>
+                                                @if ($arrival->cost_price_count > 0)
+                                                    <span class="d-none">Delete</span>
+
+                                                    <a type="button"
+                                                        class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
+                                                        href="{{ route('arrival-inventory.delete-check', $arrival->id) }}"
+                                                        title="Delete">
+                                                        <i
+                                                            class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                    </a>
+                                                @else
+                                                    <span class="d-none">Delete</span>
+
+                                                    <a type="button"
+                                                        class="btn btn-gradient-danger btn-rounded btn-icon position-relative"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#delete_arrival{{ $arrival->id }}" title="Delete">
+                                                        <i
+                                                            class="mdi mdi-delete-outline position-absolute top-50 start-50 translate-middle"></i>
+                                                    </a>
+                                                @endif
 
                                                 <span class="d-none">Show</span>
 
                                                 <a type="button"
                                                     class="btn btn-gradient-warning btn-rounded btn-icon position-relative"
-                                                    data-bs-toggle="modal" data-bs-target="#show_arrival{{ $arrival->id }}"
+                                                    href="{{ route('arrival-inventory.show', $arrival->id) }}"
                                                     title="Show">
                                                     <i
                                                         class="mdi mdi-eye-outline position-absolute top-50 start-50 translate-middle"></i>
@@ -88,7 +102,6 @@
                             </table>
                         </div>
                         {{-- Modal View Add Data --}}
-                        @include('transaction.arrival.show')
                         @include('transaction.arrival.delete')
                         {{-- End Modal View Add Data --}}
                     </div>

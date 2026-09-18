@@ -20,4 +20,9 @@ class Currency extends Model
     {
         return $this->hasMany(ArrivalStatus::class, 'default_currency_id');
     }
+
+    public function arrivals()
+    {
+        return $this->hasMany(Arrival::class, 'currency_id', 'id_currency');
+    }
 }
